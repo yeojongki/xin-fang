@@ -12,8 +12,8 @@ import { UsersModule } from '../users/users.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([UsersEntity, RolesEntity]),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
     UsersModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: JWT_SECRET,
       signOptions: { expiresIn: TOKEN_EXPIRED },

@@ -3,7 +3,7 @@ import { BaseUserDto } from '../../users/dto/base-user.dto';
 import { MIN_LENGTH_PASSWORD } from '@/constants/validate.const';
 import { genMsgOfLength } from '@/utils/genValidateMsg';
 
-export class AuthUserDto extends BaseUserDto {
+export class LoginUserDto extends BaseUserDto {
   @IsNotEmpty()
   @MinLength(
     MIN_LENGTH_PASSWORD,

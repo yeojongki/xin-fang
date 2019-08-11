@@ -1,17 +1,9 @@
-import {
-  PrimaryGeneratedColumn,
-  Entity,
-  Column,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
+import { CommonEntity } from '@/common/common.entity';
 import { UsersEntity } from '../users/users.entity';
 
 @Entity('role')
-export class RolesEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class RolesEntity extends CommonEntity {
   @Column({ comment: '名称', unique: true })
   name: string;
 

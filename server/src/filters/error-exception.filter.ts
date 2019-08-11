@@ -5,7 +5,8 @@ import {
   Catch,
   HttpStatus,
 } from '@nestjs/common';
-import { TExceptionOption } from '@/interfaces/http.interface';
+import { HttpErrorResponse } from '@/interfaces/http.interface';
+import { errorCode } from '@/constants/error-code';
 
 @Catch()
 export class ErrorExceptionFilter implements ExceptionFilter {
@@ -14,24 +15,34 @@ export class ErrorExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
 
+    console.log('ex', exception);
+
     const isHttpException = exception instanceof HttpException;
     const httpException = (() => exception as HttpException)();
     const errorResponse = httpException.getResponse
-      ? (httpException.getResponse() as TExceptionOption)
-      : (exception as TExceptionOption);
+      ? (httpException.getResponse() as HttpErrorResponse)
+      : (exception as HttpErrorResponse);
 
     const statusCode = isHttpException
       ? httpException.getStatus()
       : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const message =
-      errorResponse.message ||
-      errorResponse.error ||
-      `unknown error in ${request.url}`;
+    let message = errorResponse.message || `unknown error in ${request.url}`;
+    let errno = errorResponse.errno || errorCode.ERROR;
+    let error = errorResponse.error;
+
+    // 数据库错误
+    if (errorResponse.sqlMessage) {
+      message = '数据库操作失败';
+      error = errorResponse.sqlMessage;
+      errno = errorCode.DB_OPERATE_ERROR;
+    }
 
     response.status(statusCode).json({
-      status: 'error',
+      errno,
+      error,
       message,
     });
   }
 }
+0;

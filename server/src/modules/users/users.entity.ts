@@ -1,15 +1,13 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   BeforeInsert,
   ManyToMany,
   JoinTable,
-  CreateDateColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import * as crypto from 'crypto';
 import { RolesEntity } from '../roles/roles.entity';
+import { CommonEntity } from '@/common/common.entity';
 
 export enum Gender {
   UNKNOWN,
@@ -18,30 +16,20 @@ export enum Gender {
 }
 
 @Entity('user')
-export class UsersEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @CreateDateColumn({
-    name: 'created_at',
-  })
-  readonly createdAt: number;
-
-  @UpdateDateColumn({
-    name: 'updated_at',
-  })
-  readonly updatedAt: number;
-
+export class UsersEntity extends CommonEntity {
   @Column({ unique: true })
   username: string;
 
-  @Column({ type: 'char', length: 64 })
+  @Column({ type: 'char', length: 32 })
   password: string;
 
-  @BeforeInsert()
-  hashPassword() {
-    this.password = crypto.createHmac('sha256', this.password).digest('hex');
-  }
+  // @BeforeInsert()
+  // hashPassword() {
+  //   this.password = crypto
+  //     .createHash('md5')
+  //     .update(this.password)
+  //     .digest('hex');
+  // }
 
   @Column({ default: null })
   email: string;
@@ -58,7 +46,7 @@ export class UsersEntity {
   @Column({ default: null })
   avatar: string;
 
-  @ManyToMany(type => RolesEntity, role => role)
+  @ManyToMany(type => RolesEntity, roles => roles)
   @JoinTable({
     name: 'user_role',
     joinColumn: { name: 'user_id' },

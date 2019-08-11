@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Reflector } from '@nestjs/core';
 import { HttpSuccessResponse } from '@/interfaces/http.interface';
-import { META_RES_MSG } from '@/constants/metadataKey.const';
+import { META_RES_MSG } from '@/constants/metadata-key.const';
+import { errorCode } from '@/constants/error-code';
 
 @Injectable()
 export class HttpResInterceptor<T>
@@ -26,7 +27,7 @@ export class HttpResInterceptor<T>
     return next.handle().pipe(
       map(result => {
         return {
-          status: 'success',
+          errno: errorCode.SUCCESS,
           message: message || '',
           result,
         };

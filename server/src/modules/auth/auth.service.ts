@@ -1,12 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenResult } from './auth.interface';
-import { AuthUserDto } from './dto/auth-user.dto';
 import { RolesEntity } from '../roles/roles.entity';
 import { TOKEN_EXPIRED } from '@/config';
 import { UsersService } from '../users/users.service';
-
-console.log('UsersService', UsersService);
+import { LoginUserDto } from '../login/dto/login-user.dto';
+import { errorCode } from '@/constants/error-code';
 
 @Injectable()
 export class AuthService {
@@ -17,16 +16,21 @@ export class AuthService {
 
   /**
    * 根据用户名和密码验证用户信息 返回 token
-   * @param {AuthUserDto} auth 待验证的用户信息
+   * @param {LoginUserDto} auth 待验证的用户信息
    * @returns {Promise<ITokenResult>}
    * @memberof AuthService
    */
-  async auth(auth: AuthUserDto): Promise<ITokenResult> {
+  public async auth(auth: LoginUserDto): Promise<ITokenResult> {
     const { username, password } = auth;
     const user = await this.usersService.findOne({ username });
     if (user && user.password === password) {
       return Promise.resolve(this.generateJWT(user.id, user.roles));
     }
+
+    throw new BadRequestException({
+      errno: errorCode.LOGIN_ERROR,
+      message: '用户名或密码错误',
+    });
   }
 
   /**
@@ -42,5 +46,9 @@ export class AuthService {
       access_token: this.jwtService.sign({ id, roles: tokens }),
       expired_in: TOKEN_EXPIRED,
     };
+  }
+
+  public async validateUser(id: string) {
+    return await this.usersService.findOne({ id });
   }
 }

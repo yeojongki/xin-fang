@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { errorCode } from '@/constants/error-code';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -27,6 +28,7 @@ export class RolesGuard implements CanActivate {
     } else {
       throw new UnauthorizedException({
         statusCode: 403,
+        errno: errorCode.ROLE_AUTH_ERROR,
         message: '您的权限不足',
       });
     }
