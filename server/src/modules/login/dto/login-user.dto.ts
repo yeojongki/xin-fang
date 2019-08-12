@@ -1,5 +1,5 @@
 import { IsNotEmpty, MinLength } from 'class-validator';
-import { BaseUserDto } from '../../users/dto/base-user.dto';
+import { BaseUserDto } from '../../user/dto/base-user.dto';
 import { MIN_LENGTH_PASSWORD } from '@/constants/validate.const';
 import { genMsgOfLength } from '@/utils/genValidateMsg';
 

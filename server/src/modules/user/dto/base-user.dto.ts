@@ -1,6 +1,6 @@
 import { IsNotEmpty, MaxLength, IsEmail, ValidateIf } from 'class-validator';
-import { Gender } from '../users.entity';
-import { RolesEntity } from '@/modules/roles/roles.entity';
+import { Gender } from '../user.entity';
+import { RoleEntity } from '@/modules/role/role.entity';
 import {
   MAX_LENGTH_MOBILE,
   MAX_LENGTH_EMAIL,
@@ -25,5 +25,5 @@ export class BaseUserDto extends UsernameDto {
 
   avatar: string;
   gender: Gender;
-  roles: RolesEntity[];
+  roles: RoleEntity[];
 }

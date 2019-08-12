@@ -1,4 +1,4 @@
-import { RolesEntity } from "../roles.entity";
+import { RoleEntity } from "../role.entity";
 import { IsNotEmpty } from "class-validator";
 
 class BaseRolesDto{

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './modules/users/users.module';
+import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { Connection } from 'typeorm';
-import { RolesModule } from './modules/roles/roles.module';
+import { RoleModule } from './modules/role/role.module';
 import { LoginModule } from './modules/login/login.module';
 
 @Module({
@@ -11,8 +11,8 @@ import { LoginModule } from './modules/login/login.module';
     TypeOrmModule.forRoot(),
     LoginModule,
     AuthModule,
-    UsersModule,
-    RolesModule,
+    UserModule,
+    RoleModule,
   ],
 })
 export class AppModule {

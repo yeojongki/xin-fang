@@ -5,8 +5,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import * as crypto from 'crypto';
-import { RolesEntity } from '../roles/roles.entity';
+import { RoleEntity } from '../role/role.entity';
 import { CommonEntity } from '@/common/common.entity';
 
 export enum Gender {
@@ -16,20 +15,12 @@ export enum Gender {
 }
 
 @Entity('user')
-export class UsersEntity extends CommonEntity {
+export class UserEntity extends CommonEntity {
   @Column({ unique: true })
   username: string;
 
   @Column({ type: 'char', length: 32 })
   password: string;
-
-  // @BeforeInsert()
-  // hashPassword() {
-  //   this.password = crypto
-  //     .createHash('md5')
-  //     .update(this.password)
-  //     .digest('hex');
-  // }
 
   @Column({ default: null })
   email: string;
@@ -46,11 +37,11 @@ export class UsersEntity extends CommonEntity {
   @Column({ default: null })
   avatar: string;
 
-  @ManyToMany(type => RolesEntity, roles => roles)
+  @ManyToMany(type => RoleEntity, roles => roles)
   @JoinTable({
     name: 'user_role',
     joinColumn: { name: 'user_id' },
     inverseJoinColumn: { name: 'role_id' },
   })
-  roles: RolesEntity[];
+  roles: RoleEntity[];
 }

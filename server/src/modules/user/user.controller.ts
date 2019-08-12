@@ -9,19 +9,19 @@ import {
   UseGuards,
   BadRequestException,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesGuard } from '@/guard/roles.guard';
 import { JwtAuthGuard } from '@/guard/auth.guard';
 import { CommonController } from '@/common/common.controller';
-import { UsersEntity } from './users.entity';
+import { UserEntity } from './user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { errorCode } from '@/constants/error-code';
 
 @Controller('users')
-export class UsersController extends CommonController<UsersEntity> {
-  constructor(private readonly usersService: UsersService) {
-    super(usersService);
+export class UserController extends CommonController<UserEntity> {
+  constructor(private readonly UserService: UserService) {
+    super(UserService);
   }
 
   /**
@@ -29,18 +29,18 @@ export class UsersController extends CommonController<UsersEntity> {
    * @private
    * @param {string} id
    * @returns
-   * @memberof UsersController
+   * @memberof UserController
    */
   private async getUserById(id: string) {
-    const user = await this.usersService.findOneAndThrowError({ id });
-    return this.usersService.buildUser(user);
+    const user = await this.UserService.findOneAndThrowError({ id });
+    return this.UserService.buildUser(user);
   }
 
   /**
    * 获取用户自身信息
    * @param {*} req
    * @returns
-   * @memberof UsersController
+   * @memberof UserController
    */
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('self')
@@ -53,18 +53,18 @@ export class UsersController extends CommonController<UsersEntity> {
    * 根据用户Id查找信息
    * @param {string} id
    * @returns
-   * @memberof UsersController
+   * @memberof UserController
    */
   @Get(':id')
   async findById(@Param('id') id: string) {
-    const user = await this.usersService.findOne(id);
-    return this.usersService.buildUser(user);
+    const user = await this.UserService.findOne(id);
+    return this.UserService.buildUser(user);
   }
 
   @Post()
   async create(@Body() entity: CreateUserDto) {
     const { username } = entity;
-    const exist = await this.usersService.findOne({ username });
+    const exist = await this.UserService.findOne({ username });
     if (exist) {
       throw new BadRequestException({
         message: '用户名已存在',
@@ -72,13 +72,13 @@ export class UsersController extends CommonController<UsersEntity> {
         errno: errorCode.USER_NAME_EXIST,
       });
     } else {
-      const user = await this.usersService.create(entity);
-      return this.usersService.buildUser(user);
+      const user = await this.UserService.create(entity);
+      return this.UserService.buildUser(user);
     }
   }
 
   @Put()
   async update(@Body() entity: UpdateUserDto): Promise<any> {
-    return await this.usersService.update(entity);
+    return await this.UserService.update(entity);
   }
 }

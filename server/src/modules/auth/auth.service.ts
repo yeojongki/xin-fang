@@ -1,16 +1,16 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenResult } from './auth.interface';
-import { RolesEntity } from '../roles/roles.entity';
+import { RoleEntity } from '../role/role.entity';
 import { TOKEN_EXPIRED } from '@/config';
-import { UsersService } from '../users/users.service';
+import { UserService } from '../user/user.service';
 import { LoginUserDto } from '../login/dto/login-user.dto';
 import { errorCode } from '@/constants/error-code';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly UserService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -22,7 +22,7 @@ export class AuthService {
    */
   public async auth(auth: LoginUserDto): Promise<ITokenResult> {
     const { username, password } = auth;
-    const user = await this.usersService.findOne({ username });
+    const user = await this.UserService.findOne({ username });
     if (user && user.password === password) {
       return Promise.resolve(this.generateJWT(user.id, user.roles));
     }
@@ -36,11 +36,11 @@ export class AuthService {
   /**
    * 生成含有 `id` 和 `roles` 的 jwt
    * @param {(string | number)} id
-   * @param {RolesEntity[]} roles
+   * @param {RoleEntity[]} roles
    * @returns {ITokenResult}
    * @memberof AuthService
    */
-  public generateJWT(id: string | number, roles: RolesEntity[]): ITokenResult {
+  public generateJWT(id: string | number, roles: RoleEntity[]): ITokenResult {
     const tokens = roles.map(role => role.token);
     return {
       access_token: this.jwtService.sign({ id, roles: tokens }),
@@ -49,6 +49,6 @@ export class AuthService {
   }
 
   public async validateUser(id: string) {
-    return await this.usersService.findOne({ id });
+    return await this.UserService.findOne({ id });
   }
 }

@@ -1,9 +1,9 @@
 import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
 import { CommonEntity } from '@/common/common.entity';
-import { UsersEntity } from '../users/users.entity';
+import { UserEntity } from '../user/user.entity';
 
 @Entity('role')
-export class RolesEntity extends CommonEntity {
+export class RoleEntity extends CommonEntity {
   @Column({ comment: '名称', unique: true })
   name: string;
 
@@ -13,11 +13,11 @@ export class RolesEntity extends CommonEntity {
   @Column({ comment: '描述', default: null, nullable: true })
   desc: string;
 
-  @ManyToMany(type => UsersEntity, user => user.roles)
+  @ManyToMany(type => UserEntity, user => user.roles)
   @JoinTable({
     name: 'user_role',
     joinColumn: { name: 'role_id' },
     inverseJoinColumn: { name: 'user_id' },
   })
-  users: UsersEntity;
+  users: UserEntity;
 }
