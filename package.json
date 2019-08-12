@@ -1,17 +1,18 @@
 {
-  "name": "xin-house",
+  "name": "xin-fang",
   "version": "0.0.1",
-  "description": "xin-house fullstack",
+  "description": "xin-fang fullstack",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server:dev": "cd ./server && yarn start:dev"
+    "server:dev": "cd ./server && yarn start:dev",
+    "admin:dev": "cd ./admin && yarn start"
   },
   "author": "kk597@sina.com",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/yeojongki/xin-house.git"
+    "url": "https://github.com/yeojongki/xin-fang.git"
   },
   "devDependencies": {
     "cz-conventional-changelog": "^3.0.2",

@@ -1,6 +1,6 @@
 ## Description
 
-server of xin-fang.
+admin of xin-fang.
 
 ## Installation
 
@@ -14,11 +14,8 @@ $ npm install
 # development
 $ npm run start
 
-# watch mode
-$ npm run start:dev
-
 # production mode
-$ npm run start:prod
+$ npm run build
 ```
 
 ## Test
@@ -26,10 +23,4 @@ $ npm run start:prod
 ```bash
 # unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
