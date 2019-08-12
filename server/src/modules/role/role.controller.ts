@@ -1,23 +1,26 @@
-import { Controller, Put, Post, Body } from '@nestjs/common';
+import { Controller, Put, Body, Post } from '@nestjs/common';
 import { RoleService } from './role.service';
-import { Message } from '@/decorators/http.decorator';
 import { CommonController } from '@/common/common.controller';
 import { RoleEntity } from './role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
 
-@Controller('roles')
-export class RoleController extends CommonController<RoleEntity> {
-  constructor(private readonly RoleService: RoleService) {
-    super(RoleService);
-  }
-
-  @Post()
-  async create(@Body() entity: CreateRoleDto) {
-    return await this.RoleService.create(entity);
+@Controller('role')
+export class RoleController extends CommonController<
+  RoleEntity,
+  UpdateRoleDto
+> {
+  constructor(private readonly roleService: RoleService) {
+    super(roleService);
   }
 
   @Put()
-  async update(@Body() entity: RoleEntity) {
-    return await this.RoleService.update(entity);
+  async update(@Body() dto: UpdateRoleDto): Promise<any> {
+    return await this.roleService.update(dto);
+  }
+
+  @Post()
+  async create(@Body() dto: CreateRoleDto) {
+    return await this.roleService.create(dto);
   }
 }

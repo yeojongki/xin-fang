@@ -23,7 +23,9 @@ export class BaseUserDto extends UsernameDto {
   @IsEmail({ allow_utf8_local_part: false }, { message: '邮箱格式不正确' })
   email: string = '';
 
-  avatar: string;
+  avatar: string = '';
+
+  // todo custom validation https://github.com/typestack/class-validator#custom-validation-decorators
   gender: Gender;
   roles: RoleEntity[];
 }

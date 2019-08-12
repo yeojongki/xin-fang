@@ -1,20 +1,22 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Put, Body } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RoleEntity } from '../role/role.entity';
 import { CommonService } from '@/common/common.service';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { errorCode } from '@/constants/error-code';
 
 @Injectable()
-export class UserService extends CommonService<UserEntity> {
+export class UserService extends CommonService<UserEntity, UpdateUserDto> {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(RoleEntity)
     private readonly rolesRepository: Repository<RoleEntity>,
   ) {
-    super(userRepository);
+    super(userRepository, '用户不存在');
   }
 
   /**
@@ -23,11 +25,10 @@ export class UserService extends CommonService<UserEntity> {
    * @returns
    * @memberof UserService
    */
-  public buildUser(user: UserEntity) {
+  buildUser(user: UserEntity) {
     const { password, createdAt, updatedAt, ...result } = user;
     return result;
   }
-
 
   /**
    * 查找用户
@@ -35,49 +36,36 @@ export class UserService extends CommonService<UserEntity> {
    * @returns {Promise<UserEntity>}
    * @memberof UserService
    */
-  public async findOne(query: any): Promise<UserEntity> {
+  async findOne(query: any): Promise<UserEntity> {
     return await this.userRepository.findOne(query, { relations: ['roles'] });
   }
 
   /**
-   * 查找用户 如果用户不存在则抛出错误
-   * @param {*} query
+   * 创建用户
+   * @param {CreateUserDto} dto
    * @returns {Promise<UserEntity>}
    * @memberof UserService
    */
-  public async findOneAndThrowError(query: any): Promise<UserEntity> {
-    const user = this.findOne(query);
-    if (!user) {
-      this.throwNotFoundError('用户不存在', query);
+  async create(dto: CreateUserDto): Promise<UserEntity> {
+    const { username } = dto;
+    const isExisted = await this.findOne({ username });
+    if (isExisted) {
+      throw new BadRequestException({
+        message: '用户名已存在',
+        error: { username },
+        errno: errorCode.USER_NAME_EXIST,
+      });
     }
-    return user;
-  }
 
-  /**
-   * 创建用户
-   * @param {CreateUserDto} user
-   * @returns {Promise<ITokenResult>}
-   * @memberof UserService
-   */
-  public async create(user: CreateUserDto): Promise<UserEntity> {
     // 添加默认角色
-    if (!user.roles) {
+    if (!dto.roles) {
       const role = await this.rolesRepository.findOne({
         where: { token: 'default' },
       });
-      role ? (user.roles = [role]) : (user.roles = []);
+      role ? (dto.roles = [role]) : (dto.roles = []);
     }
 
-    const toSave = this.userRepository.create(user);
+    const toSave = this.userRepository.create(dto);
     return await this.userRepository.save(toSave);
-  }
-
-  /**
-   * 用户不存在抛出错误
-   * @param {string} id 用户Id
-   * @memberof UserService
-   */
-  public handleNotFoundError(id: string) {
-    this.throwNotFoundError('用户不存在', { id });
   }
 }

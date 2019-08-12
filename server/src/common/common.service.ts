@@ -1,10 +1,46 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { errorCode } from '@/constants/error-code';
+import { IUpdateDto } from './common.controller';
 
-@Injectable()
-export class CommonService<T> {
-  constructor(private readonly repository: Repository<T>) {}
+/**
+ * 公用 service
+ * @class CommonService
+ * @template T 数据实体 Entity
+ * @template U 更新数据对象 dto
+ */
+export abstract class CommonService<T, U extends IUpdateDto> {
+  /**
+   * Creates an instance of CommonService.
+   * @param {Repository<T>} repository
+   * @param {string} [findOneErrMsg='数据不存在']
+   * @memberof CommonService
+   */
+  constructor(
+    private readonly repository: Repository<T>,
+    private readonly findOneErrMsg: string = '数据不存在',
+  ) {}
+
+  /**
+   * 创建数据
+   * @abstract
+   * @param {*} dto
+   * @memberof CommonService
+   */
+  abstract async create(dto: any);
+
+  /**
+   * 更新数据 数据实体不存在 id 时抛错
+   * @param {*} dto
+   * @returns {Promise<any>}
+   * @memberof CommonService
+   */
+  async update(dto: U): Promise<any> {
+    const { id } = dto;
+    let toUpdate = await this.findByIdAndThrowError(id);
+    await this.repository.save(Object.assign(toUpdate, dto));
+    return Promise.resolve();
+  }
 
   /**
    * 根据Id查找数据
@@ -12,45 +48,22 @@ export class CommonService<T> {
    * @returns {Promise<T>}
    * @memberof CommonService
    */
-  async findOneById(id: string): Promise<T> {
+  async findById(id: string): Promise<T> {
     return await this.repository.findOne(id);
   }
 
   /**
-   * 根据Id查找数据 不存在时会抛出错误
+   * 根据Id查找数据 查找结果为空时抛错
    * @param {string} id
    * @returns {Promise<T>}
    * @memberof CommonService
    */
-  async findOneByIdAndError(id: string): Promise<T> {
-    const entity = await this.findOneById(id);
+  async findByIdAndThrowError(id: string): Promise<T> {
+    const entity = await this.findById(id);
     if (!entity) {
       this.handleNotFoundError(id);
     }
     return entity;
-  }
-
-  /**
-   * 创建数据
-   * @param {*} entity
-   * @returns {Promise<T>}
-   * @memberof CommonService
-   */
-  async create(entity: any): Promise<T> {
-    return this.repository.save(entity);
-  }
-
-  /**
-   * 更新数据
-   * @param {*} entity
-   * @returns {Promise<void>}
-   * @memberof CommonService
-   */
-  async update(entity: any): Promise<void> {
-    const { id } = entity;
-    let toUpdate = await this.findOneByIdAndError(id);
-    await this.repository.save(Object.assign(toUpdate, entity));
-    return Promise.resolve();
   }
 
   /**
@@ -78,24 +91,10 @@ export class CommonService<T> {
    * @param {string} id
    * @memberof CommonService
    */
-  public handleNotFoundError(
-    id: string,
-    message: string = '数据不存在',
-    error: string = id,
-  ) {
-    this.throwNotFoundError(message, error);
-  }
-
-  /**
-   * 数据不存在时抛出错误
-   * @param {string} message 错误信息
-   * @param {*} error 错误数据等
-   * @memberof CommonService
-   */
-  public throwNotFoundError(message: string, error: any) {
+  handleNotFoundError(id: string) {
     throw new BadRequestException({
-      message,
-      error,
+      message: this.findOneErrMsg,
+      error: { id },
       errorCode: errorCode.FIND_NOT_FOUND,
     });
   }
