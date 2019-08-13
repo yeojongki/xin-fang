@@ -6,6 +6,7 @@ import { HttpResInterceptor } from './interceptor/http-res.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new ErrorExceptionFilter());
   app.useGlobalInterceptors(new HttpResInterceptor(new Reflector()));

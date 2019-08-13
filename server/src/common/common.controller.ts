@@ -20,9 +20,9 @@ export interface IUpdateDto extends IID {}
 export abstract class CommonController<E, U extends IUpdateDto> {
   constructor(private readonly service: CommonService<E, U>) {}
 
-  abstract create(dto: any);
+  abstract async create(dto: any): Promise<any>;
 
-  abstract update(dto: U);
+  abstract async update(dto: U): Promise<any>;
 
   @Get(':id')
   async findById(@Param('id') id: string): Promise<any> {

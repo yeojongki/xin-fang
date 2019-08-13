@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  BeforeInsert,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
 import { RoleEntity } from '../role/role.entity';
 import { CommonEntity } from '@/common/common.entity';
 
