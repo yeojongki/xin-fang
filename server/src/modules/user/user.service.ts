@@ -43,10 +43,10 @@ export class UserService extends CommonService<UserEntity, UpdateUserDto> {
   /**
    * 创建用户
    * @param {CreateUserDto} dto
-   * @returns {Promise<UserEntity>}
+   * @returns {Promise<void>}
    * @memberof UserService
    */
-  async create(dto: CreateUserDto): Promise<UserEntity> {
+  async create(dto: CreateUserDto): Promise<void> {
     const { username } = dto;
     const isExisted = await this.findOne({ username });
     if (isExisted) {
@@ -60,12 +60,13 @@ export class UserService extends CommonService<UserEntity, UpdateUserDto> {
     // 添加默认角色
     if (!dto.roles) {
       const role = await this.rolesRepository.findOne({
-        where: { token: 'default' },
+        where: { token: 'user' },
       });
       role ? (dto.roles = [role]) : (dto.roles = []);
     }
 
     const toSave = this.userRepository.create(dto);
-    return await this.userRepository.save(toSave);
+    await this.userRepository.save(toSave);
+    return Promise.resolve();
   }
 }

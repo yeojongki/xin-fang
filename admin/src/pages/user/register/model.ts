@@ -1,11 +1,11 @@
 import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
-import { fakeRegister } from './service';
+import * as Api from './service';
 
 export interface StateType {
-  status?: 'ok' | 'error';
-  currentAuthority?: 'user' | 'guest' | 'admin';
+  errno?: number;
+  // currentAuthority?: 'user' | 'guest' | 'admin';
 }
 
 export type Effect = (
@@ -28,12 +28,12 @@ const Model: ModelType = {
   namespace: 'userRegister',
 
   state: {
-    status: undefined,
+    errno: undefined,
   },
 
   effects: {
     *submit({ payload }, { call, put }) {
-      const response = yield call(fakeRegister, payload);
+      const response = yield call(Api.register, payload);
       yield put({
         type: 'registerHandle',
         payload: response,
@@ -44,8 +44,7 @@ const Model: ModelType = {
   reducers: {
     registerHandle(state, { payload }) {
       return {
-        ...state,
-        status: payload.status,
+        errno: payload.errno,
       };
     },
   },

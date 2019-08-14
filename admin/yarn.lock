@@ -15388,6 +15388,11 @@ ts-loader@6.0.3:
     micromatch "^4.0.0"
     semver "^6.0.0"
 
+ts-md5@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.npm.taobao.org/ts-md5/download/ts-md5-1.2.4.tgz#7030d7ba9134449deedf6f609d4b4509b94a5712"
+  integrity sha1-cDDXupE0RJ3u329gnUtFCblKVxI=
+
 tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.2:
   version "1.10.0"
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"

@@ -15,6 +15,7 @@ import { JwtAuthGuard } from '@/guard/auth.guard';
 import { CommonController } from '@/common/common.controller';
 import { UserEntity } from './user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Message } from '@/decorators/http.decorator';
 
 @Controller('user')
 export class UserController extends CommonController<
@@ -51,9 +52,9 @@ export class UserController extends CommonController<
   }
 
   @Post()
+  @Message('注册成功')
   async create(@Body() entity: CreateUserDto) {
-    const user = await this.userService.create(entity);
-    return this.userService.buildUser(user);
+    return await this.userService.create(entity);
   }
 
   @Put()

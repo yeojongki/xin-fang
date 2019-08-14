@@ -23,15 +23,42 @@ const codeMessage = {
   504: '网关超时。',
 };
 
+export interface HttpBaseResponse {
+  errno: number;
+  message: string;
+}
+
+export interface HttpErrorResponse extends HttpBaseResponse {
+  error?: any;
+  sqlMessage?: string;
+  name?: string;
+}
+
+export interface HttpSuccessResponse extends HttpBaseResponse {
+  result: any;
+}
+
 /**
  * 异常处理程序
  */
-const errorHandler = (error: { response: Response }): Response => {
-  const { response } = error;
+const errorHandler = (error: { response: Response; data: HttpErrorResponse }): Response => {
+  const { response, data } = error;
+  const { status, url } = response;
+
+  // console.log('data', data);
+  // console.log('response', response);
+
+  if (data && data.message !== undefined) {
+    const { message, errno } = data;
+    notification.error({
+      message: `${message}`,
+      description: errno ? `errno: ${errno}` : '',
+    });
+    return response;
+  }
+
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
-
     notification.error({
       message: `请求错误 ${status}: ${url}`,
       description: errorText,
@@ -44,6 +71,7 @@ const errorHandler = (error: { response: Response }): Response => {
  * 配置request请求时的默认参数
  */
 const request = extend({
+  prefix: '/api',
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });

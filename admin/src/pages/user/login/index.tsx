@@ -8,6 +8,7 @@ import { connect } from 'dva';
 import { StateType } from './model';
 import LoginComponents from './components/Login';
 import styles from './style.less';
+import { Md5 } from '@/utils';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
 interface LoginProps {
@@ -20,7 +21,7 @@ interface LoginState {
   autoLogin: boolean;
 }
 export interface FormDataType {
-  userName: string;
+  username: string;
   password: string;
   mobile: string;
   captcha: string;
@@ -57,13 +58,13 @@ class Login extends Component<LoginProps, LoginState> {
   };
 
   handleSubmit = (err: any, values: FormDataType) => {
-    const { type } = this.state;
-
     if (!err) {
       const { dispatch } = this.props;
+      let { password, username } = values;
+      password = Md5(password);
       dispatch({
         type: 'userLogin/login',
-        payload: { ...values, type },
+        payload: { password, username},
       });
     }
   };
@@ -108,7 +109,7 @@ class Login extends Component<LoginProps, LoginState> {
 
   render() {
     const { userLogin, submitting } = this.props;
-    const { status, type: loginType } = userLogin;
+    const { errno, type: loginType } = userLogin;
     const { type, autoLogin } = this.state;
     return (
       <div className={styles.main}>
@@ -121,12 +122,12 @@ class Login extends Component<LoginProps, LoginState> {
           }}
         >
           <Tab key="account" tab="账户密码登录">
-            {status === 'error' &&
+            {errno !== 0 &&
               loginType === 'account' &&
               !submitting &&
-              this.renderMessage('账户或密码错误（admin/ant.design）')}
+              this.renderMessage('账户或密码错误')}
             <UserName
-              name="userName"
+              name="username"
               placeholder="用户名"
               rules={[
                 {
@@ -142,6 +143,10 @@ class Login extends Component<LoginProps, LoginState> {
                 {
                   required: true,
                   message: '请输入密码！',
+                },
+                {
+                  min: 6,
+                  message: '请输入至少6位!',
                 },
               ]}
               onPressEnter={e => {

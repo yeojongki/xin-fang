@@ -6,13 +6,10 @@ import styles from './style.less';
 
 const actions = (
   <div className={styles.actions}>
-    <a href="">
+    <Link to="/user/login" replace={true}>
       <Button size="large" type="primary">
-        查看邮箱
+        去登录
       </Button>
-    </a>
-    <Link to="/">
-      <Button size="large">返回首页</Button>
     </Link>
   </div>
 );
@@ -21,12 +18,8 @@ const RegisterResult: React.FC<RouteChildrenProps> = ({ location }) => (
   <Result
     className={styles.registerResult}
     status="success"
-    title={
-      <div className={styles.title}>
-        你的账户：{location.state ? location.state.account : 'AntDesign@example.com'} 注册成功
-      </div>
-    }
-    subTitle="激活邮件已发送到你的邮箱中，邮件有效期为24小时。请及时登录邮箱，点击邮件中的链接激活帐户。"
+    title={<div className={styles.title}>你的账户：{location.state.account} 注册成功</div>}
+    subTitle="请马上登录账号开始体验吧 :)"
     extra={actions}
   />
 );

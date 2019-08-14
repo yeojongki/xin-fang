@@ -8,7 +8,7 @@ export const MAX_LENGTH_EMAIL = 50;
 /** 最大手机号长度 */
 export const MAX_LENGTH_MOBILE = 25;
 /** 最大密码长度 */
-export const MAX_LENGTH_PASSWORD = 16;
+export const MAX_LENGTH_PASSWORD = 32;
 /** 最大角色名长度 */
 export const MAX_LENGTH_ROLE_NAME = 16;
 /** 最大角色名标识 */

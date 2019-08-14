@@ -7,12 +7,13 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import { StateType } from './model';
 import styles from './style.less';
+import { Md5 } from '@/utils';
 
 const FormItem = Form.Item;
 const passwordStatusMap = {
-  ok: <div className={styles.success}>强度：强</div>,
-  pass: <div className={styles.warning}>强度：中</div>,
-  poor: <div className={styles.error}>强度：太短</div>,
+  ok: <div className={styles.success}>密码强度：强</div>,
+  pass: <div className={styles.warning}>密码强度：中</div>,
+  poor: <div className={styles.error}>密码强度：太短</div>,
 };
 const passwordProgressMap: {
   ok: 'success';
@@ -31,12 +32,11 @@ interface RegisterProps extends FormComponentProps {
 interface RegisterState {
   count: number;
   confirmDirty: boolean;
-  visible: boolean;
-  help: string;
+  showPwdTips: boolean;
   prefix: string;
 }
 export interface UserRegisterParams {
-  mail: string;
+  username: string;
   password: string;
   confirm: string;
   mobile: string;
@@ -50,11 +50,7 @@ export interface UserRegisterParams {
     loading,
   }: {
     userRegister: StateType;
-    loading: {
-      effects: {
-        [key: string]: string;
-      };
-    };
+    loading: { effects: { [key: string]: string } };
   }) => ({
     userRegister,
     submitting: loading.effects['userRegister/submit'],
@@ -64,8 +60,7 @@ class Register extends Component<RegisterProps, RegisterState> {
   state: RegisterState = {
     count: 0,
     confirmDirty: false,
-    visible: false,
-    help: '',
+    showPwdTips: false,
     prefix: '86',
   };
 
@@ -74,8 +69,7 @@ class Register extends Component<RegisterProps, RegisterState> {
   componentDidUpdate() {
     const { userRegister, form } = this.props;
     const account = form.getFieldValue('username');
-
-    if (userRegister.status === 'ok') {
+    if (userRegister.errno === 0) {
       message.success('注册成功！');
       router.push({
         pathname: '/user/register-result',
@@ -129,12 +123,13 @@ class Register extends Component<RegisterProps, RegisterState> {
       {
         force: true,
       },
-      (err, values) => {
+      (err, values: UserRegisterParams) => {
         if (!err) {
-          const { prefix } = this.state;
+          let { password, username } = values;
+          password = Md5(password);
           dispatch({
             type: 'userRegister/submit',
-            payload: { ...values, prefix },
+            payload: { password, username },
           });
         }
       },
@@ -152,27 +147,22 @@ class Register extends Component<RegisterProps, RegisterState> {
   };
 
   checkPassword = (rule: any, value: string, callback: (messgae?: string) => void) => {
-    const { visible, confirmDirty } = this.state;
+    const { showPwdTips, confirmDirty } = this.state;
 
     if (!value) {
       this.setState({
-        help: '请输入密码！',
-        visible: !!value,
+        showPwdTips: true,
       });
-      callback('error');
+      callback('请输入密码!');
     } else {
-      this.setState({
-        help: '',
-      });
-
-      if (!visible) {
+      if (!showPwdTips) {
         this.setState({
-          visible: !!value,
+          showPwdTips: true,
         });
       }
 
       if (value.length < 6) {
-        callback('error');
+        callback('请输入至少6位密码!');
       } else {
         const { form } = this.props;
 
@@ -210,15 +200,57 @@ class Register extends Component<RegisterProps, RegisterState> {
     ) : null;
   };
 
+  handlePasswoldBlur = () => {
+    if (this.getValidPasswoldValue()) {
+      this.setState({
+        showPwdTips: false,
+      });
+    }
+  };
+
+  handlePasswoldFocus = () => {
+    // if invalid value show helper
+    const value = this.getPasswoldValue();
+    if (value && value!.length) {
+      this.setState({
+        showPwdTips: true,
+      });
+    }
+  };
+
+  /**
+   * 返回长度大于6的密码
+   * @memberof Register
+   */
+  getValidPasswoldValue = (): string | undefined => {
+    const value = this.getPasswoldValue();
+    if (value && value!.length >= 6) {
+      return value;
+    }
+    return undefined;
+  };
+
+  /**
+   * 返回密码
+   * @memberof Register
+   */
+  getPasswoldValue = (): string | undefined => {
+    const { form } = this.props;
+    const value = form.getFieldValue('password');
+    return value;
+  };
+
   render() {
     const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
-    const { help, visible } = this.state;
+    const { showPwdTips } = this.state;
+    const enteredPasswold = this.getPasswoldValue();
+
     return (
       <div className={styles.main}>
         <h3>注册</h3>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem>
+          <FormItem hasFeedback>
             {getFieldDecorator('username', {
               rules: [
                 {
@@ -226,9 +258,9 @@ class Register extends Component<RegisterProps, RegisterState> {
                   message: '请输入用户名！',
                 },
               ],
-            })(<Input size="large" placeholder="用户名" />)}
+            })(<Input size="large" maxLength={16} placeholder="用户名" />)}
           </FormItem>
-          <FormItem help={help}>
+          <FormItem hasFeedback>
             <Popover
               getPopupContainer={node => {
                 if (node && node.parentNode) {
@@ -249,7 +281,7 @@ class Register extends Component<RegisterProps, RegisterState> {
                       marginTop: 10,
                     }}
                   >
-                    请至少输入 6 个字符。请不要使用容易被猜到的密码。
+                    当前已输入{(enteredPasswold && enteredPasswold.length) || 0}个字符
                   </div>
                 </div>
               }
@@ -257,7 +289,7 @@ class Register extends Component<RegisterProps, RegisterState> {
                 width: 240,
               }}
               placement="right"
-              visible={visible}
+              visible={showPwdTips}
             >
               {getFieldDecorator('password', {
                 rules: [
@@ -265,10 +297,10 @@ class Register extends Component<RegisterProps, RegisterState> {
                     validator: this.checkPassword,
                   },
                 ],
-              })(<Input size="large" type="password" placeholder="至少6位密码" />)}
+              })(<Input.Password size="large" maxLength={16} placeholder="至少6位密码" />)}
             </Popover>
           </FormItem>
-          <FormItem>
+          <FormItem hasFeedback>
             {getFieldDecorator('confirm', {
               rules: [
                 {
@@ -279,7 +311,9 @@ class Register extends Component<RegisterProps, RegisterState> {
                   validator: this.checkConfirm,
                 },
               ],
-            })(<Input size="large" type="password" placeholder="确认密码" />)}
+            })(
+              <Input.Password size="large" maxLength={16} type="password" placeholder="确认密码" />,
+            )}
           </FormItem>
           <FormItem>
             <Button

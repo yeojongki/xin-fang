@@ -3,6 +3,7 @@ import {
   ExecutionContext,
   CallHandler,
   Injectable,
+  HttpStatus,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,27 +11,39 @@ import { Reflector } from '@nestjs/core';
 import { HttpSuccessResponse } from '@/interfaces/http.interface';
 import { META_RES_MSG } from '@/constants/metadata-key.const';
 import { errorCode } from '@/constants/error-code';
+import { THttpResponseMsg } from '@/decorators/http.decorator';
 
 @Injectable()
-export class HttpResInterceptor<T>
-  implements NestInterceptor<T, HttpSuccessResponse<T>> {
+export class HttpResInterceptor implements NestInterceptor {
   constructor(private readonly reflector: Reflector) {}
 
   intercept(
     context: ExecutionContext,
     next: CallHandler,
-  ): Observable<HttpSuccessResponse<T>> {
-    const message = this.reflector.get<string>(
+  ): Observable<HttpSuccessResponse | any> {
+    let message: string = '';
+    // set default code -> 200
+    let httpCode: number = HttpStatus.OK;
+    const metadata = this.reflector.get<THttpResponseMsg | string>(
       META_RES_MSG,
       context.getHandler(),
     );
+    if (Array.isArray(metadata)) {
+      [message, httpCode] = metadata;
+    } else {
+      message = metadata;
+    }
+
+    const ctx = context.switchToHttp();
+    const res = ctx.getResponse();
     return next.handle().pipe(
       map(result => {
-        return {
+        let data = {
           errno: errorCode.SUCCESS,
-          message: message || '',
+          message,
           result,
         };
+        res.status(httpCode).json(data);
       }),
     );
   }

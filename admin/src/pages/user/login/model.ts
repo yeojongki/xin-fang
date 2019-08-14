@@ -1,11 +1,15 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { routerRedux } from 'dva/router';
-import { fakeAccountLogin, getFakeCaptcha } from './service';
+import * as Api from './service';
 import { getPageQuery, setAuthority } from './utils/utils';
+import { HttpSuccessResponse } from '@/utils/request';
 
 export interface StateType {
-  status?: 'ok' | 'error';
+  errno?: number;
+  /**
+   * 登录类型 账号 or 手机号+验证码
+   */
   type?: string;
   currentAuthority?: 'user' | 'guest' | 'admin';
 }
@@ -20,7 +24,7 @@ export interface ModelType {
   state: StateType;
   effects: {
     login: Effect;
-    getCaptcha: Effect;
+    // getCaptcha: Effect;
   };
   reducers: {
     changeLoginStatus: Reducer<StateType>;
@@ -31,18 +35,18 @@ const Model: ModelType = {
   namespace: 'userLogin',
 
   state: {
-    status: undefined,
+    errno: undefined,
   },
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      const response: HttpSuccessResponse = yield call(Api.accountLogin, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.errno === 0) {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -62,9 +66,9 @@ const Model: ModelType = {
       }
     },
 
-    *getCaptcha({ payload }, { call }) {
-      yield call(getFakeCaptcha, payload);
-    },
+    // *getCaptcha({ payload }, { call }) {
+    //   yield call(getFakeCaptcha, payload);
+    // },
   },
 
   reducers: {
