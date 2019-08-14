@@ -64,7 +64,7 @@ class Login extends Component<LoginProps, LoginState> {
       password = Md5(password);
       dispatch({
         type: 'userLogin/login',
-        payload: { password, username},
+        payload: { password, username },
       });
     }
   };
