@@ -7,6 +7,10 @@ admin of xin-fang.
 Install `node_modules`:
 
 ```bash
+# change puppeteer host
+npm config set puppeteer_download_host=https://npm.taobao.org/mirrors
+yarn config set puppeteer_download_host https://npm.taobao.org/mirrors
+
 npm install
 ```
 
