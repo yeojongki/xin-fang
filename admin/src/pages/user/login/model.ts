@@ -4,6 +4,8 @@ import { routerRedux } from 'dva/router';
 import * as Api from './service';
 import { getPageQuery, setAuthority } from './utils/utils';
 import { HttpSuccessResponse } from '@/utils/request';
+import { ITokenResult } from './login.interface';
+import { TOKEN_KEY } from '@/config';
 
 export interface StateType {
   errno?: number;
@@ -41,12 +43,18 @@ const Model: ModelType = {
   effects: {
     *login({ payload }, { call, put }) {
       const response: HttpSuccessResponse = yield call(Api.accountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
+
+      // set token
+      const result: ITokenResult = response.result;
+      window.localStorage.setItem(TOKEN_KEY, JSON.stringify({ ...result, ts: +new Date() }));
+
       // Login successfully
       if (response.errno === 0) {
+        // fetch user info
+        yield put({
+          type: 'user/fetchCurrent',
+        });
+
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };

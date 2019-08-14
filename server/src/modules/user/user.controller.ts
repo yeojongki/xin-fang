@@ -33,10 +33,11 @@ export class UserController extends CommonController<
    * @memberof UserController
    */
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get('self')
+  @Get('currentUser')
   async getProfile(@Request() req) {
     const { id } = req.user;
-    return await this.userService.findByIdAndThrowError(id);
+    const user = await this.userService.findByIdAndThrowError(id);
+    return this.userService.buildUser(user);
   }
 
   /**

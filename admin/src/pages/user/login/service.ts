@@ -11,3 +11,5 @@ export const accountLogin = (params: FormDataType) => {
     data: params,
   });
 };
+
+export const getCurrentUser = () => request('/user/self');

@@ -84,7 +84,7 @@ class Login extends Component<LoginProps, LoginState> {
           });
         },
       },
-      form: { ...form },
+      form,
       updateActive: activeItem => {
         const { type = '', active = {} } = this.state;
         if (active[type]) {
