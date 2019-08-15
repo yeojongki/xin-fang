@@ -36,15 +36,13 @@ export class HttpResInterceptor implements NestInterceptor {
 
     const ctx = context.switchToHttp();
     const res = ctx.getResponse();
+    res.status(httpCode);
     return next.handle().pipe(
-      map(result => {
-        let data = {
-          errno: errorCode.SUCCESS,
-          message,
-          result,
-        };
-        res.status(httpCode).json(data);
-      }),
+      map(result => ({
+        errno: errorCode.SUCCESS,
+        message,
+        result,
+      })),
     );
   }
 }
