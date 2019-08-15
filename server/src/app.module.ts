@@ -5,6 +5,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { Connection } from 'typeorm';
 import { RoleModule } from './modules/role/role.module';
 import { LoginModule } from './modules/login/login.module';
+import { CityModule } from './common/city/city.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { LoginModule } from './modules/login/login.module';
     AuthModule,
     UserModule,
     RoleModule,
+    CityModule,
   ],
 })
 export class AppModule {

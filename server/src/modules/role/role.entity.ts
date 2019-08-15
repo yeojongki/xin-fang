@@ -1,9 +1,9 @@
 import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
-import { CommonEntity } from '@/common/common.entity';
+import { BaseEntity } from '@/common/base/base.entity';
 import { UserEntity } from '../user/user.entity';
 
 @Entity('role')
-export class RoleEntity extends CommonEntity {
+export class RoleEntity extends BaseEntity {
   @Column({ comment: '名称', unique: true })
   name: string;
 

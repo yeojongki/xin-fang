@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
 import { RoleEntity } from '../role/role.entity';
-import { CommonEntity } from '@/common/common.entity';
+import { BaseEntity } from '@/common/base/base.entity';
 
 export enum Gender {
   UNKNOWN,
@@ -9,7 +9,7 @@ export enum Gender {
 }
 
 @Entity('user')
-export class UserEntity extends CommonEntity {
+export class UserEntity extends BaseEntity {
   @Column({ unique: true })
   username: string;
 

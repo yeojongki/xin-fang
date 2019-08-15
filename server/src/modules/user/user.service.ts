@@ -4,19 +4,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RoleEntity } from '../role/role.entity';
-import { CommonService } from '@/common/common.service';
+import { CurdService } from '@/common/curd/curd.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { errorCode } from '@/constants/error-code';
 
 @Injectable()
-export class UserService extends CommonService<UserEntity, UpdateUserDto> {
+export class UserService extends CurdService<UserEntity, UpdateUserDto> {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(RoleEntity)
     private readonly rolesRepository: Repository<RoleEntity>,
   ) {
-    super(userRepository, '用户不存在');
+    super(userRepository, '用户');
   }
 
   /**

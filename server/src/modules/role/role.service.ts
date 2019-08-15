@@ -1,5 +1,5 @@
 import { Injectable, Put, Body } from '@nestjs/common';
-import { CommonService } from '@/common/common.service';
+import { CurdService } from '@/common/curd/curd.service';
 import { RoleEntity } from './role.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,12 +7,12 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { CreateRoleDto } from './dto/create-role.dto';
 
 @Injectable()
-export class RoleService extends CommonService<RoleEntity, UpdateRoleDto> {
+export class RoleService extends CurdService<RoleEntity, UpdateRoleDto> {
   constructor(
     @InjectRepository(RoleEntity)
-    private readonly roleRepository: Repository<RoleEntity>,
+    protected readonly roleRepository: Repository<RoleEntity>,
   ) {
-    super(roleRepository, '角色不存在');
+    super(roleRepository, '角色');
   }
 
   async create(user: CreateRoleDto): Promise<RoleEntity> {

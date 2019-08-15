@@ -1,16 +1,13 @@
 import { Controller, Put, Body, Post } from '@nestjs/common';
 import { RoleService } from './role.service';
-import { CommonController } from '@/common/common.controller';
+import { CurdController } from '@/common/curd/curd.controller';
 import { RoleEntity } from './role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Controller('role')
-export class RoleController extends CommonController<
-  RoleEntity,
-  UpdateRoleDto
-> {
-  constructor(private readonly roleService: RoleService) {
+export class RoleController extends CurdController<RoleEntity, UpdateRoleDto> {
+  constructor(protected readonly roleService: RoleService) {
     super(roleService);
   }
 

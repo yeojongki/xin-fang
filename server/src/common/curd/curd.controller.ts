@@ -1,33 +1,32 @@
-import { CommonService } from './common.service';
+import { CurdService } from './curd.service';
 import { Message } from '@/decorators/http.decorator';
-import { Body, Post, Put, Get, Param, Delete, UseGuards } from '@nestjs/common';
+import { Body, Delete, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '@/guard/auth.guard';
 import { RolesGuard } from '@/guard/roles.guard';
 import { Roles } from '@/decorators/roles.decorator';
+import { BaseController, IFindIdResult } from '../base/base.controller';
 
 export interface IID {
   id: string;
 }
 
-export interface IUpdateDto extends IID {}
-
 /**
- * 公用 controller
- * @class CommonController
+ * curd controller
+ * @class CurdController
  * @template E 数据实体 Entity
  * @template U 更新数据对象 dto
  */
-export abstract class CommonController<E, U extends IUpdateDto> {
-  constructor(private readonly service: CommonService<E, U>) {}
+export abstract class CurdController<
+  E extends IFindIdResult,
+  U extends IID
+> extends BaseController<E> {
+  constructor(protected readonly service: CurdService<E, U>) {
+    super(service);
+  }
 
   abstract async create(dto: any): Promise<any>;
 
   abstract async update(dto: U): Promise<any>;
-
-  @Get(':id')
-  async findById(@Param('id') id: string): Promise<any> {
-    return await this.service.findById(id);
-  }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('superAdmin')
