@@ -12,4 +12,4 @@ export const accountLogin = (params: FormDataType) => {
   });
 };
 
-export const getCurrentUser = () => request('/user/self');
+export const getCurrentUser = () => request('/user/currentUser');

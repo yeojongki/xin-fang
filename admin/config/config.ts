@@ -3,6 +3,8 @@ import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 
 import slash from 'slash2';
 import webpackPlugin from './plugin.config';
+import routes from './routes';
+
 const { pwa, primaryColor } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
@@ -73,53 +75,7 @@ export default {
   },
   devtool: isAntDesignProPreview ? 'source-map' : false,
   // umi routes: https://umijs.org/zh/guide/router.html
-  routes: [
-    {
-      path: '/',
-      component: '../layouts/BlankLayout',
-      routes: [
-        {
-          path: '/user',
-          component: '../layouts/UserLayout',
-          routes: [
-            {
-              path: '/user',
-              redirect: '/user/login',
-            },
-            {
-              name: 'login',
-              path: '/user/login',
-              component: './user/login',
-            },
-            {
-              name: 'register-result',
-              path: '/user/register-result',
-              component: './user/register-result',
-            },
-            {
-              name: 'register',
-              path: '/user/register',
-              component: './user/register',
-            },
-            {
-              component: '404',
-            },
-          ],
-        },
-        {
-          path: '/',
-          component: '../layouts/BasicLayout',
-          Routes: ['src/pages/Authorized'],
-          authority: ['admin', 'user'],
-          routes: [
-            {
-              component: '404',
-            },
-          ],
-        },
-      ],
-    },
-  ],
+  routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'primary-color': primaryColor,

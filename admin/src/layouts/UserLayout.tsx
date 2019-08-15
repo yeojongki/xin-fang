@@ -1,4 +1,4 @@
-import { DefaultFooter, MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
+import { MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import DocumentTitle from 'react-document-title';
 import Link from 'umi/link';
 import React from 'react';
@@ -6,6 +6,7 @@ import { connect } from 'dva';
 import { ConnectProps, ConnectState } from '@/models/connect';
 import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
+import GlobalFooter from '@/components/GlobalFooter';
 
 export interface UserLayoutProps extends ConnectProps {
   breadcrumbNameMap: {
@@ -48,7 +49,7 @@ const UserLayout: React.SFC<UserLayoutProps> = props => {
           </div>
           {children}
         </div>
-        <DefaultFooter links={[]} copyright={'2019 馨房'} />
+        <GlobalFooter />
       </div>
     </DocumentTitle>
   );

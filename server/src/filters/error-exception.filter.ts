@@ -15,7 +15,7 @@ export class ErrorExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
 
-    console.log('ex', exception);
+    console.log('exception', request.url, exception);
 
     const isHttpException = exception instanceof HttpException;
     const httpException = (() => exception as HttpException)();
@@ -45,4 +45,3 @@ export class ErrorExceptionFilter implements ExceptionFilter {
     });
   }
 }
-0;

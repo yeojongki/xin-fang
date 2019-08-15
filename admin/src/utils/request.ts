@@ -5,7 +5,8 @@
 import { extend } from 'umi-request';
 import { notification } from 'antd';
 import { TOKEN_KEY } from '@/config';
-import { ITokenResult } from '@/pages/user/login/login.interface';
+import { router } from 'umi';
+import { checkTokenExpired } from '.';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -40,23 +41,6 @@ export interface HttpSuccessResponse extends HttpBaseResponse {
   result: any;
 }
 
-export interface ICheckToken extends ITokenResult {
-  ts: number;
-}
-
-/**
- * 检测token是否失效 有效时返回token
- * @param {ICheckToken} info
- * @returns {(boolean | string)}
- */
-function checkTokenExpired(info: ICheckToken): boolean | string {
-  const { expired_in, ts, access_token } = info;
-  if (expired_in * 1000 + ts < +new Date()) {
-    return false;
-  }
-  return access_token;
-}
-
 /**
  * 异常处理程序
  */
@@ -73,6 +57,24 @@ const errorHandler = (error: { response: Response; data: HttpErrorResponse }): R
       message: `${message}`,
       description: errno ? `errno: ${errno}` : '',
     });
+
+    // match exception routes
+    if (status === 401) {
+      const { search } = window.location;
+      const href = encodeURIComponent(window.location.href);
+      // 判断 search 避免在当前页面刷新 url 会重复添加 search
+      router.replace(`/exception/401${search ? search : '?redirect=' + href}`);
+    }
+    if (status === 403) {
+      router.push(`/exception/403`);
+    }
+    if (status === 404) {
+      router.push(`/exception/404`);
+    }
+    if (status === 500) {
+      router.push(`/exception/500`);
+    }
+
     return response;
   }
 
