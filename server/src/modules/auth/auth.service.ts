@@ -10,7 +10,7 @@ import { errorCode } from '@/constants/error-code';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly UserService: UserService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -22,7 +22,7 @@ export class AuthService {
    */
   public async auth(auth: LoginUserDto): Promise<ITokenResult> {
     const { username, password } = auth;
-    const user = await this.UserService.findOne({ username });
+    const user = await this.userService.findOne({ username });
     if (user && user.password === password) {
       return Promise.resolve(this.generateJWT(user.id, user.roles));
     }
@@ -49,6 +49,6 @@ export class AuthService {
   }
 
   public async validateUser(id: string) {
-    return await this.UserService.findOne({ id });
+    return await this.userService.findOne({ id });
   }
 }

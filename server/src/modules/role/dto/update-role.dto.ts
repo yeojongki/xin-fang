@@ -5,9 +5,9 @@ export class UpdateRoleDto extends CreateRoleDto {
   @IsNotEmpty({ message: '角色ID不能为空' })
   id: string;
 
-  @ValidateIf((o: Object) => o.hasOwnProperty('name'))
+  @ValidateIf((o: object) => o.hasOwnProperty('name'))
   name: string;
 
-  @ValidateIf((o: Object) => o.hasOwnProperty('token'))
+  @ValidateIf((o: object) => o.hasOwnProperty('token'))
   token: string;
 }
