@@ -1,0 +1,2266 @@
+[
+  {
+    "line_name": "地铁7号线(广州南站-大学城南)",
+    "line_uid": "78054b01c3fe96e7461a32c4",
+    "stops": [
+      {
+        "name": "广州南站",
+        "uid": "12279b29d9158dcac16c142b"
+      },
+      {
+        "name": "石壁",
+        "uid": "b5345735381517cbc036443b"
+      },
+      {
+        "name": "谢村",
+        "uid": "f53469f71622e3d57f29bd06"
+      },
+      {
+        "name": "钟村",
+        "uid": "b3a8d7a59997654f4afd3ff7"
+      },
+      {
+        "name": "汉溪长隆",
+        "uid": "7e72c2155342ca848b2fb55a"
+      },
+      {
+        "name": "南村万博",
+        "uid": "7a7c11b6e92368a240ab9a0c"
+      },
+      {
+        "name": "员岗",
+        "uid": "0763fa4ec25dafdb49fd3f09"
+      },
+      {
+        "name": "板桥",
+        "uid": "ee6f0bf00d022760ebe582e4"
+      },
+      {
+        "name": "大学城南",
+        "uid": "dcb8e4ec781e5cb8f8f0cb2b"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁21号线(镇龙西-增城广场)",
+    "line_uid": "83a648eac0f298ca6340a9ba",
+    "stops": [
+      {
+        "name": "镇龙西",
+        "uid": "ca67afd6df869dca9ff77965"
+      },
+      {
+        "name": "镇龙",
+        "uid": "0640e9b14f025ce65fbe8653"
+      },
+      {
+        "name": "中新",
+        "uid": "c226c2e9330994837369d364"
+      },
+      {
+        "name": "坑贝",
+        "uid": "9706fb201acf3a805a3ac813"
+      },
+      {
+        "name": "凤岗",
+        "uid": "ec94c5e09716d89d8505bf48"
+      },
+      {
+        "name": "朱村",
+        "uid": "6b760902725f9ae0f423109f"
+      },
+      {
+        "name": "山田",
+        "uid": "4c813e10bfdc400f38221c79"
+      },
+      {
+        "name": "钟岗",
+        "uid": "c7b8e9bd7a326c5af7eafc15"
+      },
+      {
+        "name": "增城广场",
+        "uid": "fe827ad61cd878e5bea2404f"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁9号线(高增-飞鹅岭)",
+    "line_uid": "0d76ae13a9a634298bf15d86",
+    "stops": [
+      {
+        "name": "高增",
+        "uid": "309855dc0214f6465cd4fe66"
+      },
+      {
+        "name": "清塘",
+        "uid": "2123b074a454f653a1a934d6"
+      },
+      {
+        "name": "清布",
+        "uid": "01f92f818f7b2ff132f71d39"
+      },
+      {
+        "name": "莲塘",
+        "uid": "fbe2c392f172db7697ec8474"
+      },
+      {
+        "name": "马鞍山公园",
+        "uid": "49617768d8144843bb17e782"
+      },
+      {
+        "name": "花都广场",
+        "uid": "6852582b0cfb0dd0d1ff2342"
+      },
+      {
+        "name": "花果山公园",
+        "uid": "a58ea6116d15af97990050ff"
+      },
+      {
+        "name": "花城路",
+        "uid": "df3cbdca6f9655db343a7131"
+      },
+      {
+        "name": "广州北站",
+        "uid": "3aa9d7f515d0237885420e02"
+      },
+      {
+        "name": "花都汽车城",
+        "uid": "e43748338f973b378e7727fc"
+      },
+      {
+        "name": "飞鹅岭",
+        "uid": "1676de4e68e0cecbdfee8bdd"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁13号线(新沙-鱼珠)",
+    "line_uid": "c7c6247823a8328217948ec5",
+    "stops": [
+      {
+        "name": "新沙",
+        "uid": "2c309ba3f08fe2f3774ff118"
+      },
+      {
+        "name": "官湖",
+        "uid": "f78e243222336a09e115f92c"
+      },
+      {
+        "name": "新塘",
+        "uid": "c46cd358d86d634a5cbe86b0"
+      },
+      {
+        "name": "白江",
+        "uid": "c4d0303cede5fa68c17da2e6"
+      },
+      {
+        "name": "沙村",
+        "uid": "cb8266fcc366dc91b817e75e"
+      },
+      {
+        "name": "南岗",
+        "uid": "3f26299e4e34160f07fef5c3"
+      },
+      {
+        "name": "夏园",
+        "uid": "36041c8812d69a70343a7111"
+      },
+      {
+        "name": "南海神庙",
+        "uid": "156598aff2578e611c389464"
+      },
+      {
+        "name": "双岗",
+        "uid": "bc722412fd954601f4b91602"
+      },
+      {
+        "name": "裕丰围",
+        "uid": "f18f4fb4fc7893112eb90866"
+      },
+      {
+        "name": "鱼珠",
+        "uid": "ef9f956de219a8af343a7144"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁6号线(香雪-浔峰岗)",
+    "line_uid": "62e1a0dfee85ec8221f017db",
+    "stops": [
+      {
+        "name": "香雪",
+        "uid": "90947784539870eaa4c7564a"
+      },
+      {
+        "name": "萝岗",
+        "uid": "45c85c86c50faafdb9df8f0e"
+      },
+      {
+        "name": "苏元",
+        "uid": "18b921a72d5f6ae9d1f49e7a"
+      },
+      {
+        "name": "暹岗",
+        "uid": "be0d5294b720861932870a25"
+      },
+      {
+        "name": "金峰",
+        "uid": "1cd3d26222b60bcd6c3e1bc8"
+      },
+      {
+        "name": "黄陂",
+        "uid": "55afb148dc9c006b4f3a5938"
+      },
+      {
+        "name": "高塘石",
+        "uid": "a8f5f469543c8e068936eee1"
+      },
+      {
+        "name": "柯木塱",
+        "uid": "37cf269ec53748b83517dc8b"
+      },
+      {
+        "name": "龙洞",
+        "uid": "5a5fffdc5cca423ead31e5af"
+      },
+      {
+        "name": "植物园",
+        "uid": "97072e64edfe29494bfc8daf"
+      },
+      {
+        "name": "长湴",
+        "uid": "d9c15e46613535bbfd0eb025"
+      },
+      {
+        "name": "天河客运站",
+        "uid": "b696341b3717b406ae31e5b9"
+      },
+      {
+        "name": "燕塘",
+        "uid": "3c0965fac05d66e7f90caddb"
+      },
+      {
+        "name": "天平架",
+        "uid": "de4324aec5938e6941024555"
+      },
+      {
+        "name": "沙河顶",
+        "uid": "ef0ecf0646b57fa6841541fe"
+      },
+      {
+        "name": "黄花岗",
+        "uid": "106784634a5419d5f02d83a6"
+      },
+      {
+        "name": "区庄",
+        "uid": "e117f4b37028233cf4eafc1a"
+      },
+      {
+        "name": "东山口",
+        "uid": "6a76429519ce1d5825d2bbfc"
+      },
+      {
+        "name": "东湖",
+        "uid": "1d39f3d804d6c456ba17e7d5"
+      },
+      {
+        "name": "团一大广场",
+        "uid": "e29dc0e512f2c6c788db733b"
+      },
+      {
+        "name": "北京路",
+        "uid": "1162af05464800580d3dda3b"
+      },
+      {
+        "name": "海珠广场",
+        "uid": "954d9ea48741880bbca822bb"
+      },
+      {
+        "name": "一德路",
+        "uid": "afbdf2e7edc7c9dcd4851f1e"
+      },
+      {
+        "name": "文化公园",
+        "uid": "876da44d61db1afe00ec01af"
+      },
+      {
+        "name": "黄沙",
+        "uid": "0e65f918d7fdba63f7e73b1b"
+      },
+      {
+        "name": "如意坊",
+        "uid": "eb1bfc6831e05768eb12e47f"
+      },
+      {
+        "name": "坦尾",
+        "uid": "8415d06aec6547822bb97c72"
+      },
+      {
+        "name": "河沙",
+        "uid": "c2d9ca15a9297f841811d552"
+      },
+      {
+        "name": "沙贝",
+        "uid": "f13cfab9a13fa1e6acee7a46"
+      },
+      {
+        "name": "横沙",
+        "uid": "672c9d40101ac1ff8b2fb54a"
+      },
+      {
+        "name": "浔峰岗",
+        "uid": "d8c4ee03058e6e9fc8213df9"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁6号线(浔峰岗-香雪)",
+    "line_uid": "e38c8da0c2672ccc17948e44",
+    "stops": [
+      {
+        "name": "浔峰岗",
+        "uid": "83571df160f3bb287c29bdb7"
+      },
+      {
+        "name": "横沙",
+        "uid": "4c45535b156dc11dd7851fb2"
+      },
+      {
+        "name": "沙贝",
+        "uid": "6c1d9ba4b9ae4f88c91b95cf"
+      },
+      {
+        "name": "河沙",
+        "uid": "6aa3f12edb9b31ee29b97cf6"
+      },
+      {
+        "name": "坦尾",
+        "uid": "e91e03e58ca62f9ed02dd64a"
+      },
+      {
+        "name": "如意坊",
+        "uid": "feefc23e385aaf664f776eb7"
+      },
+      {
+        "name": "黄沙",
+        "uid": "2b2f4fe997de474fdeee8bcf"
+      },
+      {
+        "name": "文化公园",
+        "uid": "7909b409fc3526648bfc06c8"
+      },
+      {
+        "name": "一德路",
+        "uid": "13d3f0e755d735960189722f"
+      },
+      {
+        "name": "海珠广场",
+        "uid": "9a8f8c66856cbd2c9e9d68cb"
+      },
+      {
+        "name": "北京路",
+        "uid": "42558bf4429a0151cd04ef39"
+      },
+      {
+        "name": "团一大广场",
+        "uid": "ec8399bc7c9e12a096ca0747"
+      },
+      {
+        "name": "东湖",
+        "uid": "99106cb86ccab4ed9a005056"
+      },
+      {
+        "name": "东山口",
+        "uid": "7c81b9e0e419f1acbbbd6385"
+      },
+      {
+        "name": "区庄",
+        "uid": "78a4bb579d543b634251c059"
+      },
+      {
+        "name": "黄花岗",
+        "uid": "bb055fd02e93f804c7f025c3"
+      },
+      {
+        "name": "沙河顶",
+        "uid": "f00be0a56f8d184fa11de995"
+      },
+      {
+        "name": "天平架",
+        "uid": "16625c518847bd3b2102204a"
+      },
+      {
+        "name": "燕塘",
+        "uid": "760a2bee038e5ed84207c126"
+      },
+      {
+        "name": "天河客运站",
+        "uid": "5cbc407fc9077ac193114cd2"
+      },
+      {
+        "name": "长湴",
+        "uid": "43ae6900f4e02e0896f08ca0"
+      },
+      {
+        "name": "植物园",
+        "uid": "48a9f20f4e0753eb54bfff1f"
+      },
+      {
+        "name": "龙洞",
+        "uid": "5219febf23a61b7e5a3ac89b"
+      },
+      {
+        "name": "柯木塱",
+        "uid": "4c7ce46e538b34aab320a8aa"
+      },
+      {
+        "name": "高塘石",
+        "uid": "6579d9baf0e195362cb908a8"
+      },
+      {
+        "name": "黄陂",
+        "uid": "cb8ed824bf92b23cabf729d2"
+      },
+      {
+        "name": "金峰",
+        "uid": "9c5102cb31d6582b2fb96df4"
+      },
+      {
+        "name": "暹岗",
+        "uid": "156aac196281defe41e19249"
+      },
+      {
+        "name": "苏元",
+        "uid": "d6c8a6839136df30f82d61a9"
+      },
+      {
+        "name": "萝岗",
+        "uid": "3193f57ef830fd5c276e985f"
+      },
+      {
+        "name": "香雪",
+        "uid": "8aa3026df4010eb0373a7184"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁7号线(大学城南-广州南站)",
+    "line_uid": "69de70b8378bf6a60ab93af4",
+    "stops": [
+      {
+        "name": "大学城南",
+        "uid": "1236cd1218511f88b5f42fb9"
+      },
+      {
+        "name": "板桥",
+        "uid": "d2f4fd24ed4a6dd82fb9085c"
+      },
+      {
+        "name": "员岗",
+        "uid": "358f96a6318e22c9373a71e5"
+      },
+      {
+        "name": "南村万博",
+        "uid": "71306b2afdd9cfc1157643e1"
+      },
+      {
+        "name": "汉溪长隆",
+        "uid": "215a3bec3d6e673e3617dc0e"
+      },
+      {
+        "name": "钟村",
+        "uid": "81b45d20ff55b4ed0f0e6bde"
+      },
+      {
+        "name": "谢村",
+        "uid": "534d5871a5ab479240afe613"
+      },
+      {
+        "name": "石壁",
+        "uid": "b29ade042bc4ac9184154164"
+      },
+      {
+        "name": "广州南站",
+        "uid": "bd2bfd32b2d912952a02e19f"
+      }
+    ]
+  },
+  {
+    "line_name": "知识城线(新和-镇龙)",
+    "line_uid": "4b78f851dc6117271811d50d",
+    "stops": [
+      {
+        "name": "新和",
+        "uid": "948a2bb1bb2fda504d554790"
+      },
+      {
+        "name": "红卫",
+        "uid": "693dfb6ccaa59306a2d23017"
+      },
+      {
+        "name": "新南",
+        "uid": "5a205febe9f313783586f432"
+      },
+      {
+        "name": "枫下",
+        "uid": "3915aef2715604053913fd0e"
+      },
+      {
+        "name": "知识城",
+        "uid": "35eaf25f56148051f2193732"
+      },
+      {
+        "name": "何棠下",
+        "uid": "079e1fd123f1ecaf44e2746b"
+      },
+      {
+        "name": "旺村",
+        "uid": "27a76b760483f39333169bfa"
+      },
+      {
+        "name": "汤村",
+        "uid": "c575f3504bbe1df86f476026"
+      },
+      {
+        "name": "镇龙北",
+        "uid": "7941fb37a1262fbdcf06a4cd"
+      },
+      {
+        "name": "镇龙",
+        "uid": "d576f005058597a383a00c74"
+      }
+    ]
+  },
+  {
+    "line_name": "知识城线(镇龙-新和)",
+    "line_uid": "e57c8104d99e35102e473360",
+    "stops": [
+      {
+        "name": "镇龙",
+        "uid": "3cde0159d20ff8fcfa42b2d5"
+      },
+      {
+        "name": "镇龙北",
+        "uid": "fad0902f7b4d53c12b3a9fc7"
+      },
+      {
+        "name": "汤村",
+        "uid": "ecd482d238ce73527069d360"
+      },
+      {
+        "name": "旺村",
+        "uid": "9ce976ab815a211ec9c3db66"
+      },
+      {
+        "name": "何棠下",
+        "uid": "21ff0a3655a702cd9868b46c"
+      },
+      {
+        "name": "知识城",
+        "uid": "bb5a8b5e7616b8718bdb736f"
+      },
+      {
+        "name": "枫下",
+        "uid": "6cddd525ee221f4e3c9a5e6c"
+      },
+      {
+        "name": "新南",
+        "uid": "7e07454a6a773da2fb2d6162"
+      },
+      {
+        "name": "红卫",
+        "uid": "c59f0b854712fedc0c0e6be4"
+      },
+      {
+        "name": "新和",
+        "uid": "b78b90d5ea7458269ff77970"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁14号线(东风-嘉禾望岗)",
+    "line_uid": "dd70d6644999fc26eee4a5ab",
+    "stops": [
+      {
+        "name": "东风",
+        "uid": "3da6fda94807410c7bf79686"
+      },
+      {
+        "name": "从化客运站",
+        "uid": "44b74d3e084bc540be484221"
+      },
+      {
+        "name": "赤草",
+        "uid": "f3e0f59fab76f853d13ce30a"
+      },
+      {
+        "name": "神岗",
+        "uid": "a04fca518224e4be14948ea5"
+      },
+      {
+        "name": "太平",
+        "uid": "6280bc64c7e933f3147643f0"
+      },
+      {
+        "name": "新和",
+        "uid": "e29c3be1ac772a5bd92f28a2"
+      },
+      {
+        "name": "马沥",
+        "uid": "2704bc63c8fd13fc283a9f72"
+      },
+      {
+        "name": "钟落潭",
+        "uid": "223f2085cc0097aefa0cadfa"
+      },
+      {
+        "name": "竹料",
+        "uid": "1264dc6a4aa08a144c3a59ff"
+      },
+      {
+        "name": "太和",
+        "uid": "d73bf5217a74a686a8f729cd"
+      },
+      {
+        "name": "夏良",
+        "uid": "96b1e3a721692bca90114cb6"
+      },
+      {
+        "name": "白云东平",
+        "uid": "0914397def5d7bd34e5547a8"
+      },
+      {
+        "name": "嘉禾望岗",
+        "uid": "37d809d5fadd3bd45e17c3db"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁9号线(飞鹅岭-高增)",
+    "line_uid": "e623f661aa9fa2798bf15dc2",
+    "stops": [
+      {
+        "name": "飞鹅岭",
+        "uid": "f1306e410cb19a2ee856fa46"
+      },
+      {
+        "name": "花都汽车城",
+        "uid": "fd9bfc3fecd57ee528d7ab8b"
+      },
+      {
+        "name": "广州北站",
+        "uid": "3f54dbf9b5d76e0079b55cd8"
+      },
+      {
+        "name": "花城路",
+        "uid": "648994ac37d331c94f3a59d8"
+      },
+      {
+        "name": "花果山公园",
+        "uid": "4989e6960e06294aa80dd850"
+      },
+      {
+        "name": "花都广场",
+        "uid": "f851895592c246db71455b0c"
+      },
+      {
+        "name": "马鞍山公园",
+        "uid": "bb3d8b275bd62c2a28201a51"
+      },
+      {
+        "name": "莲塘",
+        "uid": "250652ceb0d88621e856fa86"
+      },
+      {
+        "name": "清布",
+        "uid": "e60fbb2075ad00b8c1f1cfa4"
+      },
+      {
+        "name": "清塘",
+        "uid": "9c40853a1a7e2695d23ce307"
+      },
+      {
+        "name": "高增",
+        "uid": "b6ef5194988be2a488fc06e1"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁14号线(嘉禾望岗-东风)",
+    "line_uid": "39c283a577d12b5bbabd63b4",
+    "stops": [
+      {
+        "name": "嘉禾望岗",
+        "uid": "e0fa24f70dd02bfe260bd043"
+      },
+      {
+        "name": "白云东平",
+        "uid": "afcaeb40ac42c1bc9e82ea82"
+      },
+      {
+        "name": "夏良",
+        "uid": "bf1de0e605532c23223bf22e"
+      },
+      {
+        "name": "太和",
+        "uid": "2264a9a3413a35039122e010"
+      },
+      {
+        "name": "竹料",
+        "uid": "acb03d1a1280c030a8059d07"
+      },
+      {
+        "name": "钟落潭",
+        "uid": "aadfbeef8bb872cf1d5800fe"
+      },
+      {
+        "name": "马沥",
+        "uid": "070f4f299a3fe5958f1a891f"
+      },
+      {
+        "name": "新和",
+        "uid": "3723571aed77740a210262e4"
+      },
+      {
+        "name": "太平",
+        "uid": "8b0ef3966247329179dbd210"
+      },
+      {
+        "name": "神岗",
+        "uid": "a2ca6eea7d462bc814a190ce"
+      },
+      {
+        "name": "赤草",
+        "uid": "bcd8683639f844d6704b873c"
+      },
+      {
+        "name": "从化客运站",
+        "uid": "4f4438edf89f34e88c1a8961"
+      },
+      {
+        "name": "东风",
+        "uid": "e3e12128d17528379a005000"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁13号线(鱼珠-新沙)",
+    "line_uid": "3d57bbd794acff02b34c4926",
+    "stops": [
+      {
+        "name": "鱼珠",
+        "uid": "e3979b4ee358614e40ab9a14"
+      },
+      {
+        "name": "裕丰围",
+        "uid": "af176626ee9027a48605bfa9"
+      },
+      {
+        "name": "双岗",
+        "uid": "41febe80c0b53040882fb589"
+      },
+      {
+        "name": "南海神庙",
+        "uid": "8eef5d8343cda2972ce67b71"
+      },
+      {
+        "name": "夏园",
+        "uid": "d00ce511e25d7c26dbd8916a"
+      },
+      {
+        "name": "南岗",
+        "uid": "542728b002737920a8175a9f"
+      },
+      {
+        "name": "沙村",
+        "uid": "4ed1248d0132ef53b03c816a"
+      },
+      {
+        "name": "白江",
+        "uid": "88235366751eccd62902e17b"
+      },
+      {
+        "name": "新塘",
+        "uid": "c9b79285643640d3a2a93471"
+      },
+      {
+        "name": "官湖",
+        "uid": "3978f72c38118ce2a8f72965"
+      },
+      {
+        "name": "新沙",
+        "uid": "542f1d766d84b3e42cb90864"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁21号线(增城广场-镇龙西)",
+    "line_uid": "871a055ffab2456f57bfffe8",
+    "stops": [
+      {
+        "name": "增城广场",
+        "uid": "c4372ed57e9034014f6d46a7"
+      },
+      {
+        "name": "钟岗",
+        "uid": "8d755efbff8ac38508f5eb35"
+      },
+      {
+        "name": "山田",
+        "uid": "085c417603a822fcb11e36ef"
+      },
+      {
+        "name": "朱村",
+        "uid": "ab08b2b8381d328d82288ae2"
+      },
+      {
+        "name": "凤岗",
+        "uid": "9dfdb3bed480fb8657bfffa9"
+      },
+      {
+        "name": "坑贝",
+        "uid": "cf65efdee3164e9855bfff6c"
+      },
+      {
+        "name": "中新",
+        "uid": "f5cb7918c43c8d6ac356ac34"
+      },
+      {
+        "name": "镇龙",
+        "uid": "fbd173e787b38e4fc7f50d70"
+      },
+      {
+        "name": "镇龙西",
+        "uid": "175b113a6ab84291626858e5"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁2号线(广州南站-嘉禾望岗)",
+    "line_uid": "62cb4fc848093743343a7183",
+    "stops": [
+      {
+        "name": "广州南站",
+        "uid": "9cea338935dc0df92fb96d83"
+      },
+      {
+        "name": "石壁",
+        "uid": "a959badb8bb717f04d776e83"
+      },
+      {
+        "name": "会江",
+        "uid": "210b04b091be753e07026f83"
+      },
+      {
+        "name": "南浦",
+        "uid": "98601eb9f3703f4b9e9d6883"
+      },
+      {
+        "name": "洛溪",
+        "uid": "83697c77b905a6d477026983"
+      },
+      {
+        "name": "南洲",
+        "uid": "e2a73602209a4f4bb05c6a83"
+      },
+      {
+        "name": "东晓南",
+        "uid": "a9d2af9dc90588150c0e6b83"
+      },
+      {
+        "name": "江泰路",
+        "uid": "2f4d46020e5b3447a1046483"
+      },
+      {
+        "name": "昌岗",
+        "uid": "c7d2815cb209994de6e96583"
+      },
+      {
+        "name": "江南西",
+        "uid": "038c3d0e1f03dea0adcb6683"
+      },
+      {
+        "name": "市二宫",
+        "uid": "bede900458ee9582601c6783"
+      },
+      {
+        "name": "海珠广场",
+        "uid": "14d4d7e913cc58556c476083"
+      },
+      {
+        "name": "公园前",
+        "uid": "52399ccbde1b540ef82d6183"
+      },
+      {
+        "name": "纪念堂",
+        "uid": "1a1b511cd240c06421026283"
+      },
+      {
+        "name": "越秀公园",
+        "uid": "d6cc5d47462a194bb8bd6383"
+      },
+      {
+        "name": "广州火车站",
+        "uid": "d597c92d9f0580f47ab55c83"
+      },
+      {
+        "name": "三元里",
+        "uid": "40fd100206ba42fc8bf15d83"
+      },
+      {
+        "name": "飞翔公园",
+        "uid": "9ad289bdc4b2b3b83f9a5e83"
+      },
+      {
+        "name": "白云公园",
+        "uid": "026d4bb535f607d3cafa5f83"
+      },
+      {
+        "name": "白云文化广场",
+        "uid": "c765baf1819df2b361685883"
+      },
+      {
+        "name": "萧岗",
+        "uid": "37210e9a74fd59214f3a5983"
+      },
+      {
+        "name": "江夏",
+        "uid": "804afbfadf6f7773a8175a83"
+      },
+      {
+        "name": "黄边",
+        "uid": "742a5068f13d905e72455b83"
+      },
+      {
+        "name": "嘉禾望岗",
+        "uid": "a0b87e3a16104a0cb54f5483"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁4号线(南沙客运港-黄村)",
+    "line_uid": "843b94a108f3e266abf729b7",
+    "stops": [
+      {
+        "name": "南沙客运港",
+        "uid": "90669a505f4407660a5cb3e0"
+      },
+      {
+        "name": "南横",
+        "uid": "2e7160e4ff5028be08f5eb3a"
+      },
+      {
+        "name": "塘坑",
+        "uid": "44de46cb14e8a57aadb22ab6"
+      },
+      {
+        "name": "大涌",
+        "uid": "e290006ba1efbe7f0bf5eb38"
+      },
+      {
+        "name": "广隆",
+        "uid": "35cdf71b2f95edfe4f6d46f2"
+      },
+      {
+        "name": "飞沙角",
+        "uid": "1df9828b8ffcaf78704b87c4"
+      },
+      {
+        "name": "金洲",
+        "uid": "61e7781cd240c064200262df"
+      },
+      {
+        "name": "蕉门",
+        "uid": "af307447462a194bb9bd63df"
+      },
+      {
+        "name": "黄阁",
+        "uid": "a26be02d9f0580f47bb55cdf"
+      },
+      {
+        "name": "黄阁汽车城",
+        "uid": "2901390206ba42fc8af15ddf"
+      },
+      {
+        "name": "庆盛",
+        "uid": "67a53f9375b5b852a8f0cd68"
+      },
+      {
+        "name": "东涌",
+        "uid": "f12ea0bdc4b2b3b83e9a5edf"
+      },
+      {
+        "name": "低涌",
+        "uid": "6b9162b535f607d3cbfa5fdf"
+      },
+      {
+        "name": "海傍",
+        "uid": "a89993f1819df2b3606858df"
+      },
+      {
+        "name": "石碁",
+        "uid": "b741573a16104a0cb44f54d8"
+      },
+      {
+        "name": "新造",
+        "uid": "9613b017cc428d06b62655d8"
+      },
+      {
+        "name": "大学城南",
+        "uid": "703e6a450b488f6fa6c756d8"
+      },
+      {
+        "name": "大学城北",
+        "uid": "a96cad4f09219f8eaf0457d8"
+      },
+      {
+        "name": "官洲",
+        "uid": "6f66af2619c0964d9b0050d8"
+      },
+      {
+        "name": "万胜围",
+        "uid": "6a0fbfc71003a249c41e51d8"
+      },
+      {
+        "name": "车陂南",
+        "uid": "ff26db36fe0574244c554746"
+      },
+      {
+        "name": "车陂",
+        "uid": "cca668bbc12e63bf8505bf80"
+      },
+      {
+        "name": "黄村",
+        "uid": "846b4e29e5f1bd4cf603b880"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁3号线(番禺广场-天河客运站)",
+    "line_uid": "bf26511a9040548903ff2db7",
+    "stops": [
+      {
+        "name": "番禺广场",
+        "uid": "899578188c804968863304df"
+      },
+      {
+        "name": "市桥",
+        "uid": "c9342a87cf26bf7a14c905df"
+      },
+      {
+        "name": "汉溪长隆",
+        "uid": "9aab692139342d808afc06df"
+      },
+      {
+        "name": "大石",
+        "uid": "da0d9f33abceb3b597ca07df"
+      },
+      {
+        "name": "厦滘",
+        "uid": "2d1f0dc935fbae831c5800df"
+      },
+      {
+        "name": "沥滘",
+        "uid": "b8e593fc28cd251102ec01df"
+      },
+      {
+        "name": "大塘",
+        "uid": "27d08ecaa35f3ba55c0d02df"
+      },
+      {
+        "name": "客村",
+        "uid": "39e60558bdeb6544e11103df"
+      },
+      {
+        "name": "广州塔",
+        "uid": "b3741bece30ad8582ab97cdf"
+      },
+      {
+        "name": "珠江新城",
+        "uid": "b2c0450d5e1613f0b3077ddf"
+      },
+      {
+        "name": "体育西路",
+        "uid": "ed21f81195be8a4e2db17edf"
+      },
+      {
+        "name": "石牌桥",
+        "uid": "533d33b90c0014f8b7147fdf"
+      },
+      {
+        "name": "岗顶",
+        "uid": "9995aa0792b68e5dffa778df"
+      },
+      {
+        "name": "华师",
+        "uid": "072b34b10813c6ee9ef779df"
+      },
+      {
+        "name": "五山",
+        "uid": "989dae1440a0a7beadee7adf"
+      },
+      {
+        "name": "天河客运站",
+        "uid": "0138e6a721f094a72de67bdf"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁1号线(西塱-广州东站)",
+    "line_uid": "ccdae4191cd504ab471a32b7",
+    "stops": [
+      {
+        "name": "西塱",
+        "uid": "35fa51fd5b009d930bb93adf"
+      },
+      {
+        "name": "坑口",
+        "uid": "3ed1fd071bdd32f0f6e73bdf"
+      },
+      {
+        "name": "花地湾",
+        "uid": "932bbddab4becfaea3a934df"
+      },
+      {
+        "name": "芳村",
+        "uid": "dcf612b949e09ae0122935df"
+      },
+      {
+        "name": "黄沙",
+        "uid": "7295efe71cae2b60b31e36df"
+      },
+      {
+        "name": "长寿路",
+        "uid": "8ccbbaa9ad2e8a57f31937df"
+      },
+      {
+        "name": "陈家祠",
+        "uid": "d8850b290c19ca50a3d230df"
+      },
+      {
+        "name": "西门口",
+        "uid": "6e05aa1e4c1e9a9b3de231df"
+      },
+      {
+        "name": "公园前",
+        "uid": "ce32ea191cd504ab461a32df"
+      },
+      {
+        "name": "农讲所",
+        "uid": "8d35bad282e57f532f4733df"
+      },
+      {
+        "name": "烈士陵园",
+        "uid": "dcfe24e2f91d160e6dc02cdf"
+      },
+      {
+        "name": "东山口",
+        "uid": "bdce5f1a9040548902ff2ddf"
+      },
+      {
+        "name": "杨箕",
+        "uid": "c7363647d2c73bb683a12edf"
+      },
+      {
+        "name": "体育西路",
+        "uid": "ad6b74c0bdf8bae8b7f42fdf"
+      },
+      {
+        "name": "体育中心",
+        "uid": "eeec1bff3ca68ebddb2f28df"
+      },
+      {
+        "name": "广州东站",
+        "uid": "86d39aa108f3e266aaf729df"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁5号线(文冲-滘口)",
+    "line_uid": "2cc05907ba85655ecbe33c40",
+    "stops": [
+      {
+        "name": "文冲",
+        "uid": "c1c2e10c884d0b59b120a847"
+      },
+      {
+        "name": "大沙东",
+        "uid": "fc982e4a8d1788696040a947"
+      },
+      {
+        "name": "大沙地",
+        "uid": "32de2b100e275909110daa47"
+      },
+      {
+        "name": "鱼珠",
+        "uid": "3484a820df4728442ad7ab47"
+      },
+      {
+        "name": "三溪",
+        "uid": "b6b47940ae0a139ece06a447"
+      },
+      {
+        "name": "东圃",
+        "uid": "68d4080d95d0f74fefe4a547"
+      },
+      {
+        "name": "车陂南",
+        "uid": "189933d77101d6ad39e4a647"
+      },
+      {
+        "name": "科韵路",
+        "uid": "2043d70650e300ad2cfaa747"
+      },
+      {
+        "name": "员村",
+        "uid": "c592f6e486e315b324e0a047"
+      },
+      {
+        "name": "潭村",
+        "uid": "e37020e493fd1da9c62ba147"
+      },
+      {
+        "name": "猎德",
+        "uid": "347035fa9be7ff62c07da247"
+      },
+      {
+        "name": "珠江新城",
+        "uid": "226e3de0792cf934912ca347"
+      },
+      {
+        "name": "五羊邨",
+        "uid": "2b74df2b7f7aa865f7c59c47"
+      },
+      {
+        "name": "杨箕",
+        "uid": "d6bfd97d2e2bce8caa059d47"
+      },
+      {
+        "name": "动物园",
+        "uid": "d1e9882c48c2934cd3f49e47"
+      },
+      {
+        "name": "区庄",
+        "uid": "83b8eec51502eabd293a9f47"
+      },
+      {
+        "name": "淘金",
+        "uid": "e451b3056cf31073266e9847"
+      },
+      {
+        "name": "小北",
+        "uid": "be91caf4963d1f271ee99947"
+      },
+      {
+        "name": "广州火车站",
+        "uid": "54645ab36a6d63c4e60738ac"
+      },
+      {
+        "name": "西村",
+        "uid": "3fae3f6ea1ee78e232169b47"
+      },
+      {
+        "name": "西场",
+        "uid": "20f0a7d4df37f01d80a12efa"
+      },
+      {
+        "name": "中山八",
+        "uid": "067d58ab8d112471cb1b9547"
+      },
+      {
+        "name": "坦尾",
+        "uid": "583f2b16a23ff2527af79647"
+      },
+      {
+        "name": "滘口",
+        "uid": "28820438741c43beea1e9747"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁4号线(黄村-南沙客运港)",
+    "line_uid": "0465a0f4642893beaeb22ab7",
+    "stops": [
+      {
+        "name": "黄村",
+        "uid": "5cc58c48a87161f27f29bd80"
+      },
+      {
+        "name": "车陂",
+        "uid": "66982776e7bc47605bf6be80"
+      },
+      {
+        "name": "车陂南",
+        "uid": "a35f0cb57d31784b4d6d4646"
+      },
+      {
+        "name": "万胜围",
+        "uid": "7beeb6042407fd57dd1e52d8"
+      },
+      {
+        "name": "官洲",
+        "uid": "712d82007b19e457ebf853d8"
+      },
+      {
+        "name": "大学城北",
+        "uid": "4429dd1e6219d2b192114cd8"
+      },
+      {
+        "name": "大学城南",
+        "uid": "2437c41e54ffab581cf74dd8"
+      },
+      {
+        "name": "新造",
+        "uid": "3c37f2f82d1625bed7b74ed8"
+      },
+      {
+        "name": "石碁",
+        "uid": "09d18b11a3f0eefe00294fd8"
+      },
+      {
+        "name": "海傍",
+        "uid": "713805f768b039602bfc48d8"
+      },
+      {
+        "name": "低涌",
+        "uid": "f8deceb7bf2e12b5b14c49d8"
+      },
+      {
+        "name": "东涌",
+        "uid": "329e192994fb88054acc4ad8"
+      },
+      {
+        "name": "庆盛",
+        "uid": "3a8abd20095e20065a3ac8eb"
+      },
+      {
+        "name": "黄阁汽车城",
+        "uid": "e60032fc0e4b738515b54bd8"
+      },
+      {
+        "name": "黄阁",
+        "uid": "ccd5a84cf5cb2cfcc23644d8"
+      },
+      {
+        "name": "蕉门",
+        "uid": "596553ccaab2fb7f410245d8"
+      },
+      {
+        "name": "金洲",
+        "uid": "a3e50cb57d31784b4d6d46d8"
+      },
+      {
+        "name": "飞沙角",
+        "uid": "eaf0ca4865a94116cd04ef9f"
+      },
+      {
+        "name": "广隆",
+        "uid": "48d7b4339c4efa2681a12e08"
+      },
+      {
+        "name": "大涌",
+        "uid": "0f8f9dd3ad490cfdf90cad7c"
+      },
+      {
+        "name": "塘坑",
+        "uid": "6ff37e2e3ccfe5764bfd3fe3"
+      },
+      {
+        "name": "南横",
+        "uid": "edb47cbcd52219c2cb213deb"
+      },
+      {
+        "name": "南沙客运港",
+        "uid": "a0170239ec41c1101029350e"
+      }
+    ]
+  },
+  {
+    "line_name": "apm线(林和西-广州塔)",
+    "line_uid": "f3a162bece4c4917b03c816c",
+    "stops": [
+      {
+        "name": "林和西",
+        "uid": "46c2d3745c12d31fc7effb6c"
+      },
+      {
+        "name": "体育中心南",
+        "uid": "fb09df155551fea63786f46c"
+      },
+      {
+        "name": "天河南",
+        "uid": "f668d65678e80ecf05fef56c"
+      },
+      {
+        "name": "黄埔大道",
+        "uid": "fc2bfbef88813cb716c8f66c"
+      },
+      {
+        "name": "妇儿中心",
+        "uid": "d0920b86baf92f819e09f76c"
+      },
+      {
+        "name": "花城大道",
+        "uid": "2ffb39fea9cfa740cb09f06c"
+      },
+      {
+        "name": "大剧院",
+        "uid": "1c832ac8210ef240754ff16c"
+      },
+      {
+        "name": "海心沙",
+        "uid": "0eb444a165df78a85a10935e"
+      },
+      {
+        "name": "广州塔",
+        "uid": "0cb5a209740e4c06203bf26c"
+      }
+    ]
+  },
+  {
+    "line_name": "广佛线(沥滘-新城东)",
+    "line_uid": "722f2d1d8d65c36b82a00cff",
+    "stops": [
+      {
+        "name": "沥滘",
+        "uid": "e5a61da667610a2fcafa5fd6"
+      },
+      {
+        "name": "南洲",
+        "uid": "9c6528217f7865d04c3a592b"
+      },
+      {
+        "name": "石溪",
+        "uid": "78f1db1979f6befdf8f0cb92"
+      },
+      {
+        "name": "燕岗",
+        "uid": "0173fb20ef4b9b66b5147f82"
+      },
+      {
+        "name": "沙园",
+        "uid": "362931b8fd879d479122e09c"
+      },
+      {
+        "name": "沙涌",
+        "uid": "134e67bf6613f5c89ef7796c"
+      },
+      {
+        "name": "鹤洞",
+        "uid": "f7f443c09c097d26a2acc4f9"
+      },
+      {
+        "name": "西塱",
+        "uid": "c60e805cb209994de7e965ff"
+      },
+      {
+        "name": "菊树",
+        "uid": "00503c0e1f03dea0accb66ff"
+      },
+      {
+        "name": "龙溪",
+        "uid": "bf02910458ee9582611c67ff"
+      },
+      {
+        "name": "金融高新区",
+        "uid": "1308d6e913cc58556d4760ff"
+      },
+      {
+        "name": "千灯湖",
+        "uid": "53e59dcbde1b540ef92d61ff"
+      },
+      {
+        "name": "礌岗",
+        "uid": "19c7501cd240c064200262ff"
+      },
+      {
+        "name": "南桂路",
+        "uid": "d7105c47462a194bb9bd63ff"
+      },
+      {
+        "name": "桂城",
+        "uid": "da4bc82d9f0580f47bb55cff"
+      },
+      {
+        "name": "朝安",
+        "uid": "4121110206ba42fc8af15dff"
+      },
+      {
+        "name": "普君北路",
+        "uid": "990e88bdc4b2b3b83e9a5eff"
+      },
+      {
+        "name": "祖庙",
+        "uid": "03b14ab535f607d3cbfa5fff"
+      },
+      {
+        "name": "同济路",
+        "uid": "c0b9bbf1819df2b3606858ff"
+      },
+      {
+        "name": "季华园",
+        "uid": "36fd0f9a74fd59214e3a59ff"
+      },
+      {
+        "name": "魁奇路",
+        "uid": "8396fafadf6f7773a9175aff"
+      },
+      {
+        "name": "澜石",
+        "uid": "395f2c9e1af0069d9e82eab3"
+      },
+      {
+        "name": "世纪莲",
+        "uid": "e32b0ede8d9b864edb131860"
+      },
+      {
+        "name": "东平",
+        "uid": "82febf5d5de5aaa79de321f3"
+      },
+      {
+        "name": "新城东",
+        "uid": "bf05a1683164843d1e5800c5"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁8号线(凤凰新村-万胜围)",
+    "line_uid": "50de3e0a8a3d3ac08bdb7383",
+    "stops": [
+      {
+        "name": "凤凰新村",
+        "uid": "8574f709ca4819726949f36c"
+      },
+      {
+        "name": "沙园",
+        "uid": "d774494f9f3c50008d55ec6c"
+      },
+      {
+        "name": "宝岗大道",
+        "uid": "68321c3bd64eb41cdaeced6c"
+      },
+      {
+        "name": "昌岗",
+        "uid": "a3f96af63b02ce4a6d20b980"
+      },
+      {
+        "name": "晓港",
+        "uid": "8426b40548045569f33cba80"
+      },
+      {
+        "name": "中大",
+        "uid": "5bd5c703d327cb7526d2bb80"
+      },
+      {
+        "name": "鹭江",
+        "uid": "17d35c204d3b1e9b9868b480"
+      },
+      {
+        "name": "客村",
+        "uid": "8df0c23c98d5a0218b2fb580"
+      },
+      {
+        "name": "赤岗",
+        "uid": "10ec17d2266fb36676e5b680"
+      },
+      {
+        "name": "磨碟沙",
+        "uid": "c402a96835284eacd618b780"
+      },
+      {
+        "name": "新港东",
+        "uid": "7db8ba2fc8e2ee51fe0eb080"
+      },
+      {
+        "name": "琶洲",
+        "uid": "6fff47e5681fc6473904b180"
+      },
+      {
+        "name": "万胜围",
+        "uid": "9135e7184009014dfa42b280"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁1号线(广州东站-西塱)",
+    "line_uid": "6ceda41e4c1e9a9b3ce231b7",
+    "stops": [
+      {
+        "name": "广州东站",
+        "uid": "4f2adaf1e73da856efdfcadf"
+      },
+      {
+        "name": "体育中心",
+        "uid": "a5dd413a2e18d696f9f0cbdf"
+      },
+      {
+        "name": "体育西路",
+        "uid": "3f16881f50d8c0b9a1acc4df"
+      },
+      {
+        "name": "杨箕",
+        "uid": "f933f6df46f798e550e5c5df"
+      },
+      {
+        "name": "东山口",
+        "uid": "86f3e0f01eab69ac1a94c6df"
+      },
+      {
+        "name": "烈士陵园",
+        "uid": "93dcb8acefe223dd0a1cc7df"
+      },
+      {
+        "name": "农讲所",
+        "uid": "ca8049e5a59333554351c0df"
+      },
+      {
+        "name": "公园前",
+        "uid": "3cc90394b51b7a184007c1df"
+      },
+      {
+        "name": "西门口",
+        "uid": "77b8131cfc56794e0582c2df"
+      },
+      {
+        "name": "陈家祠",
+        "uid": "64305a51ff003ccb5c17c3df"
+      },
+      {
+        "name": "长寿路",
+        "uid": "2c7d5907ba85655ecbe33cdf"
+      },
+      {
+        "name": "黄沙",
+        "uid": "302b1c82e310f2aaca213ddf"
+      },
+      {
+        "name": "芳村",
+        "uid": "74ae451774e4f36840d63edf"
+      },
+      {
+        "name": "花地湾",
+        "uid": "2e3bd2e37526799f48fd3fdf"
+      },
+      {
+        "name": "坑口",
+        "uid": "b8cfd321ffd171b4e40738df"
+      },
+      {
+        "name": "西塱",
+        "uid": "be0d59d6f7fadd4ea4da39df"
+      }
+    ]
+  },
+  {
+    "line_name": "广佛线(新城东-沥滘)",
+    "line_uid": "a5fcc423a31a0b2bfa2213ff",
+    "stops": [
+      {
+        "name": "新城东",
+        "uid": "a9bf2b678ce0ee992fb17e83"
+      },
+      {
+        "name": "东平",
+        "uid": "f9af2fe4ded11e92e011035c"
+      },
+      {
+        "name": "世纪莲",
+        "uid": "6f090fc9ac93bb29c16c1412"
+      },
+      {
+        "name": "澜石",
+        "uid": "3b896390a4757fedd7851ffc"
+      },
+      {
+        "name": "魁奇路",
+        "uid": "8fea75e2781c4681f70e77ff"
+      },
+      {
+        "name": "季华园",
+        "uid": "e7eef61bc0cfce470e0a70ff"
+      },
+      {
+        "name": "同济路",
+        "uid": "63174ec848093743353a71ff"
+      },
+      {
+        "name": "祖庙",
+        "uid": "dac4c60eb10d0c73038972ff"
+      },
+      {
+        "name": "普君北路",
+        "uid": "51023f0a8a3d3ac08adb73ff"
+      },
+      {
+        "name": "朝安",
+        "uid": "a906043abc8eb39234b06cff"
+      },
+      {
+        "name": "桂城",
+        "uid": "9d36328935dc0df92eb96dff"
+      },
+      {
+        "name": "南桂路",
+        "uid": "aa85bbdb8bb717f04c776eff"
+      },
+      {
+        "name": "礌岗",
+        "uid": "20d705b091be753e06026fff"
+      },
+      {
+        "name": "千灯湖",
+        "uid": "9fbc1fb9f3703f4b9f9d68ff"
+      },
+      {
+        "name": "金融高新区",
+        "uid": "82b57d77b905a6d4760269ff"
+      },
+      {
+        "name": "龙溪",
+        "uid": "e17b3702209a4f4bb15c6aff"
+      },
+      {
+        "name": "菊树",
+        "uid": "a80eae9dc90588150d0e6bff"
+      },
+      {
+        "name": "西塱",
+        "uid": "309147020e5b3447a00464ff"
+      },
+      {
+        "name": "鹤洞",
+        "uid": "c583e0ae926a80975b109374"
+      },
+      {
+        "name": "沙涌",
+        "uid": "6e84fffc37b5723125e0a015"
+      },
+      {
+        "name": "沙园",
+        "uid": "dea58ffbb52a4b9a9ff779ca"
+      },
+      {
+        "name": "燕岗",
+        "uid": "25f2b15ec8ff738ee115f905"
+      },
+      {
+        "name": "石溪",
+        "uid": "263b48bafa3961a42bd7ab4b"
+      },
+      {
+        "name": "南洲",
+        "uid": "65f796c67bb4455ff5c59ce0"
+      },
+      {
+        "name": "沥滘",
+        "uid": "3b1c93169914b714b23c81b6"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁8号线(万胜围-凤凰新村)",
+    "line_uid": "a6da053abc8eb39235b06c83",
+    "stops": [
+      {
+        "name": "万胜围",
+        "uid": "30c8cf0e8703c20b0a5cb380"
+      },
+      {
+        "name": "琶洲",
+        "uid": "17de080444453215c356ac80"
+      },
+      {
+        "name": "新港东",
+        "uid": "d1d4cb42b45bfb1ff90cad80"
+      },
+      {
+        "name": "磨碟沙",
+        "uid": "11923b5c7d51c145364aae80"
+      },
+      {
+        "name": "赤岗",
+        "uid": "e08cf256470b0e033310af80"
+      },
+      {
+        "name": "客村",
+        "uid": "2e86c80c884d0b59b020a880"
+      },
+      {
+        "name": "鹭江",
+        "uid": "15dc074a8d1788696140a980"
+      },
+      {
+        "name": "中大",
+        "uid": "d99a02100e275909100daa80"
+      },
+      {
+        "name": "晓港",
+        "uid": "ddc08120df4728442bd7ab80"
+      },
+      {
+        "name": "昌岗",
+        "uid": "41f05040ae0a139ecf06a480"
+      },
+      {
+        "name": "宝岗大道",
+        "uid": "3e4655493252e3a58b36ee6c"
+      },
+      {
+        "name": "沙园",
+        "uid": "7634b15565ebb27fcc04ef6c"
+      },
+      {
+        "name": "凤凰新村",
+        "uid": "ad28e6ec3431f54d057ce86c"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁3号线(天河客运站-番禺广场)",
+    "line_uid": "c5de3847d2c73bb682a12eb7",
+    "stops": [
+      {
+        "name": "天河客运站",
+        "uid": "488b87f712e914af44e274df"
+      },
+      {
+        "name": "五山",
+        "uid": "26dbb4ee92e17dabc71b75df"
+      },
+      {
+        "name": "华师",
+        "uid": "14c234e6fbe5fe527fc876df"
+      },
+      {
+        "name": "岗顶",
+        "uid": "97ca5de2781c4681f70e77df"
+      },
+      {
+        "name": "石牌桥",
+        "uid": "ffcede1bc0cfce470e0a70df"
+      },
+      {
+        "name": "体育西路",
+        "uid": "7b3766c848093743353a71df"
+      },
+      {
+        "name": "珠江新城",
+        "uid": "c2e4ee0eb10d0c73038972df"
+      },
+      {
+        "name": "广州塔",
+        "uid": "4922170a8a3d3ac08adb73df"
+      },
+      {
+        "name": "客村",
+        "uid": "b1262c3abc8eb39234b06cdf"
+      },
+      {
+        "name": "大塘",
+        "uid": "f5161a8935dc0df92eb96ddf"
+      },
+      {
+        "name": "沥滘",
+        "uid": "c2a593db8bb717f04c776edf"
+      },
+      {
+        "name": "厦滘",
+        "uid": "48f72db091be753e06026fdf"
+      },
+      {
+        "name": "大石",
+        "uid": "f79c37b9f3703f4b9f9d68df"
+      },
+      {
+        "name": "汉溪长隆",
+        "uid": "ea955577b905a6d4760269df"
+      },
+      {
+        "name": "市桥",
+        "uid": "895b1f02209a4f4bb15c6adf"
+      },
+      {
+        "name": "番禺广场",
+        "uid": "c02e869dc90588150d0e6bdf"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁2号线(嘉禾望岗-广州南站)",
+    "line_uid": "d918c70eb10d0c7302897283",
+    "stops": [
+      {
+        "name": "嘉禾望岗",
+        "uid": "8fea9917cc428d06b7265583"
+      },
+      {
+        "name": "黄边",
+        "uid": "6bc743450b488f6fa7c75683"
+      },
+      {
+        "name": "江夏",
+        "uid": "b095844f09219f8eae045783"
+      },
+      {
+        "name": "萧岗",
+        "uid": "709f862619c0964d9a005083"
+      },
+      {
+        "name": "白云文化广场",
+        "uid": "73f696c71003a249c51e5183"
+      },
+      {
+        "name": "白云公园",
+        "uid": "60179f042407fd57dc1e5283"
+      },
+      {
+        "name": "飞翔公园",
+        "uid": "68d4ab007b19e457eaf85383"
+      },
+      {
+        "name": "三元里",
+        "uid": "53d0f41e6219d2b193114c83"
+      },
+      {
+        "name": "广州火车站",
+        "uid": "0dceed1e54ffab581df74d83"
+      },
+      {
+        "name": "越秀公园",
+        "uid": "17cedbf82d1625bed6b74e83"
+      },
+      {
+        "name": "纪念堂",
+        "uid": "2028a211a3f0eefe01294f83"
+      },
+      {
+        "name": "公园前",
+        "uid": "5ec12cf768b039602afc4883"
+      },
+      {
+        "name": "海珠广场",
+        "uid": "d127e7b7bf2e12b5b04c4983"
+      },
+      {
+        "name": "市二宫",
+        "uid": "1967302994fb88054bcc4a83"
+      },
+      {
+        "name": "江南西",
+        "uid": "cff91bfc0e4b738514b54b83"
+      },
+      {
+        "name": "昌岗",
+        "uid": "fb2c814cf5cb2cfcc3364483"
+      },
+      {
+        "name": "江泰路",
+        "uid": "609c7accaab2fb7f40024583"
+      },
+      {
+        "name": "东晓南",
+        "uid": "981c25b57d31784b4c6d4683"
+      },
+      {
+        "name": "南洲",
+        "uid": "c665f236fe0574244d554783"
+      },
+      {
+        "name": "洛溪",
+        "uid": "16e67102f26a751cbda24083"
+      },
+      {
+        "name": "南浦",
+        "uid": "94d27d6df35285eb84154183"
+      },
+      {
+        "name": "会江",
+        "uid": "9bbd7c5503a5bc5cbd484283"
+      },
+      {
+        "name": "石壁",
+        "uid": "9b858ca23a12850116764383"
+      },
+      {
+        "name": "广州南站",
+        "uid": "6472b515034f2e3f59bbbc80"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁3号线北延段(体育西路-机场北(2号航站楼))",
+    "line_uid": "70b512f04a242554326212ff",
+    "stops": [
+      {
+        "name": "体育西路",
+        "uid": "1ff0a6caa35f3ba55c0d02ff"
+      },
+      {
+        "name": "林和西",
+        "uid": "01c62d58bdeb6544e11103ff"
+      },
+      {
+        "name": "广州东站",
+        "uid": "8b5433ece30ad8582ab97cff"
+      },
+      {
+        "name": "燕塘",
+        "uid": "9ae06d0d5e1613f0b3077dff"
+      },
+      {
+        "name": "梅花园",
+        "uid": "c501d01195be8a4e2db17eff"
+      },
+      {
+        "name": "京溪南方医院",
+        "uid": "7b1d1bb90c0014f8b7147fff"
+      },
+      {
+        "name": "同和",
+        "uid": "b1b5820792b68e5dffa778ff"
+      },
+      {
+        "name": "永泰",
+        "uid": "2f0b1cb10813c6ee9ef779ff"
+      },
+      {
+        "name": "白云大道北",
+        "uid": "b0bd861440a0a7beadee7aff"
+      },
+      {
+        "name": "嘉禾望岗",
+        "uid": "2918cea721f094a72de67bff"
+      },
+      {
+        "name": "龙归",
+        "uid": "60abaff712e914af44e274ff"
+      },
+      {
+        "name": "人和",
+        "uid": "3efb9cee92e17dabc71b75ff"
+      },
+      {
+        "name": "高增",
+        "uid": "5fc6a6a66b29177d8f1a898a"
+      },
+      {
+        "name": "机场南(1号航站楼)",
+        "uid": "0ce21ce6fbe5fe527fc876ff"
+      },
+      {
+        "name": "机场北(2号航站楼)",
+        "uid": "b1e5fb5f3792b84b57bfff3c"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁5号线(滘口-文冲)",
+    "line_uid": "30961c82e310f2aaca213d40",
+    "stops": [
+      {
+        "name": "滘口",
+        "uid": "29a55802f26a751cbca24046"
+      },
+      {
+        "name": "坦尾",
+        "uid": "ad91546df35285eb85154146"
+      },
+      {
+        "name": "中山八",
+        "uid": "a0fe555503a5bc5cbc484246"
+      },
+      {
+        "name": "西场",
+        "uid": "df616a852d2bbab62ce67b6e"
+      },
+      {
+        "name": "西村",
+        "uid": "53319c15034f2e3f58bbbc47"
+      },
+      {
+        "name": "广州火车站",
+        "uid": "e55efd86148d7ab215a19089"
+      },
+      {
+        "name": "小北",
+        "uid": "4ddb0e76e7bc47605af6be47"
+      },
+      {
+        "name": "淘金",
+        "uid": "e5e541bbc12e63bf8405bf47"
+      },
+      {
+        "name": "区庄",
+        "uid": "ab286729e5f1bd4cf703b847"
+      },
+      {
+        "name": "动物园",
+        "uid": "8aba43f63b02ce4a6c20b947"
+      },
+      {
+        "name": "杨箕",
+        "uid": "af659d0548045569f23cba47"
+      },
+      {
+        "name": "五羊邨",
+        "uid": "7296ee03d327cb7527d2bb47"
+      },
+      {
+        "name": "珠江新城",
+        "uid": "009075204d3b1e9b9968b447"
+      },
+      {
+        "name": "猎德",
+        "uid": "94b3eb3c98d5a0218a2fb547"
+      },
+      {
+        "name": "潭村",
+        "uid": "0baf3ed2266fb36677e5b647"
+      },
+      {
+        "name": "员村",
+        "uid": "dd41806835284eacd718b747"
+      },
+      {
+        "name": "科韵路",
+        "uid": "62fb932fc8e2ee51ff0eb047"
+      },
+      {
+        "name": "车陂南",
+        "uid": "76bc6ee5681fc6473804b147"
+      },
+      {
+        "name": "东圃",
+        "uid": "8a76ce184009014dfb42b247"
+      },
+      {
+        "name": "三溪",
+        "uid": "298be60e8703c20b0b5cb347"
+      },
+      {
+        "name": "鱼珠",
+        "uid": "009d210444453215c256ac47"
+      },
+      {
+        "name": "大沙地",
+        "uid": "3890e242b45bfb1ff80cad47"
+      },
+      {
+        "name": "大沙东",
+        "uid": "fad6125c7d51c145374aae47"
+      },
+      {
+        "name": "文冲",
+        "uid": "09c8db56470b0e033210af47"
+      }
+    ]
+  },
+  {
+    "line_name": "地铁3号线北延段(机场北(2号航站楼)-体育西路)",
+    "line_uid": "4c25c4b99cf7cc6a1c1d11ff",
+    "stops": [
+      {
+        "name": "机场北(2号航站楼)",
+        "uid": "593b3215f86fa490ad080f99"
+      },
+      {
+        "name": "机场南(1号航站楼)",
+        "uid": "941103624525bbe9c5f50dff"
+      },
+      {
+        "name": "高增",
+        "uid": "04964c6a2030cc2cf50e77aa"
+      },
+      {
+        "name": "人和",
+        "uid": "bb6ecb223da7fcbc87420eff"
+      },
+      {
+        "name": "龙归",
+        "uid": "702eb3a07af2be0baf080fff"
+      },
+      {
+        "name": "嘉禾望岗",
+        "uid": "09acf4f5384596412eb908ff"
+      },
+      {
+        "name": "白云大道北",
+        "uid": "49f9b642100f17f0611809ff"
+      },
+      {
+        "name": "永泰",
+        "uid": "0a4e9e0891be585133870aff"
+      },
+      {
+        "name": "同和",
+        "uid": "21041fb9de1f0ace70210bff"
+      },
+      {
+        "name": "京溪南方医院",
+        "uid": "a1b550188c804968863304ff"
+      },
+      {
+        "name": "梅花园",
+        "uid": "f1140287cf26bf7a14c905ff"
+      },
+      {
+        "name": "燕塘",
+        "uid": "a28b412139342d808afc06ff"
+      },
+      {
+        "name": "广州东站",
+        "uid": "e22db733abceb3b597ca07ff"
+      },
+      {
+        "name": "林和西",
+        "uid": "153f25c935fbae831c5800ff"
+      },
+      {
+        "name": "体育西路",
+        "uid": "80c5bbfc28cd251102ec01ff"
+      }
+    ]
+  },
+  {
+    "line_name": "apm线(广州塔-林和西)",
+    "line_uid": "54c34d4bcf598975e9e5826c",
+    "stops": [
+      {
+        "name": "广州塔",
+        "uid": "7a364c5e0f3bd0acf12d836c"
+      },
+      {
+        "name": "海心沙",
+        "uid": "995db91ea8a6e39141e1925e"
+      },
+      {
+        "name": "大剧院",
+        "uid": "7c238c3c56e2c864f5eafc6c"
+      },
+      {
+        "name": "花城大道",
+        "uid": "bd41d5e54e2acca33813fd6c"
+      },
+      {
+        "name": "妇儿中心",
+        "uid": "e798cd2d4aed015a5ed4fe6c"
+      },
+      {
+        "name": "黄埔大道",
+        "uid": "fe50c9ea8714679d55bfff6c"
+      },
+      {
+        "name": "天河南",
+        "uid": "e5970413e1d36cf6ef74f86c"
+      },
+      {
+        "name": "体育中心南",
+        "uid": "296e62d4eab8d63de315f96c"
+      },
+      {
+        "name": "林和西",
+        "uid": "4ca969bf5073da5cea56fa6c"
+      }
+    ]
+  }
+]
