@@ -5,9 +5,9 @@ export class UpdateUserDto extends CreateUserDto {
   @IsNotEmpty({ message: '用户ID不能为空' })
   id: string;
 
-  @ValidateIf((o: Object) => o.hasOwnProperty('password'))
+  @ValidateIf((o: object) => o.hasOwnProperty('password'))
   password: string;
 
-  @ValidateIf((o: Object) => o.hasOwnProperty('username'))
+  @ValidateIf((o: object) => o.hasOwnProperty('username'))
   username: string;
 }

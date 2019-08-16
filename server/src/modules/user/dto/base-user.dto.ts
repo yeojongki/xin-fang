@@ -14,6 +14,7 @@ export class UsernameDto {
   username: string;
 }
 
+/* tslint:disable:max-classes-per-file */
 export class BaseUserDto extends UsernameDto {
   @MaxLength(MAX_LENGTH_MOBILE, genMsgOfLength('手机号', MAX_LENGTH_MOBILE))
   mobile: string = '';

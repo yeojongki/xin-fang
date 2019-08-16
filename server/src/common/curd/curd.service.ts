@@ -9,7 +9,7 @@ import { BaseService } from '../base/base.service';
  */
 export abstract class CurdService<T, U extends IID> extends BaseService<T> {
   /**
-   *Creates an instance of CurdService.
+   * Creates an instance of CurdService.
    * @param {Repository<T>} repository
    * @param {string} serviceName
    * @memberof CurdService
@@ -34,7 +34,7 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
    */
   async update(dto: U): Promise<any> {
     const { id } = dto;
-    let toUpdate = await this.findByIdAndThrowError(id);
+    const toUpdate = await this.findByIdAndThrowError(id);
     await this.repository.save(Object.assign(toUpdate, dto));
     return Promise.resolve();
   }

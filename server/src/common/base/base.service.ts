@@ -12,7 +12,7 @@ interface IServiceName {
  */
 export abstract class BaseService<T> implements IServiceName {
   /**
-   *Creates an instance of BaseService.
+   * Creates an instance of BaseService.
    * @param {Repository<T>} repository
    * @param {string} [serviceName='数据'] 用于查找失败时显示 `serviceName` 不存在
    * @memberof BaseService

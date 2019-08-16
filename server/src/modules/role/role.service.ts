@@ -23,7 +23,7 @@ export class RoleService extends CurdService<RoleEntity, UpdateRoleDto> {
   @Put()
   async update(@Body() dto: UpdateRoleDto): Promise<void> {
     const { id } = dto;
-    let toUpdate = await this.findByIdAndThrowError(id);
+    const toUpdate = await this.findByIdAndThrowError(id);
     await this.roleRepository.save(Object.assign(toUpdate, dto));
     return Promise.resolve();
   }
