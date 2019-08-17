@@ -13,11 +13,11 @@ export class RoleEntity extends BaseEntity {
   @Column({ comment: '描述', default: null, nullable: true })
   desc: string;
 
-  @ManyToMany(type => UserEntity, user => user.roles)
+  @ManyToMany(() => UserEntity, user => user.roles)
   @JoinTable({
     name: 'user_role',
     joinColumn: { name: 'role_id' },
     inverseJoinColumn: { name: 'user_id' },
   })
-  users: UserEntity;
+  users: UserEntity[];
 }

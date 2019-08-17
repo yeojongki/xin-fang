@@ -8,6 +8,8 @@ import { CurdService } from '@/common/curd/curd.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { errorCode } from '@/constants/error-code';
 
+export type TKeyStringObj = { [key: string]: any };
+
 @Injectable()
 export class UserService extends CurdService<UserEntity, UpdateUserDto> {
   constructor(
@@ -36,8 +38,27 @@ export class UserService extends CurdService<UserEntity, UpdateUserDto> {
    * @returns {Promise<UserEntity>}
    * @memberof UserService
    */
-  async findOne(query: any): Promise<UserEntity> {
-    return await this.userRepository.findOne(query, { relations: ['roles'] });
+  async findOne(query: TKeyStringObj): Promise<UserEntity> {
+    return await this.userRepository.findOne(query, {
+      relations: ['roles'],
+    });
+  }
+
+  /**
+   * 查找用户 不存在时报错
+   * @param {TKeyStringObj} query
+   * @returns {Promise<UserEntity>}
+   * @memberof UserService
+   */
+  async findOneAndThrowError(query: TKeyStringObj): Promise<UserEntity> {
+    const user = this.findOne(query);
+    if (user) {
+      return user;
+    } else {
+      const key = Object.keys(query)[0];
+      const value = Object.values(query)[0];
+      this.handleNotFoundError(value, key);
+    }
   }
 
   /**

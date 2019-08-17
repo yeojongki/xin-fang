@@ -45,7 +45,7 @@ export class UserController extends CurdController<UserEntity, UpdateUserDto> {
    */
   @Get(':id')
   async findById(@Param('id') id: string) {
-    const user = await this.userService.findByIdAndThrowError(id);
+    const user = await this.userService.findOneAndThrowError({ id });
     return this.userService.buildUser(user);
   }
 
@@ -56,6 +56,7 @@ export class UserController extends CurdController<UserEntity, UpdateUserDto> {
   }
 
   @Put()
+  @Message('更新成功')
   async update(@Body() entity: UpdateUserDto): Promise<any> {
     return await this.userService.update(entity);
   }

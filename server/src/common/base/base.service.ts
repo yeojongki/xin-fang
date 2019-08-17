@@ -1,6 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { errorCode } from '@/constants/error-code';
+import { TID } from './base.controller';
 
 interface IServiceName {
   serviceName: string;
@@ -28,7 +29,7 @@ export abstract class BaseService<T> implements IServiceName {
    * @returns {Promise<T>}
    * @memberof BaseService
    */
-  async findById(id: string): Promise<T> {
+  async findById(id: TID): Promise<T> {
     return await this.repository.findOne(id);
   }
 
@@ -38,7 +39,7 @@ export abstract class BaseService<T> implements IServiceName {
    * @returns {Promise<T>}
    * @memberof BaseService
    */
-  async findByIdAndThrowError(id: string): Promise<T> {
+  async findByIdAndThrowError(id: TID): Promise<T> {
     const entity = await this.findById(id);
     if (!entity) {
       this.handleNotFoundError(id);
@@ -48,13 +49,14 @@ export abstract class BaseService<T> implements IServiceName {
 
   /**
    * 数据不存在时抛出的出错处理
-   * @param {string} id
+   * @param {TID} value 错误的值
+   * @param {string} [filed='id'] 错误字段 默认为id {error: {id}}
    * @memberof BaseService
    */
-  handleNotFoundError(id: string) {
+  handleNotFoundError(value: TID, filed: string = 'id') {
     throw new BadRequestException({
       message: `${this.serviceName}不存在`,
-      error: { id },
+      error: { [filed]: value },
       errorCode: errorCode.FIND_NOT_FOUND,
     });
   }

@@ -28,15 +28,17 @@ export class HttpResInterceptor implements NestInterceptor {
       META_RES_MSG,
       context.getHandler(),
     );
-    if (Array.isArray(metadata)) {
-      [message, httpCode] = metadata;
-    } else {
-      message = metadata;
+    if (metadata) {
+      if (Array.isArray(metadata)) {
+        [message, httpCode] = metadata;
+      } else {
+        message = metadata;
+      }
     }
-
     const ctx = context.switchToHttp();
     const res = ctx.getResponse();
     res.status(httpCode);
+
     return next.handle().pipe(
       map(result => ({
         errno: errorCode.SUCCESS,

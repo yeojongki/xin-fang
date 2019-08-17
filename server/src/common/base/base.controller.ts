@@ -1,10 +1,12 @@
 import { BaseService } from './base.service';
 import { Get, Param } from '@nestjs/common';
 
+export type TID = string | number;
+
 export interface IFindIdResult {
   createdAt?: Date;
   updatedAt?: Date;
-  id: string;
+  id: TID;
   [key: string]: any;
 }
 
@@ -18,7 +20,7 @@ export abstract class BaseController<E extends IFindIdResult> {
   constructor(protected readonly service: BaseService<E>) {}
 
   @Get(':id')
-  async findById(@Param('id') id: string): Promise<any> {
+  async findById(@Param('id') id: TID): Promise<any> {
     const { createdAt, updatedAt, ...rest } = await this.service.findById(id);
     return { ...rest };
   }

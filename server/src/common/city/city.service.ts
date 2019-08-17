@@ -12,4 +12,13 @@ export class CityService extends BaseService<CityEntity> {
   ) {
     super(cityRepository, '城市');
   }
+
+  async getSubways(cityId: number) {
+    // return await this.cityRepository
+    //   .createQueryBuilder('city')
+    //   .leftJoinAndSelect('city.subways', 'subways')
+    //   .where('city.id = :cityId', { cityId })
+    //   .getMany();
+    return await this.cityRepository.findOne(cityId, { relations: ['subways'] });
+  }
 }
