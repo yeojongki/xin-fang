@@ -12,17 +12,14 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesGuard } from '@/guard/roles.guard';
 import { JwtAuthGuard } from '@/guard/auth.guard';
-import { CommonController } from '@/common/common.controller';
+import { CurdController } from '@/common/curd/curd.controller';
 import { UserEntity } from './user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Message } from '@/decorators/http.decorator';
 
 @Controller('user')
-export class UserController extends CommonController<
-  UserEntity,
-  UpdateUserDto
-> {
-  constructor(private readonly userService: UserService) {
+export class UserController extends CurdController<UserEntity, UpdateUserDto> {
+  constructor(protected readonly userService: UserService) {
     super(userService);
   }
 
@@ -48,7 +45,7 @@ export class UserController extends CommonController<
    */
   @Get(':id')
   async findById(@Param('id') id: string) {
-    const user = await this.userService.findByIdAndThrowError(id);
+    const user = await this.userService.findOneAndThrowError({ id });
     return this.userService.buildUser(user);
   }
 
@@ -59,6 +56,7 @@ export class UserController extends CommonController<
   }
 
   @Put()
+  @Message('更新成功')
   async update(@Body() entity: UpdateUserDto): Promise<any> {
     return await this.userService.update(entity);
   }

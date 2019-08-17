@@ -3,7 +3,7 @@ import { BadRequestException } from '@nestjs/common';
 import { errorCode } from '@/constants/error-code';
 
 export function now(time: number = 0): number {
-  return parseInt(((Date.now() + time) / 1000).toString());
+  return parseInt(((Date.now() + time) / 1000).toString(), 10);
 }
 
 export function throwIfValidationError(errors: ValidationError[]) {

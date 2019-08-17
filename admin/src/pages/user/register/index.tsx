@@ -71,7 +71,7 @@ class Register extends Component<RegisterProps, RegisterState> {
     const account = form.getFieldValue('username');
     if (userRegister.errno === 0) {
       message.success('注册成功！');
-      router.push({
+      router.replace({
         pathname: '/user/register-result',
         state: {
           account,
