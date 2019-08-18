@@ -1,6 +1,6 @@
 ## Description
 
-admin of xin-fang.
+Admin side of Xin-Fang App implemented using React.js
 
 ## Environment Prepare
 
@@ -8,48 +8,42 @@ Install `node_modules`:
 
 ```bash
 # change puppeteer host
-npm config set puppeteer_download_host=https://npm.taobao.org/mirrors
-yarn config set puppeteer_download_host https://npm.taobao.org/mirrors
+$ npm config set puppeteer_download_host=https://npm.taobao.org/mirrors
+$ yarn config set puppeteer_download_host https://npm.taobao.org/mirrors
 
-npm install
-```
-
-or
-
-```bash
-yarn
+$ npm install # or yarn
 ```
 
 ### Start project
 
 ```bash
-npm start
+$ npm start
 ```
 
 ### Build project
 
 ```bash
-npm run build
+$ npm run build
 ```
 
 ### Check code style
 
 ```bash
-npm run lint
+$ npm run lint
 ```
 
 You can also use script to auto fix some lint error:
 
 ```bash
-npm run lint:fix
+$ npm run lint:fix
 ```
 
 ### Test code
 
 ```bash
-npm test
+$ npm test
 ```
 
 ## More
 
-You can view full document on our [official website](https://pro.ant.design).
+ant.design document [official website](https://pro.ant.design).

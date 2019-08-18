@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "0.0.1",
-  "description": "server of xin-house",
+  "description": "Server side of Xin-Fang",
   "author": "kk597@sina.com",
   "private": true,
   "scripts": {

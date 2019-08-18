@@ -1,6 +1,6 @@
 ## Description
 
-server of xin-fang.
+Server side of Xin-Fang App implemented using Nest.js
 
 ## Installation
 
