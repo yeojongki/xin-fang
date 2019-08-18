@@ -90,4 +90,16 @@ export class UserService extends CurdService<UserEntity, UpdateUserDto> {
     await this.userRepository.save(toSave);
     return Promise.resolve();
   }
+
+  /**
+   * 获取所有的用户
+   * @param {number} skip
+   * @param {number} take
+   * @returns
+   * @memberof UserService
+   */
+  async getUserList(skip: number, take: number) {
+    let users = await this.userRepository.find({ skip, take });
+    return users.map(user => this.buildUser(user));
+  }
 }

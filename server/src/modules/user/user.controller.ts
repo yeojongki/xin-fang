@@ -7,6 +7,7 @@ import {
   Param,
   Request,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,11 +17,29 @@ import { CurdController } from '@/common/curd/curd.controller';
 import { UserEntity } from './user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Message } from '@/decorators/http.decorator';
+import { Roles } from '@/decorators/roles.decorator';
 
 @Controller('user')
 export class UserController extends CurdController<UserEntity, UpdateUserDto> {
   constructor(protected readonly userService: UserService) {
     super(userService);
+  }
+
+  /**
+   * 获取所有的用户
+   * @param {number} [skip=1]
+   * @param {number} [take=20]
+   * @returns
+   * @memberof UserController
+   */
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('superAdmin')
+  @Get('list')
+  async getUserList(
+    @Query('skip') skip: number = 1,
+    @Query('take') take: number = 20,
+  ) {
+    return await this.userService.getUserList(skip, take);
   }
 
   /**
