@@ -75,7 +75,7 @@ const errorHandler = (error: { response: Response; data: HttpErrorResponse }): R
       router.push(`/exception/500`);
     }
 
-    return response;
+    // return response;
   }
 
   if (response && response.status) {
@@ -85,7 +85,8 @@ const errorHandler = (error: { response: Response; data: HttpErrorResponse }): R
       description: errorText,
     });
   }
-  return response;
+  // return response;
+  throw error;
 };
 
 /**
@@ -110,5 +111,11 @@ request.interceptors.request.use((url, options) => {
     options: { ...options, interceptors: true },
   };
 });
+
+// request.interceptors.response.use(response => {
+//   const { body, status } = response;
+//   console.log('res', { body, status });
+//   return response;
+// });
 
 export default request;

@@ -99,7 +99,14 @@ export class UserService extends CurdService<UserEntity, UpdateUserDto> {
    * @memberof UserService
    */
   async getUserList(skip: number, take: number) {
-    let users = await this.userRepository.find({ skip, take });
-    return users.map(user => this.buildUser(user));
+    const [users, count] = await this.userRepository.findAndCount({
+      skip,
+      take,
+    });
+    const list = users.map(user => this.buildUser(user));
+    return Promise.resolve({
+      list,
+      count,
+    });
   }
 }

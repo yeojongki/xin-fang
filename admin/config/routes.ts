@@ -37,6 +37,12 @@ export default [
         component: './Welcome',
       },
       {
+        path: '/users',
+        name: '用户管理',
+        icon: 'group',
+        component: './users',
+      },
+      {
         path: '/exception',
         routes: [
           { path: '/exception/401', component: './exception/401' },
