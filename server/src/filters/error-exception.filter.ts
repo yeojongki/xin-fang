@@ -37,7 +37,7 @@ export class ErrorExceptionFilter implements ExceptionFilter {
       error = errorResponse.sqlMessage;
       errno = errorCode.DB_OPERATE_ERROR;
     }
-
+    
     response.status(statusCode).json({
       errno,
       error,

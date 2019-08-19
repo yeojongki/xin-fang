@@ -39,7 +39,7 @@ export default [
       {
         path: '/users',
         name: '用户管理',
-        icon: 'group',
+        icon: 'team',
         component: './users',
       },
       {

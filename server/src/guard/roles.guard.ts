@@ -2,7 +2,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { errorCode } from '@/constants/error-code';
@@ -26,7 +26,7 @@ export class RolesGuard implements CanActivate {
     if (user && user.roles && hasRole()) {
       return true;
     } else {
-      throw new UnauthorizedException({
+      throw new ForbiddenException({
         statusCode: 403,
         errno: errorCode.ROLE_AUTH_ERROR,
         message: '您的权限不足',

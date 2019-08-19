@@ -43,7 +43,6 @@ const Model: ModelType = {
   effects: {
     *login({ payload }, { call, put }) {
       const response: HttpSuccessResponse = yield call(Api.accountLogin, payload);
-
       // set token
       const result: ITokenResult = response.result;
       window.localStorage.setItem(TOKEN_KEY, JSON.stringify({ ...result, ts: +new Date() }));

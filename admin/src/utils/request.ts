@@ -42,15 +42,33 @@ export interface HttpSuccessResponse extends HttpBaseResponse {
 }
 
 /**
- * 异常处理程序
+ * 配置request请求时的默认参数
  */
-const errorHandler = (error: { response: Response; data: HttpErrorResponse }): Response => {
-  const { response, data } = error;
-  // console.log('data', data);
-  // console.log('response', response);
+const request = extend({
+  prefix: '/api',
+  credentials: 'include', // 默认请求是否带上cookie
+});
 
-  const { status, url } = response;
+request.interceptors.request.use((url, options) => {
+  // add token to header
+  const tokenInfo = JSON.parse(window.localStorage.getItem(TOKEN_KEY) as string);
+  const token = checkTokenExpired(tokenInfo);
+  if (token) {
+    options.headers!['Authorization'] = `Bearer ${token}`;
+  }
 
+  return {
+    url,
+    options: { ...options, interceptors: true },
+  };
+});
+
+request.interceptors.response.use(async response => {
+  const { url, status } = response;
+  const data = await response.clone().json();
+  if (data && data.errno === 0) return response;
+
+  // 自定义错误
   if (data && data.message !== undefined) {
     const { message, errno } = data;
     notification.error({
@@ -74,10 +92,10 @@ const errorHandler = (error: { response: Response; data: HttpErrorResponse }): R
     if (status === 500) {
       router.push(`/exception/500`);
     }
-
-    // return response;
+    return Promise.reject(new Error(data.message || 'Error'));
   }
 
+  // 未知错误
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     notification.error({
@@ -85,37 +103,7 @@ const errorHandler = (error: { response: Response; data: HttpErrorResponse }): R
       description: errorText,
     });
   }
-  // return response;
-  throw error;
-};
-
-/**
- * 配置request请求时的默认参数
- */
-const request = extend({
-  prefix: '/api',
-  errorHandler, // 默认错误处理
-  credentials: 'include', // 默认请求是否带上cookie
+  return response;
 });
-
-request.interceptors.request.use((url, options) => {
-  // add token to header
-  const tokenInfo = JSON.parse(window.localStorage.getItem(TOKEN_KEY) as string);
-  const token = checkTokenExpired(tokenInfo);
-  if (token) {
-    options.headers!['Authorization'] = `Bearer ${token}`;
-  }
-
-  return {
-    url,
-    options: { ...options, interceptors: true },
-  };
-});
-
-// request.interceptors.response.use(response => {
-//   const { body, status } = response;
-//   console.log('res', { body, status });
-//   return response;
-// });
 
 export default request;
