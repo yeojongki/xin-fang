@@ -24,11 +24,16 @@ export class UserService extends CurdService<UserEntity, UpdateUserDto> {
   /**
    * 构建用户信息 (除去保密和无需返回的字段)
    * @param {UserEntity} user
+   * @param {boolean} [onlyExcludePwd=false] 返回时是否只排除 `password` 字段 default `true`
    * @returns
    * @memberof UserService
    */
-  buildUser(user: UserEntity) {
-    const { password, createdAt, updatedAt, ...result } = user;
+  buildUser(user: UserEntity, onlyExcludePwd: boolean = false) {
+    const { createdAt, updatedAt, ...result } = user;
+    if (onlyExcludePwd) {
+      delete user.password;
+      return user;
+    }
     return result;
   }
 
@@ -103,10 +108,14 @@ export class UserService extends CurdService<UserEntity, UpdateUserDto> {
       skip,
       take,
     });
-    const list = users.map(user => this.buildUser(user));
+    const list = users.map(user => this.buildUser(user, true));
     return Promise.resolve({
       list,
-      count,
+      pagination: {
+        current: +skip,
+        pageSize: +take,
+        total: count,
+      },
     });
   }
 }

@@ -1,6 +1,6 @@
 import request from '@/utils/request';
-import { IPagination } from '.';
+import { IPaginationParams } from '.';
 
-export const getUserList = (data: IPagination) => {
-  return request('/user/list', { data });
+export const getUserList = (params: IPaginationParams) => {
+  return request('/user/list', { params });
 };

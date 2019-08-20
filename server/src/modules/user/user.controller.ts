@@ -27,7 +27,7 @@ export class UserController extends CurdController<UserEntity, UpdateUserDto> {
 
   /**
    * 获取所有的用户
-   * @param {number} [skip=1]
+   * @param {number} [skip=0]
    * @param {number} [take=20]
    * @returns
    * @memberof UserController
@@ -36,8 +36,8 @@ export class UserController extends CurdController<UserEntity, UpdateUserDto> {
   @Roles('superAdmin')
   @Get('list')
   async getUserList(
-    @Query('skip') skip: number = 1,
-    @Query('take') take: number = 20,
+    @Query('skip') skip: number = 0,
+    @Query('take') take: number = 10,
   ) {
     return await this.userService.getUserList(skip, take);
   }
