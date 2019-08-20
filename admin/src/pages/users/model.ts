@@ -3,6 +3,7 @@ import { EffectsCommandMap } from 'dva';
 import { HttpSuccessResponse } from '@/utils/request';
 import * as Api from './service';
 import { IUser } from '.';
+import { message as Message } from 'antd';
 
 export interface IPagination {
   total: number;
@@ -21,6 +22,7 @@ export interface ModelType {
   state: StateType;
   effects: {
     getList: Effect;
+    deleteUser: Effect;
   };
   reducers: {
     getListHandle: Reducer<StateType>;
@@ -42,16 +44,23 @@ const Model: ModelType = {
   effects: {
     *getList({ payload }, { call, put }) {
       const { result }: HttpSuccessResponse = yield call(Api.getUserList, payload);
-
       yield put({
         type: 'getListHandle',
         payload: result,
       });
     },
+    *deleteUser({ payload }, { call }) {
+      const { callback, id } = payload;
+      const { errno, message }: HttpSuccessResponse = yield call(Api.deleteUser, id);
+      if (errno === 0) {
+        Message.success(message);
+        callback();
+      }
+    },
   },
 
   reducers: {
-    getListHandle(state, { payload }) {
+    getListHandle(_, { payload }) {
       return {
         list: payload.list as any[],
         pagination: payload.pagination,

@@ -1,6 +1,6 @@
 import { CurdService } from './curd.service';
 import { Message } from '@/decorators/http.decorator';
-import { Body, Delete, UseGuards } from '@nestjs/common';
+import { Delete, UseGuards, Param } from '@nestjs/common';
 import { JwtAuthGuard } from '@/guard/auth.guard';
 import { RolesGuard } from '@/guard/roles.guard';
 import { Roles } from '@/decorators/roles.decorator';
@@ -30,9 +30,9 @@ export abstract class CurdController<
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('superAdmin')
-  @Delete()
+  @Delete(':id')
   @Message('删除成功')
-  async deleteById(@Body() id: string): Promise<void> {
+  async deleteById(@Param('id') id: string): Promise<void> {
     await this.service.delete(id);
     return Promise.resolve();
   }

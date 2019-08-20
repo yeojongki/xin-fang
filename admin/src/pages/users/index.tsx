@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import { Table, Popconfirm } from 'antd';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { StateType } from './model';
-import { ColumnProps } from 'antd/lib/table';
+import { ColumnProps, PaginationConfig } from 'antd/lib/table';
 
-const DEFAULT_PAGE_SIZE = 5;
+const DEFAULT_PAGE_SIZE = 20;
+const DEFAULT_PAGE_OPTIONS = Array(5)
+  .fill(DEFAULT_PAGE_SIZE)
+  .map((n, i) => n * (i + 1) + '');
 
 interface UsersProps {
   dispatch: Dispatch<any>;
@@ -35,24 +38,6 @@ export interface IUser {
   roles: any[];
 }
 
-const columns: ColumnProps<IUser>[] = [
-  {
-    key: 'id',
-    dataIndex: 'id',
-    title: 'id',
-  },
-  {
-    key: 'username',
-    dataIndex: 'username',
-    title: '用户名',
-  },
-  {
-    key: 'createdAt',
-    dataIndex: 'createdAt',
-    title: '创建时间',
-  },
-];
-
 @connect(
   ({
     usersManage,
@@ -67,6 +52,34 @@ const columns: ColumnProps<IUser>[] = [
   }) => ({ usersManage, fetching: loading.effects['usersManage/getList'] }),
 )
 class Users extends Component<UsersProps, UsersState> {
+  columns: ColumnProps<IUser>[] = [
+    {
+      key: 'id',
+      dataIndex: 'id',
+      title: 'id',
+    },
+    {
+      key: 'username',
+      dataIndex: 'username',
+      title: '用户名',
+    },
+    {
+      key: 'createdAt',
+      dataIndex: 'createdAt',
+      title: '创建时间',
+    },
+    {
+      key: 'operation',
+      dataIndex: 'operation',
+      title: '操作',
+      render: (_, record: IUser) => (
+        <Popconfirm title="确定删除吗?" onConfirm={() => this.handleDeleteUser(record.id)}>
+          <a>Delete</a>
+        </Popconfirm>
+      ),
+    },
+  ];
+
   state: UsersState = {
     pagination: { take: DEFAULT_PAGE_SIZE, skip: 0 },
     selectedRowKeys: [],
@@ -94,11 +107,38 @@ class Users extends Component<UsersProps, UsersState> {
     });
   };
 
+  setPaginationChange({ pageSize, current }: PaginationConfig) {
+    const { pagination } = this.state;
+    this.setPaginationParams(
+      {
+        ...pagination,
+        take: pageSize ? +pageSize : DEFAULT_PAGE_SIZE,
+        skip: current! - 1,
+      },
+      () => {
+        this.fetchUsers(this.state.pagination);
+      },
+    );
+  }
+
+  handleDeleteUser = (id: string) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'usersManage/deleteUser',
+      payload: {
+        id,
+        callback: () => {
+          this.fetchUsers(this.state.pagination);
+        },
+      },
+    });
+  };
+
   render() {
+    const { columns } = this;
     const { usersManage, fetching } = this.props;
     const { selectedRowKeys } = this.state;
     const { list, pagination } = usersManage;
-    const paginationParam = this.state.pagination;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -110,24 +150,16 @@ class Users extends Component<UsersProps, UsersState> {
         rowSelection={rowSelection}
         loading={fetching}
         pagination={{
+          showTotal: total => `共${total}条记录 `,
           showSizeChanger: true,
           showQuickJumper: true,
           defaultCurrent: 1,
           ...pagination,
           current: pagination.current + 1,
-          pageSizeOptions: ['5', '10', '20', '30', '40'],
+          pageSizeOptions: DEFAULT_PAGE_OPTIONS,
         }}
-        onChange={({ pageSize, current }) => {
-          this.setPaginationParams(
-            {
-              ...paginationParam,
-              take: pageSize ? +pageSize : DEFAULT_PAGE_SIZE,
-              skip: current! - 1,
-            },
-            () => {
-              this.fetchUsers(this.state.pagination);
-            },
-          );
+        onChange={pagination => {
+          this.setPaginationChange(pagination);
         }}
         columns={columns}
         dataSource={list}
