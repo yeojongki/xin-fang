@@ -6,10 +6,6 @@ strictEslint.rules = {
   'class-methods-use-this': 0,
   '@typescript-eslint/no-explicit-any': 0,
   'no-console': 0,
-
-  // todo
-  'import/no-extraneous-dependencies': 0,
-  'react/no-unused-state': 0,
 };
 
 module.exports = {

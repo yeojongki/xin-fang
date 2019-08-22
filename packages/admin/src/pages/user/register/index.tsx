@@ -30,18 +30,18 @@ interface RegisterProps extends FormComponentProps {
   submitting: boolean;
 }
 interface RegisterState {
-  count: number;
+  // count: number;
   confirmDirty: boolean;
   showPwdTips: boolean;
-  prefix: string;
+  // prefix: string;
 }
 export interface UserRegisterParams {
   username: string;
   password: string;
   confirm: string;
-  mobile: string;
-  captcha: string;
-  prefix: string;
+  // mobile: string;
+  // captcha: string;
+  // prefix: string;
 }
 
 @connect(
@@ -58,10 +58,10 @@ export interface UserRegisterParams {
 )
 class Register extends Component<RegisterProps, RegisterState> {
   state: RegisterState = {
-    count: 0,
+    // count: 0,
     confirmDirty: false,
     showPwdTips: false,
-    prefix: '86',
+    // prefix: '86',
   };
 
   interval: number | undefined = undefined;
@@ -84,22 +84,22 @@ class Register extends Component<RegisterProps, RegisterState> {
     clearInterval(this.interval);
   }
 
-  onGetCaptcha = () => {
-    let count = 59;
-    this.setState({
-      count,
-    });
-    this.interval = window.setInterval(() => {
-      count -= 1;
-      this.setState({
-        count,
-      });
+  // onGetCaptcha = () => {
+  //   let count = 59;
+  //   this.setState({
+  //     count,
+  //   });
+  //   this.interval = window.setInterval(() => {
+  //     count -= 1;
+  //     this.setState({
+  //       count,
+  //     });
 
-      if (count === 0) {
-        clearInterval(this.interval);
-      }
-    }, 1000);
-  };
+  //     if (count === 0) {
+  //       clearInterval(this.interval);
+  //     }
+  //   }, 1000);
+  // };
 
   getPasswordStatus = () => {
     const { form } = this.props;
@@ -176,11 +176,11 @@ class Register extends Component<RegisterProps, RegisterState> {
     }
   };
 
-  changePrefix = (value: string) => {
-    this.setState({
-      prefix: value,
-    });
-  };
+  // changePrefix = (value: string) => {
+  //   this.setState({
+  //     prefix: value,
+  //   });
+  // };
 
   renderPasswordProgress = () => {
     const { form } = this.props;
