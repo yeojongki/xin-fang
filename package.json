@@ -1,32 +1,60 @@
 {
-  "name": "xin-fang",
+  "name": "@xf/monorepo",
+  "private": true,
   "version": "0.0.1",
   "description": "xin-fang fullstack",
-  "main": "index.js",
+  "engines": {
+    "node": ">=10.13.0",
+    "npm": ">=6.4.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server:dev": "cd ./server && yarn start:dev",
-    "admin:dev": "cd ./admin && yarn start"
+    "clean-node-modules": "rimraf ./yarn.lock && rimraf ./yarn-error.log && rimraf ./node_modules",
+    "commit": "git cz",
+    "lerna": "lerna bootstrap",
+    "server:dev": "cd ./packages/server && yarn start:dev",
+    "admin:dev": "cd ./packages/admin && yarn start"
   },
   "author": "kk597@sina.com",
-  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/yeojongki/xin-fang.git"
   },
   "devDependencies": {
-    "cz-conventional-changelog": "^3.0.2",
+    "@umijs/fabric": "^1.1.9",
+    "commitizen": "^4.0.3",
+    "cz-lerna-changelog": "^2.0.2",
     "husky": "^3.0.3",
+    "lerna": "^3.16.4",
+    "lint-staged": "^9.2.3",
     "validate-commit-msg": "^2.14.0"
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "./node_modules/cz-lerna-changelog"
     }
   },
   "husky": {
     "hooks": {
+      "pre-commit": "lint-staged",
       "commit-msg": "validate-commit-msg"
     }
+  },
+  "lint-staged": {
+    "packages/**/*.ts?(x)": [
+      "prettier --write",
+      "eslint",
+      "git add"
+    ],
+    "packages/**/*.(css|less)": [
+      "prettier --write",
+      "stylelint",
+      "git add"
+    ]
   }
 }

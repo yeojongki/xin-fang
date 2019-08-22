@@ -1,0 +1,21 @@
+{
+  "name": "@xf/common",
+  "version": "0.0.1",
+  "author": "yeojongki <kk597@sina.com>",
+  "homepage": "https://github.com/yeojongki/xin-house#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeojongki/xin-house.git"
+  },
+  "scripts": {
+    "lint:js": "eslint \"src/**/*.{ts,tsx}\"",
+    "fix:js": "yarn run lint-js --fix",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "@nestjs/common": "^6.5.3",
+    "@nestjs/core": "^6.5.3",
+    "class-validator": "^0.10.0",
+    "typeorm": "^0.2.18"
+  }
+}
