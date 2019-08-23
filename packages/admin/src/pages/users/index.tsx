@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Popconfirm } from 'antd';
+import { Table, Popconfirm, Button } from 'antd';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps, PaginationConfig } from 'antd/lib/table';
@@ -91,7 +91,6 @@ class Users extends Component<UsersProps, UsersState> {
   }
 
   onSelectChange = (selectedRowKeys: any) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   };
 
@@ -105,7 +104,7 @@ class Users extends Component<UsersProps, UsersState> {
       {
         ...pagination,
         take: pageSize ? +pageSize : DEFAULT_PAGE_SIZE,
-        skip: current as number - 1,
+        skip: (current as number) - 1,
       },
       () => {
         this.fetchUsers(this.state.pagination);
@@ -126,7 +125,21 @@ class Users extends Component<UsersProps, UsersState> {
     dispatch({
       type: 'usersManage/deleteUser',
       payload: {
-        id,
+        ids: [id],
+        callback: () => {
+          this.fetchUsers(this.state.pagination);
+        },
+      },
+    });
+  };
+
+  deleteSelectedUsers = () => {
+    const { selectedRowKeys } = this.state;
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'usersManage/deleteUser',
+      payload: {
+        ids: selectedRowKeys,
         callback: () => {
           this.fetchUsers(this.state.pagination);
         },
@@ -143,27 +156,43 @@ class Users extends Component<UsersProps, UsersState> {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
+    const hasSelected = selectedRowKeys.length > 0;
 
     return (
-      <Table
-        rowKey={record => record.id}
-        rowSelection={rowSelection}
-        loading={fetching}
-        pagination={{
-          showTotal: total => `共${total}条记录 `,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          defaultCurrent: 1,
-          ...pagination,
-          current: pagination.current + 1,
-          pageSizeOptions: DEFAULT_PAGE_OPTIONS,
-        }}
-        onChange={_pagination => {
-          this.setPaginationChange(_pagination);
-        }}
-        columns={columns}
-        dataSource={list}
-      />
+      <>
+        <div style={{ marginBottom: 16 }}>
+          <Button
+            type="danger"
+            onClick={this.deleteSelectedUsers}
+            disabled={!hasSelected}
+            loading={fetching}
+          >
+            删除选中
+          </Button>
+          <span style={{ marginLeft: 8 }}>
+            {hasSelected ? `当前选中 ${selectedRowKeys.length} 位用户` : ''}
+          </span>
+        </div>
+        <Table
+          rowKey={record => record.id}
+          rowSelection={rowSelection}
+          loading={fetching}
+          pagination={{
+            showTotal: total => `共${total}条记录 `,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            defaultCurrent: 1,
+            ...pagination,
+            current: pagination.current + 1,
+            pageSizeOptions: DEFAULT_PAGE_OPTIONS,
+          }}
+          onChange={_pagination => {
+            this.setPaginationChange(_pagination);
+          }}
+          columns={columns}
+          dataSource={list}
+        />
+      </>
     );
   }
 }

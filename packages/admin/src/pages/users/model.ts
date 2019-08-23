@@ -50,8 +50,8 @@ const Model: ModelType = {
       });
     },
     *deleteUser({ payload }, { call }) {
-      const { callback, id } = payload;
-      const { errno, message }: HttpSuccessResponse = yield call(Api.deleteUser, id);
+      const { callback, ids } = payload;
+      const { errno, message }: HttpSuccessResponse = yield call(Api.deleteUsers, ids);
       if (errno === 0) {
         Message.success(message);
         callback();

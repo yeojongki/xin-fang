@@ -3,8 +3,9 @@ import { IPaginationParams } from '.';
 
 export const getUserList = (params: IPaginationParams) => request('/user/list', { params });
 
-export async function deleteUser(id: string): Promise<any> {
-  return request(`/user/${id}`, {
+export async function deleteUsers(ids: string[]): Promise<any> {
+  return request('/user', {
     method: 'DELETE',
+    data: ids,
   });
 }
