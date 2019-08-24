@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Popconfirm, Button } from 'antd';
+import { Table, Popconfirm, Alert, Divider } from 'antd';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps, PaginationConfig } from 'antd/lib/table';
@@ -73,9 +73,13 @@ class Users extends Component<UsersProps, UsersState> {
       dataIndex: 'operation',
       title: '操作',
       render: (_, record: IUser) => (
-        <Popconfirm title="确定删除吗?" onConfirm={() => this.handleDeleteUser(record.id)}>
-          <a>Delete</a>
-        </Popconfirm>
+        <>
+          <a>编辑</a>
+          <Divider type="vertical" />
+          <Popconfirm title="确定删除吗?" onConfirm={() => this.handleDeleteUser(record.id)}>
+            <a>删除</a>
+          </Popconfirm>
+        </>
       ),
     },
   ];
@@ -161,17 +165,20 @@ class Users extends Component<UsersProps, UsersState> {
     return (
       <>
         <div style={{ marginBottom: 16 }}>
-          <Button
-            type="danger"
-            onClick={this.deleteSelectedUsers}
-            disabled={!hasSelected}
-            loading={fetching}
-          >
-            删除选中
-          </Button>
-          <span style={{ marginLeft: 8 }}>
-            {hasSelected ? `当前选中 ${selectedRowKeys.length} 位用户` : ''}
-          </span>
+          <Alert
+            message={
+              <>
+                <span>当前选中 {selectedRowKeys.length} 位用户</span>{' '}
+                {hasSelected ? (
+                  <Popconfirm title="确定删除吗?" onConfirm={() => this.deleteSelectedUsers()}>
+                    <a style={{ marginLeft: '20px' }}>删除选中</a>
+                  </Popconfirm>
+                ) : null}
+              </>
+            }
+            type="info"
+            showIcon
+          />
         </div>
         <Table
           rowKey={record => record.id}
