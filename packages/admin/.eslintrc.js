@@ -2,7 +2,7 @@ const { strictEslint } = require('@umijs/fabric');
 
 strictEslint.rules = {
   ...strictEslint.rules,
-  'import/no-unresolved': [2, { ignore: ['^@/', '^@xf/'] }],
+  'import/no-unresolved': [2, { ignore: ['^@/', '^@xf/', 'umi-types'] }],
   'class-methods-use-this': 0,
   '@typescript-eslint/no-explicit-any': 0,
   'no-console': 0,

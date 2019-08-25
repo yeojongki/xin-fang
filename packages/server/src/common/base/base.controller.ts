@@ -1,7 +1,6 @@
 import { Get, Param } from '@nestjs/common';
+import { TID } from '@xf/common/interfaces/id.interface';
 import { BaseService } from './base.service';
-
-export type TID = string | number;
 
 export interface IFindIdResult {
   createdAt?: Date;

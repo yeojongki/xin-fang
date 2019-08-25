@@ -1,9 +1,10 @@
 import { Repository } from 'typeorm';
-import { IID } from './curd.controller';
+import { TID, IID, TIDs } from '@xf/common/interfaces/id.interface';
 import { BaseService } from '../base/base.service';
 
 /**
  * @class CurdService
+ * @extends {BaseService<T>}
  * @template T 数据实体 Entity
  * @template U 更新数据对象 dto
  */
@@ -45,7 +46,7 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
    * @returns {Promise<void>}
    * @memberof CommonService
    */
-  async delete(id: string): Promise<void> {
+  async delete(id: TID): Promise<void> {
     const toDelete = await this.findByIdAndThrowError(id);
     await this.repository.remove(toDelete as T);
     return Promise.resolve();
@@ -53,11 +54,11 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
 
   /**
    * 删除多条数据
-   * @param {string[]} ids
+   * @param {TIDs} ids
    * @returns {Promise<void>}
-   * @memberof CommonService
+   * @memberof CurdService
    */
-  async deleteByIds(ids: string[]): Promise<void> {
+  async deleteByIds(ids: TIDs): Promise<void> {
     await this.repository.remove(await this.repository.findByIds(ids));
     return Promise.resolve();
   }

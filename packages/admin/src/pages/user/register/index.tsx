@@ -5,10 +5,12 @@ import { FormComponentProps } from 'antd/es/form';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import router from 'umi/router';
+// import { MIN_LENGTH_PASSWORD } from '@xf/common/constants/validation.const';
 import { StateType } from './model';
 import styles from './style.less';
 import { Md5 } from '@/utils';
 
+const MIN_LENGTH_PASSWORD = 6;
 const FormItem = Form.Item;
 const passwordStatusMap = {
   ok: <div className={styles.success}>密码强度：强</div>,
@@ -160,8 +162,8 @@ class Register extends Component<RegisterProps, RegisterState> {
         });
       }
 
-      if (value.length < 6) {
-        callback('请输入至少6位密码!');
+      if (value.length < MIN_LENGTH_PASSWORD) {
+        callback(`请输入至少${MIN_LENGTH_PASSWORD}位密码!`);
       } else {
         const { form } = this.props;
 
@@ -296,7 +298,13 @@ class Register extends Component<RegisterProps, RegisterState> {
                     validator: this.checkPassword,
                   },
                 ],
-              })(<Input.Password size="large" maxLength={16} placeholder="至少6位密码" />)}
+              })(
+                <Input.Password
+                  size="large"
+                  maxLength={16}
+                  placeholder={`至少${MIN_LENGTH_PASSWORD}位密码`}
+                />,
+              )}
             </Popover>
           </FormItem>
           <FormItem hasFeedback>

@@ -2,15 +2,13 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '@xf/common/entities/user.entity';
+import { Role } from '@xf/common/entities/role.entity';
+import { IKeyStringObj } from '@xf/common/interfaces/common.interface';
+import { IPaginationList } from '@xf/common/interfaces/pagination.interface';
 import { UpdateUserInput } from '@xf/common/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/dtos/user/create-user.input';
-import { Role } from '@xf/common/entities/role.entity';
 import { errorCode } from '@/constants/error-code';
 import { CurdService } from '@/common/curd/curd.service';
-
-export interface TKeyStringObj {
-  [key: string]: any;
-}
 
 @Injectable()
 export class UserService extends CurdService<User, UpdateUserInput> {
@@ -46,7 +44,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @returns {Promise<User>}
    * @memberof UserService
    */
-  async findOne(query: TKeyStringObj): Promise<User | undefined> {
+  async findOne(query: IKeyStringObj): Promise<User | undefined> {
     const user = await this.userRepository.findOne(query, {
       relations: ['roles'],
     });
@@ -55,11 +53,11 @@ export class UserService extends CurdService<User, UpdateUserInput> {
 
   /**
    * 查找用户 不存在时报错
-   * @param {TKeyStringObj} query
+   * @param {IKeyStringObj} query
    * @returns {Promise<User>}
    * @memberof UserService
    */
-  async findOneAndThrowError(query: TKeyStringObj): Promise<User | void> {
+  async findOneAndThrowError(query: IKeyStringObj): Promise<User | void> {
     const user = this.findOne(query);
     if (user) {
       return user;
@@ -111,7 +109,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @returns
    * @memberof UserService
    */
-  async getUserList(skip: number, take: number) {
+  async getUserList(skip: number, take: number): Promise<IPaginationList> {
     const [users, count] = await this.userRepository.findAndCount({
       skip,
       take,

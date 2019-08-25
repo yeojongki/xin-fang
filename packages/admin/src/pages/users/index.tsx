@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Table, Popconfirm, Alert, Divider } from 'antd';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { ColumnProps, PaginationConfig } from 'antd/lib/table';
+import { ColumnProps } from 'antd/lib/table';
+import { IUser } from '@xf/common/interfaces/user.interfaces';
+import { IPagination } from '@xf/common/interfaces/pagination.interface';
+// import { page } from '@xf/common/constants/pagination.const';
 import { StateType } from './model';
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -16,26 +19,8 @@ interface UsersProps {
   usersManage: StateType;
 }
 
-export interface IPaginationParams {
-  take: number;
-  skip: number;
-}
-
 interface UsersState {
-  pagination: IPaginationParams;
   selectedRowKeys: string[];
-}
-
-export interface IUser {
-  id: string;
-  createdAt: Date;
-  username: string;
-  password: string;
-  email: string;
-  mobile: string;
-  gender: number;
-  avatar: string;
-  roles: any[];
 }
 
 @connect(
@@ -85,38 +70,26 @@ class Users extends Component<UsersProps, UsersState> {
   ];
 
   state: UsersState = {
-    pagination: { take: DEFAULT_PAGE_SIZE, skip: 0 },
     selectedRowKeys: [],
   };
 
   componentDidMount() {
-    const { pagination } = this.state;
-    this.fetchUsers(pagination);
+    this.fetchUsers();
   }
 
   onSelectChange = (selectedRowKeys: any) => {
     this.setState({ selectedRowKeys });
   };
 
-  setPaginationParams = (pagination: IPaginationParams, callback: () => void) => {
-    this.setState({ pagination }, callback);
-  };
-
-  setPaginationChange({ pageSize, current }: PaginationConfig) {
-    const { pagination } = this.state;
-    this.setPaginationParams(
-      {
-        ...pagination,
-        take: pageSize ? +pageSize : DEFAULT_PAGE_SIZE,
-        skip: (current as number) - 1,
-      },
-      () => {
-        this.fetchUsers(this.state.pagination);
-      },
-    );
+  setPaginationChange({ pageSize, current }: Partial<IPagination>) {
+    const params: Partial<IPagination> = {
+      pageSize: pageSize ? +pageSize : DEFAULT_PAGE_SIZE,
+      current: (current as number) - 1,
+    };
+    this.fetchUsers(params);
   }
 
-  fetchUsers = (pagination: IPaginationParams) => {
+  fetchUsers = (pagination: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 0 }) => {
     const { dispatch } = this.props;
     dispatch({
       type: 'usersManage/getList',
@@ -131,7 +104,7 @@ class Users extends Component<UsersProps, UsersState> {
       payload: {
         ids: [id],
         callback: () => {
-          this.fetchUsers(this.state.pagination);
+          this.fetchUsers();
         },
       },
     });
@@ -145,7 +118,7 @@ class Users extends Component<UsersProps, UsersState> {
       payload: {
         ids: selectedRowKeys,
         callback: () => {
-          this.fetchUsers(this.state.pagination);
+          this.fetchUsers();
         },
       },
     });

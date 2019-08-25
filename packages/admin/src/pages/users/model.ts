@@ -1,18 +1,13 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { message as Message } from 'antd';
+import { IUser } from '@xf/common/interfaces/user.interfaces';
+import { IPaginationList } from '@xf/common/interfaces/pagination.interface';
 import { HttpSuccessResponse } from '@/utils/request';
 import * as Api from './service';
-import { IUser } from '.';
 
-export interface IPagination {
-  total: number;
-  current: number;
-  pageSize: number;
-}
-export interface StateType {
+export interface StateType extends IPaginationList {
   list: IUser[];
-  pagination: IPagination;
 }
 
 export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;

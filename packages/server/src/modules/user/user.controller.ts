@@ -2,6 +2,8 @@ import { Controller, Put, Body, Post, Get, Param, Request, UseGuards, Query } fr
 import { User } from '@xf/common/entities/user.entity';
 import { UpdateUserInput } from '@xf/common/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/dtos/user/create-user.input';
+import { IPaginationList } from '@xf/common/interfaces/pagination.interface';
+import { DEFAULT_PAGE_SIZE } from '@xf/common/constants/pagination.const';
 import { UserService } from './user.service';
 import { RolesGuard } from '@/guard/roles.guard';
 import { JwtAuthGuard } from '@/guard/auth.guard';
@@ -25,9 +27,12 @@ export class UserController extends CurdController<User, UpdateUserInput> {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('superAdmin')
   @Get('list')
-  async getUserList(@Query('skip') skip: number = 0, @Query('take') take: number = 20) {
-    const list = await this.userService.getUserList(skip, take);
-    return list;
+  async getUserList(
+    @Query('current') skip: number = 0,
+    @Query('pageSize') take: number = DEFAULT_PAGE_SIZE,
+  ): Promise<IPaginationList> {
+    const result = await this.userService.getUserList(skip, take);
+    return result;
   }
 
   /**

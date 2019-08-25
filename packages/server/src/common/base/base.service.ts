@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
+import { TID } from '@xf/common/interfaces/id.interface';
 import { Repository } from 'typeorm';
 import { errorCode } from '@/constants/error-code';
-import { TID } from './base.controller';
 
 interface IServiceName {
   serviceName: string;
@@ -36,8 +36,8 @@ export abstract class BaseService<T> implements IServiceName {
 
   /**
    * 根据Id查找数据 查找结果为空时抛错
-   * @param {string} id
-   * @returns {Promise<T>}
+   * @param {TID} id
+   * @returns {(Promise<T | undefined>)}
    * @memberof BaseService
    */
   async findByIdAndThrowError(id: TID): Promise<T | undefined> {
@@ -54,7 +54,7 @@ export abstract class BaseService<T> implements IServiceName {
    * @param {string} [filed='id'] 错误字段 默认为id {error: {id}}
    * @memberof BaseService
    */
-  handleNotFoundError(value: TID, filed: string = 'id') {
+  handleNotFoundError(value: TID, filed: string = 'id'): void {
     throw new BadRequestException({
       message: `${this.serviceName}不存在`,
       error: { [filed]: value },

@@ -1,11 +1,10 @@
 import { IConfig, IPlugin } from 'umi-types';
-import defaultSettings from './defaultSettings'; // https://umijs.org/config/
-
 import slash from 'slash2';
+import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 import webpackPlugin from './plugin.config';
 import routes from './routes';
 
-const { pwa, primaryColor } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
+const { pwa, primaryColor } = defaultSettings;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
 const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
@@ -14,6 +13,9 @@ const plugins: IPlugin[] = [
   [
     'umi-plugin-react',
     {
+      locale: {
+        default: 'zh-CN',
+      },
       antd: true,
       dva: {
         hmr: true,
@@ -64,7 +66,7 @@ if (isAntDesignProPreview) {
   ]);
 }
 
-export default {
+const config: IConfig = {
   plugins,
   block: {
     defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
@@ -127,4 +129,6 @@ export default {
   proxy: {
     '/api': 'http://localhost:3000',
   },
-} as IConfig;
+};
+
+export default config;

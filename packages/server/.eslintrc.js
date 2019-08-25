@@ -12,6 +12,7 @@ strictEslint.rules = {
   '@typescript-eslint/no-parameter-properties': 0,
   'no-useless-constructor': 0,
   'no-empty-function': 0,
+  '@typescript-eslint/no-unused-vars': 0,
 };
 module.exports = {
   ...strictEslint,

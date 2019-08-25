@@ -1,7 +1,7 @@
+import { IPagination } from '@xf/common/interfaces/pagination.interface';
 import request from '@/utils/request';
-import { IPaginationParams } from '.';
 
-export const getUserList = (params: IPaginationParams) => request('/user/list', { params });
+export const getUserList = (params: IPagination) => request('/user/list', { params });
 
 export async function deleteUsers(ids: string[]): Promise<any> {
   return request('/user', {
