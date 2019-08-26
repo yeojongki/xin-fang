@@ -3,15 +3,10 @@ import { Table, Popconfirm, Alert, Divider } from 'antd';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
-import { IUser } from '@xf/common/interfaces/user.interfaces';
-import { IPagination } from '@xf/common/interfaces/pagination.interface';
-// import { page } from '@xf/common/constants/pagination.const';
+import { IUser } from '@xf/common/src/interfaces/user.interfaces';
+import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_OPTIONS } from '@xf/common/src/constants/pagination.const';
 import { StateType } from './model';
-
-const DEFAULT_PAGE_SIZE = 20;
-const DEFAULT_PAGE_OPTIONS = Array(5)
-  .fill(DEFAULT_PAGE_SIZE)
-  .map((n, i) => `${n * (i + 1)}`);
 
 interface UsersProps {
   dispatch: Dispatch<any>;

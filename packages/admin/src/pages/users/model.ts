@@ -1,8 +1,8 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { message as Message } from 'antd';
-import { IUser } from '@xf/common/interfaces/user.interfaces';
-import { IPaginationList } from '@xf/common/interfaces/pagination.interface';
+import { IUser } from '@xf/common/src/interfaces/user.interfaces';
+import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { HttpSuccessResponse } from '@/utils/request';
 import * as Api from './service';
 

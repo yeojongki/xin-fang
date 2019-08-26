@@ -1,4 +1,4 @@
-import { IPagination } from '@xf/common/interfaces/pagination.interface';
+import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import request from '@/utils/request';
 
 export const getUserList = (params: IPagination) => request('/user/list', { params });

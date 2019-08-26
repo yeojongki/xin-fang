@@ -5,12 +5,11 @@ import { FormComponentProps } from 'antd/es/form';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import router from 'umi/router';
-// import { MIN_LENGTH_PASSWORD } from '@xf/common/constants/validation.const';
+import { MIN_LENGTH_PASSWORD } from '@xf/common/src/constants/validation.const';
 import { StateType } from './model';
 import styles from './style.less';
 import { Md5 } from '@/utils';
 
-const MIN_LENGTH_PASSWORD = 6;
 const FormItem = Form.Item;
 const passwordStatusMap = {
   ok: <div className={styles.success}>密码强度：强</div>,
