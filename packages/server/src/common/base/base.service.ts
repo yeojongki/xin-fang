@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { TID } from '@xf/common/interfaces/id.interface';
+import { TID } from '@xf/common/src/interfaces/id.interface';
 import { Repository } from 'typeorm';
 import { errorCode } from '@/constants/error-code';
 

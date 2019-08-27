@@ -1,12 +1,12 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '@xf/common/entities/user.entity';
-import { Role } from '@xf/common/entities/role.entity';
-import { IKeyStringObj } from '@xf/common/interfaces/common.interface';
-import { IPaginationList } from '@xf/common/interfaces/pagination.interface';
-import { UpdateUserInput } from '@xf/common/dtos/user/update-user.input';
-import { CreateUserInput } from '@xf/common/dtos/user/create-user.input';
+import { User } from '@xf/common/src/entities/user.entity';
+import { Role } from '@xf/common/src/entities/role.entity';
+import { IKeyStringObj } from '@xf/common/src/interfaces/common.interface';
+import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
+import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
 import { errorCode } from '@/constants/error-code';
 import { CurdService } from '@/common/curd/curd.service';
 

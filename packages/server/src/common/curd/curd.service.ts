@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { TID, IID, TIDs } from '@xf/common/interfaces/id.interface';
+import { TID, IID, TIDs } from '@xf/common/src/interfaces/id.interface';
 import { BaseService } from '../base/base.service';
 
 /**

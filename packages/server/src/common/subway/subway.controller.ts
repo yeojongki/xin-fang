@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { Subway } from '@xf/common/entities/subway.entity';
+import { Subway } from '@xf/common/src/entities/subway.entity';
 import { BaseController } from '../base/base.controller';
 import { SubwayService } from './subway.service';
 

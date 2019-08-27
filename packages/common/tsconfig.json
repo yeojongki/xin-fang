@@ -3,7 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@xf/common/*": ["./src/*"]
+      "@xf/common/*": [
+        "./*"
+      ]
     }
   }
 }

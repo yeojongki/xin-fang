@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { City } from '@xf/common/entities/city.entity';
+import { City } from '@xf/common/src/entities/city.entity';
 import { BaseController } from '../base/base.controller';
 import { CityService } from './city.service';
 

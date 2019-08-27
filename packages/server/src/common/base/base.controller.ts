@@ -1,5 +1,5 @@
 import { Get, Param } from '@nestjs/common';
-import { TID } from '@xf/common/interfaces/id.interface';
+import { TID } from '@xf/common/src/interfaces/id.interface';
 import { BaseService } from './base.service';
 
 export interface IFindIdResult {

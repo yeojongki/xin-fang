@@ -1,7 +1,7 @@
 import { Controller, Put, Body, Post } from '@nestjs/common';
-import { Role } from '@xf/common/entities/role.entity';
-import { UpdateRoleInput } from '@xf/common/dtos/role/update-role.input';
-import { CreateRoleInput } from '@xf/common/dtos/role/create-role.input';
+import { Role } from '@xf/common/src/entities/role.entity';
+import { UpdateRoleInput } from '@xf/common/src/dtos/role/update-role.input';
+import { CreateRoleInput } from '@xf/common/src/dtos/role/create-role.input';
 import { CurdController } from '@/common/curd/curd.controller';
 import { RoleService } from './role.service';
 

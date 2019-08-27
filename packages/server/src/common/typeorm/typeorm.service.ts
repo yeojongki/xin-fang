@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { User, Role, City, Subway } from '@xf/common/entities';
+import { User, Role, City, Subway } from '@xf/common/src/entities';
 
 @Injectable()
 export class TypeormService implements TypeOrmOptionsFactory {

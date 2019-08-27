@@ -13,7 +13,7 @@
         "./src/*"
       ],
       "@xf/common/*": [
-        "../common/src/*"
+        "../common/*"
       ]
     },
   },

@@ -1,9 +1,9 @@
 import { Controller, Put, Body, Post, Get, Param, Request, UseGuards, Query } from '@nestjs/common';
-import { User } from '@xf/common/entities/user.entity';
-import { UpdateUserInput } from '@xf/common/dtos/user/update-user.input';
-import { CreateUserInput } from '@xf/common/dtos/user/create-user.input';
-import { IPaginationList } from '@xf/common/interfaces/pagination.interface';
-import { DEFAULT_PAGE_SIZE } from '@xf/common/constants/pagination.const';
+import { User } from '@xf/common/src/entities/user.entity';
+import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
+import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
+import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { UserService } from './user.service';
 import { RolesGuard } from '@/guard/roles.guard';
 import { JwtAuthGuard } from '@/guard/auth.guard';

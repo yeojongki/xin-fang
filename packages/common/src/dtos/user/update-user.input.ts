@@ -1,7 +1,7 @@
 import { IsOptional, IsNotEmpty, MaxLength, IsEmail, ValidateIf } from 'class-validator';
-import { MAX_LENGTH_MOBILE, MAX_LENGTH_EMAIL } from '@xf/common/constants/validation.const';
-import { Gender } from '@xf/common/constants/gender.const';
-import { Role } from '@xf/common/entities/role.entity';
+import { MAX_LENGTH_MOBILE, MAX_LENGTH_EMAIL } from '@xf/common/src/constants/validation.const';
+import { Gender } from '@xf/common/src/constants/gender.const';
+import { Role } from '@xf/common/src/entities/role.entity';
 import { AuthBaseInput } from '../auth/auth-base.input';
 
 export class UpdateUserInput extends AuthBaseInput {

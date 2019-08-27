@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
-import { Gender } from '@xf/common/constants/gender.const';
+import { Gender } from '@xf/common/src/constants/gender.const';
 import { Base } from './base.entity';
 import { Role } from './role.entity';
 

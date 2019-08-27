@@ -1,5 +1,5 @@
 import { Delete, UseGuards, Param, Body } from '@nestjs/common';
-import { IID, TID, TIDs } from '@xf/common/interfaces/id.interface';
+import { IID, TID, TIDs } from '@xf/common/src/interfaces/id.interface';
 import { CurdService } from './curd.service';
 import { Message } from '@/decorators/http.decorator';
 import { JwtAuthGuard } from '@/guard/auth.guard';

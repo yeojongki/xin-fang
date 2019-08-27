@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Subway } from '@xf/common/entities/subway.entity';
+import { Subway } from '@xf/common/src/entities/subway.entity';
 import { SubwayController } from './subway.controller';
 import { SubwayService } from './subway.service';
 
