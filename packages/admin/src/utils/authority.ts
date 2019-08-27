@@ -1,3 +1,5 @@
+import { IRole } from '@xf/common/src/interfaces/role.interfaces';
+
 // use localStorage to store the authority info, which might be sent from server in actual project.
 export function getAuthority(str?: string): string | string[] {
   // return localStorage.getItem('antd-pro-authority') || ['admin', 'user'];
@@ -23,7 +25,7 @@ export function getAuthority(str?: string): string | string[] {
   return authority;
 }
 
-export function setAuthority(authority: string | string[]): void {
-  const proAuthority = typeof authority === 'string' ? [authority] : authority;
+export function setStorageRoles(roles: IRole[]): void {
+  const proAuthority = roles.map(role => role.token);
   return localStorage.setItem('antd-pro-authority', JSON.stringify(proAuthority));
 }

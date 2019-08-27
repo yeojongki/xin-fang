@@ -8,19 +8,19 @@ export type IAuthorityType =
   | string
   | string[]
   | Promise<boolean>
-  | ((currentAuthority: string | string[]) => IAuthorityType);
+  | ((roles: string | string[]) => IAuthorityType);
 
 /**
  * 通用权限检查方法
  * Common check permissions method
  * @param { 权限判定 | Permission judgment } authority
- * @param { 你的权限 | Your permission description } currentAuthority
+ * @param { 你的权限 | Your permission description } roles
  * @param { 通过的组件 | Passing components } target
  * @param { 未通过的组件 | no pass components } Exception
  */
 const checkPermissions = <T, K>(
   authority: IAuthorityType,
-  currentAuthority: string | string[],
+  roles: string | string[],
   target: T,
   Exception: K,
 ): T | K | React.ReactNode => {
@@ -31,22 +31,22 @@ const checkPermissions = <T, K>(
   }
   // 数组处理
   if (Array.isArray(authority)) {
-    if (Array.isArray(currentAuthority)) {
-      if (currentAuthority.some(item => authority.includes(item))) {
+    if (Array.isArray(roles)) {
+      if (roles.some(item => authority.includes(item))) {
         return target;
       }
-    } else if (authority.includes(currentAuthority)) {
+    } else if (authority.includes(roles)) {
       return target;
     }
     return Exception;
   }
   // string 处理
   if (typeof authority === 'string') {
-    if (Array.isArray(currentAuthority)) {
-      if (currentAuthority.some(item => authority === item)) {
+    if (Array.isArray(roles)) {
+      if (roles.some(item => authority === item)) {
         return target;
       }
-    } else if (authority === currentAuthority) {
+    } else if (authority === roles) {
       return target;
     }
     return Exception;
@@ -58,7 +58,7 @@ const checkPermissions = <T, K>(
   // Function 处理
   if (typeof authority === 'function') {
     try {
-      const bool = authority(currentAuthority);
+      const bool = authority(roles);
       // 函数执行后返回值是 Promise
       if (bool instanceof Promise) {
         return <PromiseRender<T, K> ok={target} error={Exception} promise={bool} />;

@@ -1,8 +1,8 @@
-import { AnyAction, Reducer } from 'redux';
+import { AnyAction } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { routerRedux } from 'dva/router';
 import * as Api from './service';
-import { getPageQuery, setAuthority } from './utils/utils';
+import { getPageQuery } from './utils/utils';
 import { HttpSuccessResponse } from '@/utils/request';
 import { TOKEN_KEY } from '@/config';
 
@@ -12,7 +12,7 @@ export interface StateType {
    * 登录类型 账号 or 手机号+验证码
    */
   type?: string;
-  currentAuthority?: 'user' | 'guest' | 'admin';
+  roles?: 'user' | 'guest' | 'admin';
 }
 
 export type Effect = (
@@ -26,9 +26,6 @@ export interface ModelType {
   effects: {
     login: Effect;
     // getCaptcha: Effect;
-  };
-  reducers: {
-    changeLoginStatus: Reducer<StateType>;
   };
 }
 
@@ -75,17 +72,6 @@ const Model: ModelType = {
     // *getCaptcha({ payload }, { call }) {
     //   yield call(getFakeCaptcha, payload);
     // },
-  },
-
-  reducers: {
-    changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
-      return {
-        ...state,
-        status: payload.status,
-        type: payload.type,
-      };
-    },
   },
 };
 

@@ -5,7 +5,7 @@ import Authorized from './Authorized';
 import { IAuthorityType } from './CheckPermissions';
 
 interface AuthorizedRoutePops {
-  currentAuthority: string;
+  roles: string;
   component: React.ComponentClass<any, any>;
   render: (props: any) => React.ReactNode;
   redirectPath: string;

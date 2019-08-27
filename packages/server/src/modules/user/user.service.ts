@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TransformClassToPlain } from 'class-transformer';
 import { Repository } from 'typeorm';
 import { User } from '@xf/common/src/entities/user.entity';
 import { Role } from '@xf/common/src/entities/role.entity';
@@ -34,7 +35,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
       return result;
     }
 
-    const { createdAt, updatedAt, ...result } = user;
+    const { createdAt, updatedAt, password, ...result } = user;
     return result;
   }
 
@@ -44,6 +45,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @returns {Promise<User>}
    * @memberof UserService
    */
+  @TransformClassToPlain()
   async findOne(query: IKeyStringObj): Promise<User | undefined> {
     const user = await this.userRepository.findOne(query, {
       relations: ['roles'],

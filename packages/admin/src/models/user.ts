@@ -1,7 +1,7 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-
 import { queryCurrent, query as queryUsers } from '@/services/user';
+import { setStorageRoles } from '@/utils/authority';
 
 export interface CurrentUser {
   avatar?: string;
@@ -64,6 +64,7 @@ const UserModel: UserModelType = {
       },
       { payload },
     ) {
+      setStorageRoles(payload.roles);
       return {
         ...state,
         currentUser: {

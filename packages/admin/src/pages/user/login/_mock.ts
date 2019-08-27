@@ -11,7 +11,7 @@ export default {
       res.send({
         status: 'ok',
         type,
-        currentAuthority: 'admin',
+        roles: 'admin',
       });
       return;
     }
@@ -19,14 +19,14 @@ export default {
       res.send({
         status: 'ok',
         type,
-        currentAuthority: 'user',
+        roles: 'user',
       });
       return;
     }
     res.send({
       status: 'error',
       type,
-      currentAuthority: 'guest',
+      roles: 'guest',
     });
   },
   'GET  /api/login/captcha': getFakeCaptcha,

@@ -1,22 +1,23 @@
+// umi routes: https://umijs.org/zh/guide/router.html
 export default [
   {
     path: '/user',
     component: '../layouts/UserLayout',
     routes: [
       {
-        name: 'login',
+        name: '用户登录',
         path: '/user/login',
         component: './user/login',
       },
       {
-        name: 'register-result',
-        path: '/user/register-result',
-        component: './user/register-result',
-      },
-      {
-        name: 'register',
+        name: '用户注册',
         path: '/user/register',
         component: './user/register',
+      },
+      {
+        name: '注册结果',
+        path: '/user/register-result',
+        component: './user/register-result',
       },
     ],
   },
@@ -24,7 +25,6 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
-    authority: ['admin', 'user'],
     routes: [
       {
         path: '/',
@@ -37,11 +37,26 @@ export default [
         component: './Welcome',
       },
       {
-        path: '/users',
-        name: '用户管理',
-        icon: 'team',
-        component: './users',
+        path: '/system',
+        name: '系统管理',
+        icon: 'apartment',
+        authority: ['superAdmin'],
+        routes: [
+          {
+            path: '/system/users-manage',
+            name: '用户管理',
+            icon: 'team',
+            component: './users-manage',
+          },
+          {
+            path: '/system/roles-manage',
+            name: '角色管理',
+            icon: 'cluster',
+            component: './roles-manage',
+          },
+        ],
       },
+
       {
         path: '/exception',
         routes: [

@@ -79,7 +79,7 @@ export default {
       res.send({
         status: 'ok',
         type,
-        currentAuthority: 'admin',
+        roles: 'admin',
       });
       return;
     }
@@ -87,18 +87,18 @@ export default {
       res.send({
         status: 'ok',
         type,
-        currentAuthority: 'user',
+        roles: 'user',
       });
       return;
     }
     res.send({
       status: 'error',
       type,
-      currentAuthority: 'guest',
+      roles: 'guest',
     });
   },
   'POST /api/register': (req: Request, res: Response) => {
-    res.send({ status: 'ok', currentAuthority: 'user' });
+    res.send({ status: 'ok', roles: 'user' });
   },
   'GET /api/500': (req: Request, res: Response) => {
     res.status(500).send({

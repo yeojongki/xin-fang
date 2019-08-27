@@ -31,7 +31,7 @@ interface UsersState {
     };
   }) => ({ usersManage, fetching: loading.effects['usersManage/getList'] }),
 )
-class Users extends Component<UsersProps, UsersState> {
+export default class UsersManage extends Component<UsersProps, UsersState> {
   columns: ColumnProps<IUser>[] = [
     {
       key: 'id',
@@ -171,5 +171,3 @@ class Users extends Component<UsersProps, UsersState> {
     );
   }
 }
-
-export default Users;
