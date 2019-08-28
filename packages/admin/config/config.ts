@@ -5,8 +5,8 @@ import webpackPlugin from './plugin.config';
 import routes from './routes';
 
 const { pwa, primaryColor } = defaultSettings;
-// preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
+// preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
 const isAntDesignProPreview = ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site';
 const plugins: IPlugin[] = [
@@ -32,7 +32,9 @@ const plugins: IPlugin[] = [
               importWorkboxFrom: 'local',
             },
           }
-        : false, // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
+        : false,
+
+      // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
       // dll features https://webpack.js.org/plugins/dll-plugin/
       // dll: {
       //   include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch'],
@@ -49,8 +51,9 @@ const plugins: IPlugin[] = [
       autoAddMenu: true,
     },
   ],
-]; // 针对 preview.pro.ant.design 的 GA 统计代码
+];
 
+// 针对 preview.pro.ant.design 的 GA 统计代码
 if (isAntDesignProPreview) {
   plugins.push([
     'umi-plugin-ga',

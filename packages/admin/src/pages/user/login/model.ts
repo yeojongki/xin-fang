@@ -4,7 +4,7 @@ import { routerRedux } from 'dva/router';
 import * as Api from './service';
 import { getPageQuery } from './utils/utils';
 import { HttpSuccessResponse } from '@/utils/request';
-import { TOKEN_KEY } from '@/config';
+import { setStorageToken } from '@/utils/authority';
 
 export interface StateType {
   errno?: number;
@@ -41,7 +41,7 @@ const Model: ModelType = {
       const response: HttpSuccessResponse = yield call(Api.accountLogin, payload);
       // set token
       const { result } = response;
-      window.localStorage.setItem(TOKEN_KEY, JSON.stringify({ ...result, ts: +new Date() }));
+      setStorageToken(result);
 
       // Login successfully
       if (response.errno === 0) {

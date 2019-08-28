@@ -11,10 +11,11 @@ import ProLayout, {
 } from '@ant-design/pro-layout';
 import React, { useEffect } from 'react';
 import Link from 'umi/link';
+import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import { ConnectState, Dispatch } from '@/models/connect';
+import { ConnectState } from '@/models/connect';
 import logo from '../assets/logo.svg';
 import GlobalFooter from '@/components/GlobalFooter';
 
@@ -62,12 +63,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
    * init variables
    */
 
-  const handleMenuCollapse = (payload: boolean): void =>
-    dispatch &&
-    dispatch({
-      type: 'global/changeLayoutCollapsed',
-      payload,
-    });
+  const handleMenuCollapse = (payload: boolean): void => {
+    if (dispatch) {
+      dispatch({
+        type: 'global/changeLayoutCollapsed',
+        payload,
+      });
+    }
+  };
 
   return (
     <>

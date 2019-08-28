@@ -1,3 +1,9 @@
+/** fix: cant use es module */
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-global-assign */
+require = require('esm')(module);
+const ROLES = require('@xf/common/src/constants/roles.const');
+
 // umi routes: https://umijs.org/zh/guide/router.html
 export default [
   {
@@ -23,51 +29,56 @@ export default [
   },
   {
     path: '/',
-    component: '../layouts/BasicLayout',
-    Routes: ['src/pages/Authorized'],
+    component: '../layouts/SecurityLayout',
     routes: [
       {
         path: '/',
-        redirect: '/welcome',
-      },
-      {
-        path: '/welcome',
-        name: 'welcome',
-        icon: 'smile',
-        component: './Welcome',
-      },
-      {
-        path: '/system',
-        name: '系统管理',
-        icon: 'apartment',
-        authority: ['superAdmin'],
+        component: '../layouts/BasicLayout',
+        Routes: ['src/pages/Authorized'],
         routes: [
           {
-            path: '/system/users-manage',
-            name: '用户管理',
-            icon: 'team',
-            component: './users-manage',
+            path: '/',
+            redirect: '/welcome',
           },
           {
-            path: '/system/roles-manage',
-            name: '角色管理',
-            icon: 'cluster',
-            component: './roles-manage',
+            path: '/welcome',
+            name: 'welcome',
+            icon: 'smile',
+            component: './Welcome',
+          },
+          {
+            path: '/system',
+            name: '系统管理',
+            icon: 'apartment',
+            authority: [ROLES.SUPER_ADMIN],
+            routes: [
+              {
+                path: '/system/users-manage',
+                name: '用户管理',
+                icon: 'team',
+                component: './users-manage',
+              },
+              {
+                path: '/system/roles-manage',
+                name: '角色管理',
+                icon: 'cluster',
+                component: './roles-manage',
+              },
+            ],
+          },
+          {
+            path: '/exception',
+            routes: [
+              { path: '/exception/401', component: './exception/401' },
+              { path: '/exception/403', component: './exception/403' },
+              { path: '/exception/404', component: './exception/404' },
+              { path: '/exception/500', component: './exception/500' },
+            ],
+          },
+          {
+            component: './exception/404',
           },
         ],
-      },
-
-      {
-        path: '/exception',
-        routes: [
-          { path: '/exception/401', component: './exception/401' },
-          { path: '/exception/403', component: './exception/403' },
-          { path: '/exception/404', component: './exception/404' },
-          { path: '/exception/500', component: './exception/500' },
-        ],
-      },
-      {
-        component: './exception/404',
       },
     ],
   },
