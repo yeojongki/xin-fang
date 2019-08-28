@@ -1,3 +1,9 @@
+/** fix: cant use es module */
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-global-assign */
+require = require('esm')(module);
+const ROLES = require('@xf/common/src/constants/roles.const');
+
 // umi routes: https://umijs.org/zh/guide/router.html
 export default [
   {
@@ -40,7 +46,7 @@ export default [
         path: '/system',
         name: '系统管理',
         icon: 'apartment',
-        authority: ['superAdmin'],
+        authority: [ROLES.SUPER_ADMIN],
         routes: [
           {
             path: '/system/users-manage',
