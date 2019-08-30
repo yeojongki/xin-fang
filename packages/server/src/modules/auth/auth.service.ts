@@ -20,9 +20,9 @@ export class AuthService {
    */
   public async auth(auth: AuthLoginInput): Promise<ITokenResult> {
     const { username, password } = auth;
-    const user = await this.userService.findOne({ username });
+    const user = await this.userService.findOneWithPassword({ username });
     if (user && user.password === password) {
-      return Promise.resolve(this.generateJWT(user.id, user.roles || []));
+      return this.generateJWT(user.id);
     }
 
     throw new BadRequestException({
@@ -32,22 +32,19 @@ export class AuthService {
   }
 
   /**
-   * 生成含有 `id` 和 `roles` 的 jwt
+   * 生成含有 `id` 的 jwt
    * @param {(string | number)} id
-   * @param {Role[]} roles
    * @returns {ITokenResult}
    * @memberof AuthService
    */
-  public generateJWT(id: string | number, roles: Role[]): ITokenResult {
-    const tokens = roles.map(role => role.token);
+  public generateJWT(id: string | number): ITokenResult {
     return {
-      accessToken: this.jwtService.sign({ id, roles: tokens }),
+      accessToken: this.jwtService.sign({ id }),
       expiredIn: TOKEN_EXPIRED,
     };
   }
 
   public async validateUser(id: string): Promise<User | undefined> {
-    const user = await this.userService.findOne({ id });
-    return user;
+    return await this.userService.findOne({ id });
   }
 }

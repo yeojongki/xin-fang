@@ -1,4 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
+import { TransformClassToPlain } from 'class-transformer';
 import { TID } from '@xf/common/src/interfaces/id.interface';
 import { Repository } from 'typeorm';
 import { errorCode } from '@/constants/error-code';
@@ -29,9 +30,9 @@ export abstract class BaseService<T> implements IServiceName {
    * @returns {Promise<T>}
    * @memberof BaseService
    */
+  @TransformClassToPlain()
   async findById(id: TID): Promise<T | undefined> {
-    const target = await this.repository.findOne(id);
-    return target;
+    return await this.repository.findOne(id);
   }
 
   /**

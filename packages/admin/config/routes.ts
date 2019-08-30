@@ -53,16 +53,16 @@ export default [
             authority: [ROLES.SUPER_ADMIN],
             routes: [
               {
-                path: '/system/users-manage',
+                path: '/system/users',
                 name: '用户管理',
                 icon: 'team',
-                component: './users-manage',
+                component: './users',
               },
               {
-                path: '/system/roles-manage',
+                path: '/system/role',
                 name: '角色管理',
                 icon: 'cluster',
-                component: './roles-manage',
+                component: './role',
               },
             ],
           },

@@ -23,23 +23,6 @@ export class UserService extends CurdService<User, UpdateUserInput> {
   }
 
   /**
-   * 构建用户信息 (除去保密和无需返回的字段)
-   * @param {User} user
-   * @param {boolean} [onlyExcludePwd=false] 返回时是否只排除 `password` 字段 default `true`
-   * @returns
-   * @memberof UserService
-   */
-  buildUser(user: User, onlyExcludePwd: boolean = false) {
-    if (onlyExcludePwd) {
-      const { password, ...result } = user;
-      return result;
-    }
-
-    const { createdAt, updatedAt, password, ...result } = user;
-    return result;
-  }
-
-  /**
    * 查找用户
    * @param {*} query 查找参数
    * @returns {Promise<User>}
@@ -47,10 +30,21 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    */
   @TransformClassToPlain()
   async findOne(query: IKeyStringObj): Promise<User | undefined> {
-    const user = await this.userRepository.findOne(query, {
+    return await this.userRepository.findOne(query, {
       relations: ['roles'],
     });
-    return user;
+  }
+
+  /**
+   * 查找用户 (返回含 `密码` 字段)
+   * @param {IKeyStringObj} query
+   * @returns
+   * @memberof UserService
+   */
+  async findOneWithPassword(query: IKeyStringObj) {
+    return await this.userRepository.findOne(query, {
+      relations: ['roles'],
+    });
   }
 
   /**
@@ -102,28 +96,5 @@ export class UserService extends CurdService<User, UpdateUserInput> {
     const toSave = this.userRepository.create(toCreate);
     await this.userRepository.save(toSave);
     return Promise.resolve();
-  }
-
-  /**
-   * 获取所有的用户
-   * @param {number} skip
-   * @param {number} take
-   * @returns
-   * @memberof UserService
-   */
-  async getUserList(skip: number, take: number): Promise<IPaginationList> {
-    const [users, count] = await this.userRepository.findAndCount({
-      skip,
-      take,
-    });
-    const list = users.map(user => this.buildUser(user, true));
-    return Promise.resolve({
-      list,
-      pagination: {
-        current: +skip,
-        pageSize: +take,
-        total: count,
-      },
-    });
   }
 }

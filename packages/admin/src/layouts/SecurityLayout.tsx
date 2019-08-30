@@ -4,6 +4,7 @@ import { Redirect } from 'umi';
 import { ConnectState, ConnectProps } from '@/models/connect';
 import { CurrentUser } from '@/models/user';
 import PageLoading from '@/components/PageLoading';
+import { getStorageToken } from '@/utils/authority';
 
 interface SecurityLayoutProps extends ConnectProps {
   loading: boolean;
@@ -28,10 +29,11 @@ class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayout
   render() {
     const { isReady } = this.state;
     const { children, loading, currentUser } = this.props;
+    const token = getStorageToken();
     if ((!currentUser.username && loading) || !isReady) {
       return <PageLoading />;
     }
-    if (!currentUser.username) {
+    if (!token) {
       return <Redirect to="/user/login" />;
     }
     return children;

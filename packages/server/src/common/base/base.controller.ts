@@ -19,14 +19,7 @@ export abstract class BaseController<E extends IFindIdResult> {
   constructor(protected readonly service: BaseService<E>) {}
 
   @Get(':id')
-  async findById(
-    @Param('id') id: TID,
-  ): Promise<Partial<E> | Pick<E, Exclude<keyof E, 'createdAt' | 'updatedAt'>> | undefined> {
-    const target = await this.service.findById(id);
-    if (target) {
-      const { createdAt, updatedAt, ...rest } = target;
-      return { ...rest };
-    }
-    return target;
+  async findById(@Param('id') id: TID): Promise<Partial<E> | undefined> {
+    return await this.service.findById(id);
   }
 }

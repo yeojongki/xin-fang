@@ -28,12 +28,11 @@ export class UserController extends CurdController<User, UpdateUserInput> {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(SUPER_ADMIN)
   @Get('list')
-  async getUserList(
+  async getList(
     @Query('current') skip: number = 0,
     @Query('pageSize') take: number = DEFAULT_PAGE_SIZE,
   ): Promise<IPaginationList> {
-    const result = await this.userService.getUserList(skip, take);
-    return result;
+    return this.userService.getList(skip, take);
   }
 
   /**
@@ -46,8 +45,7 @@ export class UserController extends CurdController<User, UpdateUserInput> {
   @Get('currentUser')
   async getProfile(@Request() req) {
     const { id } = req.user;
-    const user = await this.userService.findOneAndThrowError({ id });
-    return this.userService.buildUser(user as User);
+    return await this.userService.findOneAndThrowError({ id });
   }
 
   /**
@@ -60,8 +58,7 @@ export class UserController extends CurdController<User, UpdateUserInput> {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(SUPER_ADMIN)
   async findById(@Param('id') id: string) {
-    const user = await this.userService.findByIdAndThrowError(id);
-    return this.userService.buildUser(user as User);
+    return await this.userService.findByIdAndThrowError(id);
   }
 
   @Post()

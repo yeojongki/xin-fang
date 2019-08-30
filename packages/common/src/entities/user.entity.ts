@@ -1,4 +1,5 @@
 import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
+import { Exclude } from 'class-transformer';
 import { Gender } from '@xf/common/src/constants/gender.const';
 import { Base } from './base.entity';
 import { Role } from './role.entity';
@@ -8,6 +9,7 @@ export class User extends Base {
   @Column({ unique: true })
   username!: string;
 
+  @Exclude()
   @Column({ type: 'char', length: 32 })
   password!: string;
 

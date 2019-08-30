@@ -1,10 +1,6 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  ForbiddenException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { IRole } from '@xf/common/src/interfaces/role.interfaces';
 import { errorCode } from '@/constants/error-code';
 
 @Injectable()
@@ -20,16 +16,15 @@ export class RolesGuard implements CanActivate {
     }
     const request = context.switchToHttp().getRequest();
     const { user } = request;
-    const hasRole = () =>
-      (user.roles as string[]).some(role => roles.includes(role));
-
+    const userRoles: IRole[] = user.roles;
+    const hasRole = () => userRoles.some(role => roles.includes(role.token));
     if (user && user.roles && hasRole()) {
       return true;
     }
-      throw new ForbiddenException({
-        statusCode: 403,
-        errno: errorCode.ROLE_AUTH_ERROR,
-        message: '您的权限不足',
-      });
+    throw new ForbiddenException({
+      statusCode: 403,
+      errno: errorCode.ROLE_AUTH_ERROR,
+      message: '您的权限不足',
+    });
   }
 }

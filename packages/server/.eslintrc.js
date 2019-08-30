@@ -7,6 +7,7 @@ strictEslint.rules = {
   '@typescript-eslint/no-explicit-any': 0,
 
   'no-console': 0,
+  'no-return-await': 0,
 
   // for nestjs
   '@typescript-eslint/no-parameter-properties': 0,

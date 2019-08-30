@@ -1,5 +1,5 @@
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
-import { ITokenResult } from '@xf/common/src/interfaces/auth.interface';
+import { ITokenResult, ITokenResultWithTs } from '@xf/common/src/interfaces/auth.interface';
 import { STORAGE_TOKEN_KEY, STORAGE_ROLE_KEY } from '@/config';
 
 // use localStorage to store the authority info, which might be sent from server in actual project.
@@ -48,6 +48,22 @@ export function setStorageToken(token: ITokenResult): void {
 }
 
 /**
+ * 从 storage 中获取 token 过期或不存在则为 false
+ * @export
+ * @returns {(string| boolean)}
+ */
+export function getStorageToken(): string | boolean {
+  let tokenInfo: ITokenResultWithTs;
+  try {
+    tokenInfo = JSON.parse(window.localStorage.getItem(STORAGE_TOKEN_KEY) as string);
+    return checkTokenExpired(tokenInfo);
+  } catch (error) {
+    console.error('parse token error', error);
+    return false;
+  }
+}
+
+/**
  * 移除 token
  */
 export function removeStorageToken(): void {
@@ -66,10 +82,9 @@ export function checkTokenExpired(
     const { expiredIn, ts, accessToken } = info;
     if (expiredIn * 1000 + ts < +new Date()) {
       removeStorageToken();
-      return false;
+      return true;
     }
     return accessToken;
   }
-  removeStorageToken();
   return false;
 }
