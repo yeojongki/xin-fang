@@ -74,7 +74,7 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
     return {
       list,
       pagination: {
-        current: +skip,
+        current: skip + 1,
         pageSize: +take,
         total: count,
       },

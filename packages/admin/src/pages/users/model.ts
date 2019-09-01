@@ -6,9 +6,7 @@ import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface'
 import { HttpSuccessResponse } from '@/utils/request';
 import * as Api from './service';
 
-export interface StateType extends IPaginationList {
-  list: IUser[];
-}
+export type StateType = IPaginationList<IUser>;
 
 export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;
 

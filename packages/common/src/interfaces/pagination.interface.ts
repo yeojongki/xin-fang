@@ -4,7 +4,7 @@ export interface IPagination {
   pageSize: number;
 }
 
-export interface IPaginationList {
-  list: any[];
+export interface IPaginationList<T> {
+  list: T[];
   pagination: IPagination;
 }

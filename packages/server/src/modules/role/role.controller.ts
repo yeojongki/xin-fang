@@ -5,6 +5,7 @@ import { CreateRoleInput } from '@xf/common/src/dtos/role/create-role.input';
 import { SUPER_ADMIN } from '@xf/common/src/constants/roles.const';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import { IRole } from '@xf/common/src/interfaces/role.interfaces';
 import { CurdController } from '@/common/curd/curd.controller';
 import { RoleService } from './role.service';
 import { Roles } from '@/decorators/roles.decorator';
@@ -21,10 +22,10 @@ export class RoleController extends CurdController<Role, UpdateRoleInput> {
   @Roles(SUPER_ADMIN)
   @Get('list')
   async getList(
-    @Query('current') skip: number = 0,
+    @Query('current') skip: number = 1,
     @Query('pageSize') take: number = DEFAULT_PAGE_SIZE,
-  ): Promise<IPaginationList> {
-    return await this.roleService.getList(skip, take);
+  ): Promise<IPaginationList<IRole>> {
+    return await this.roleService.getList(skip - 1, take);
   }
 
   @Put()

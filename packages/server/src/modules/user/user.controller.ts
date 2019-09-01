@@ -3,6 +3,7 @@ import { User } from '@xf/common/src/entities/user.entity';
 import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { SUPER_ADMIN } from '@xf/common/src/constants/roles.const';
 import { UserService } from './user.service';
@@ -29,10 +30,10 @@ export class UserController extends CurdController<User, UpdateUserInput> {
   @Roles(SUPER_ADMIN)
   @Get('list')
   async getList(
-    @Query('current') skip: number = 0,
+    @Query('current') skip: number = 1,
     @Query('pageSize') take: number = DEFAULT_PAGE_SIZE,
-  ): Promise<IPaginationList> {
-    return this.userService.getList(skip, take);
+  ): Promise<IPaginationList<IUser>> {
+    return this.userService.getList(skip - 1, take);
   }
 
   /**

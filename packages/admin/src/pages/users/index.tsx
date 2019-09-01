@@ -84,12 +84,12 @@ export default class UsersManage extends Component<UsersProps, UsersState> {
   setPaginationChange({ pageSize, current }: Partial<IPagination>) {
     const params: Partial<IPagination> = {
       pageSize: pageSize ? +pageSize : DEFAULT_PAGE_SIZE,
-      current: (current as number) - 1,
+      current,
     };
     this.fetchUsers(params);
   }
 
-  fetchUsers = (pagination: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 0 }) => {
+  fetchUsers = (pagination: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
     const { dispatch } = this.props;
     dispatch({
       type: 'users/getList',

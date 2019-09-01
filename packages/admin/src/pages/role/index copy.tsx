@@ -1,13 +1,11 @@
-import React, { useCallback } from 'react';
-// import { Table, Popconfirm, Card, Divider, Button } from 'antd';
+import React, { useEffect, useCallback } from 'react';
+import { Table, Popconfirm, Card, Divider, Button } from 'antd';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
-import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_OPTIONS } from '@xf/common/src/constants/pagination.const';
 import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
-import { TIDs } from '@xf/common/src/interfaces/id.interface';
-import StandardTable from '@/components/StandardTable';
 import { IRoleStateType } from './model';
 
 interface IRoleListProps {
@@ -30,7 +28,7 @@ const RoleList = (props: IRoleListProps) => {
   } = props;
 
   const fetchList = useCallback(
-    (payload: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
+    (payload: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 0 }) => {
       dispatch({
         type: 'role/getList',
         payload,
@@ -39,19 +37,17 @@ const RoleList = (props: IRoleListProps) => {
     [pagination],
   );
 
-  const handleDeleteRoles = (ids: TIDs) => {
-    dispatch({
-      type: 'role/deleteRoles',
-      payload: {
-        ids,
-        callback: () => fetchList(),
-      },
-    });
+  const handleTableChange = ({ pageSize, current }: Partial<IPagination>) => {
+    const params: Partial<IPagination> = {
+      pageSize: pageSize ? +pageSize : DEFAULT_PAGE_SIZE,
+      current: (current as number) - 1,
+    };
+    fetchList(params);
   };
 
-  const handleEditRole = (role: IRole) => {
-    console.log('edit row', role);
-  };
+  useEffect(() => {
+    fetchList();
+  }, []);
 
   const columns: ColumnProps<IRole>[] = [
     {
@@ -74,20 +70,44 @@ const RoleList = (props: IRoleListProps) => {
       dataIndex: 'desc',
       title: '描述',
     },
+    {
+      key: 'operation',
+      dataIndex: 'operation',
+      title: '操作',
+      render: (_, record: IRole) => (
+        <>
+          <a>编辑</a>
+          <Divider type="vertical" />
+          <Popconfirm title="确定删除吗?" onConfirm={() => console.log('delete', record.token)}>
+            <a>删除</a>
+          </Popconfirm>
+        </>
+      ),
+    },
   ];
 
   return (
-    <StandardTable
-      rowKey={record => record.id}
-      loading={loading}
-      columns={columns}
-      pagination={pagination}
-      fetchList={fetchList}
-      dataSource={list}
-      onDeleteRow={handleDeleteRoles}
-      onDeleteSelected={handleDeleteRoles}
-      onEditRow={handleEditRole}
-    />
+    <Card bordered={false}>
+      <Button icon="plus" type="primary" style={{ marginBottom: 16 }}>
+        新增
+      </Button>
+      <Table
+        rowKey={record => record.id}
+        loading={loading}
+        pagination={{
+          showTotal: total => `共${total}条记录 `,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          defaultCurrent: 1,
+          ...pagination,
+          current: pagination.current + 1,
+          pageSizeOptions: DEFAULT_PAGE_OPTIONS,
+        }}
+        onChange={handleTableChange}
+        columns={columns}
+        dataSource={list}
+      />
+    </Card>
   );
 };
 
