@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useImperativeHandle, Ref, forwardRef } from 'react';
 import { Card, Alert, Table, Popconfirm, Divider } from 'antd';
 import { ColumnProps, TableProps } from 'antd/es/table';
 
@@ -9,6 +9,7 @@ import { IID, TIDs } from '@xf/common/src/interfaces/id.interface';
 import styles from './index.less';
 
 export interface IStandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
+  ref: Ref<any>;
   columns: ColumnProps<T>[];
   // selectedRows: ITableListItem[];
   onSelectRows?: (keys: TIDs, rows: any[]) => void;
@@ -36,7 +37,7 @@ export interface IStandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
 //   return toTotalList;
 // }
 
-export default (props: IStandardTableProps<any>) => {
+export default forwardRef((props: IStandardTableProps<any>, tableRef: any) => {
   const {
     columns,
     dataSource = [],
@@ -49,10 +50,11 @@ export default (props: IStandardTableProps<any>) => {
     onSelectRows,
     ...rest
   } = props;
+
   const [selectedRowKeys, setSelectedRowKeys] = useState<TIDs>([]);
   const [selectedRows, setSelectedRows] = useState<any>([]);
-  const hasSelected = selectedRowKeys.length > 0;
-  console.log('selectedRows', selectedRows);
+  const hasSelected = selectedRows.length > 0;
+
   const paginationProps = pagination
     ? {
         showTotal: total => `共${total}条记录 `,
@@ -102,47 +104,60 @@ export default (props: IStandardTableProps<any>) => {
     fetchList(params);
   };
 
+  const resetSelected = () => {
+    setSelectedRowKeys([]);
+    setSelectedRows([]);
+  };
+
   useEffect(() => {
     fetchList();
   }, []);
 
+  // 第一个参数 要暴露那个 ref , 第二个参数为暴露出什么
+  useImperativeHandle(tableRef, () => ({
+    resetSelected,
+  }));
+
   return (
-    <Card>
-      <div className={styles.standardTable}>
-        <div className={styles.tableAlert}>
-          <Alert
-            message={
-              <>
-                <span>
-                  已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-                </span>
-                {hasSelected ? (
-                  <Popconfirm
-                    title="确定删除吗?"
-                    onConfirm={() => {
-                      onDeleteSelected && onDeleteSelected(selectedRowKeys);
-                    }}
-                  >
-                    <a style={{ marginLeft: '20px' }}>删除选中</a>
-                  </Popconfirm>
-                ) : null}
-              </>
-            }
-            type="info"
-            showIcon
+    <div ref={tableRef}>
+      <Card>
+        <div className={styles.standardTable}>
+          <div className={styles.tableAlert}>
+            <Alert
+              message={
+                <>
+                  <span>
+                    已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a>{' '}
+                    项&nbsp;&nbsp;
+                  </span>
+                  {hasSelected ? (
+                    <Popconfirm
+                      title="确定删除吗?"
+                      onConfirm={() => {
+                        onDeleteSelected && onDeleteSelected(selectedRowKeys);
+                      }}
+                    >
+                      <a style={{ marginLeft: '20px' }}>删除选中</a>
+                    </Popconfirm>
+                  ) : null}
+                </>
+              }
+              type="info"
+              showIcon
+            />
+          </div>
+
+          <Table
+            columns={columnsProps}
+            rowKey={rowKey}
+            rowSelection={rowSelection}
+            dataSource={dataSource}
+            pagination={paginationProps}
+            onChange={handleTableChange}
+            {...rest}
           />
         </div>
-
-        <Table
-          columns={columnsProps}
-          rowKey={rowKey}
-          rowSelection={rowSelection}
-          dataSource={dataSource}
-          pagination={paginationProps}
-          onChange={handleTableChange}
-          {...rest}
-        />
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
-};
+});

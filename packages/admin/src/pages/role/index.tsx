@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 // import { Table, Popconfirm, Card, Divider, Button } from 'antd';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
@@ -29,6 +29,8 @@ const RoleList = (props: IRoleListProps) => {
     role: { pagination, list },
   } = props;
 
+  const tableRef = useRef<any>();
+
   const fetchList = useCallback(
     (payload: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
       dispatch({
@@ -44,7 +46,11 @@ const RoleList = (props: IRoleListProps) => {
       type: 'role/deleteRoles',
       payload: {
         ids,
-        callback: () => fetchList(),
+        callback: () => {
+          const { current } = tableRef;
+          current && current.resetSelected();
+          fetchList();
+        },
       },
     });
   };
@@ -78,6 +84,7 @@ const RoleList = (props: IRoleListProps) => {
 
   return (
     <StandardTable
+      ref={tableRef}
       rowKey={record => record.id}
       loading={loading}
       columns={columns}
