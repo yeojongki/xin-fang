@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import DEFALT_ROLES from '@xf/common/src/constants/roles.const';
@@ -9,6 +9,7 @@ import { ColumnProps } from 'antd/lib/table';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { IRoleStateType } from './model';
+import UpdateForm from './components/UpdateForm';
 
 interface IRoleListProps {
   dispatch: Dispatch<any>;
@@ -31,6 +32,7 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
     [pagination],
   );
 
+  // delete
   const handleDeleteRoles = (rows: IRole | TIDs) => {
     const ids = Array.isArray(rows) ? rows : [rows.id];
     dispatch({
@@ -46,8 +48,13 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
     });
   };
 
+  // edit
+  const [updateFormVisible, setUpdateFormVisible] = useState<boolean>(false);
+  const [currentRow, setCurrentRow] = useState<IRole>();
+
   const handleEditRole = (role: IRole): void => {
-    console.log('edit row', role);
+    setCurrentRow(role);
+    setUpdateFormVisible(true);
   };
 
   const columns: ColumnProps<IRole>[] = [
@@ -88,6 +95,14 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
         onDeleteSelected={handleDeleteRoles}
         getCheckboxProps={row => ({ disabled: DEFALT_ROLES.includes(row.token) })}
         onEditRow={handleEditRole}
+      />
+      <UpdateForm
+        visible={updateFormVisible}
+        handleUpdateVisible={setUpdateFormVisible}
+        initValue={currentRow}
+        handleOk={() => {
+          console.log('ok');
+        }}
       />
     </>
   );
