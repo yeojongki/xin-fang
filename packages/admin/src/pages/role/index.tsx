@@ -1,13 +1,13 @@
 import React, { useCallback, useRef } from 'react';
-// import { Table, Popconfirm, Card, Divider, Button } from 'antd';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
+import DEFALT_ROLES from '@xf/common/src/constants/roles.const';
 import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
-import StandardTable from '@/components/StandardTable';
+import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { IRoleStateType } from './model';
 
 interface IRoleListProps {
@@ -16,20 +16,10 @@ interface IRoleListProps {
   loading: boolean;
 }
 
-const RoleList = (props: IRoleListProps) => {
-  // const [list, setList] = useState<IRole[]>([]);
-  // const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
-  // const [current, setCurrent] = useState<number>(1);
-  // const [total, setTotal] = useState<number>();
-  // const [loading, setLoading] = useState<boolean>(false);
+const RoleTable = create<IRole>();
 
-  const {
-    dispatch,
-    loading,
-    role: { pagination, list },
-  } = props;
-
-  const tableRef = useRef<any>();
+const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { pagination, list } }) => {
+  const tableRef = useRef<IResetSelectedFn | null>(null);
 
   const fetchList = useCallback(
     (payload: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
@@ -41,7 +31,8 @@ const RoleList = (props: IRoleListProps) => {
     [pagination],
   );
 
-  const handleDeleteRoles = (ids: TIDs) => {
+  const handleDeleteRoles = (rows: IRole | TIDs) => {
+    const ids = Array.isArray(rows) ? rows : [rows.id];
     dispatch({
       type: 'role/deleteRoles',
       payload: {
@@ -55,7 +46,7 @@ const RoleList = (props: IRoleListProps) => {
     });
   };
 
-  const handleEditRole = (role: IRole) => {
+  const handleEditRole = (role: IRole): void => {
     console.log('edit row', role);
   };
 
@@ -83,18 +74,22 @@ const RoleList = (props: IRoleListProps) => {
   ];
 
   return (
-    <StandardTable
-      ref={tableRef}
-      rowKey={record => record.id}
-      loading={loading}
-      columns={columns}
-      pagination={pagination}
-      fetchList={fetchList}
-      dataSource={list}
-      onDeleteRow={handleDeleteRoles}
-      onDeleteSelected={handleDeleteRoles}
-      onEditRow={handleEditRole}
-    />
+    <>
+      <RoleTable
+        columns={columns}
+        ref={tableRef}
+        // getCheckboxProps={record=>  }
+        rowKey={record => record.id}
+        loading={loading}
+        pagination={pagination}
+        fetchList={fetchList}
+        dataSource={list}
+        onDeleteRow={handleDeleteRoles}
+        onDeleteSelected={handleDeleteRoles}
+        getCheckboxProps={row => ({ disabled: DEFALT_ROLES.includes(row.token) })}
+        onEditRow={handleEditRole}
+      />
+    </>
   );
 };
 

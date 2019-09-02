@@ -66,7 +66,7 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
   }
 
   @TransformClassToPlain()
-  async getList(skip: number, take: number): Promise<IPaginationList> {
+  async getList(skip: number, take: number): Promise<IPaginationList<T>> {
     const [list, count] = await this.repository.findAndCount({
       skip,
       take,

@@ -1,59 +1,45 @@
-import React, { useEffect, useState, useImperativeHandle, Ref, forwardRef } from 'react';
-import { Card, Alert, Table, Popconfirm, Divider } from 'antd';
-import { ColumnProps, TableProps } from 'antd/es/table';
+import React, { useEffect, useState, useImperativeHandle, forwardRef } from 'react';
+import { Card, Alert, Table, Popconfirm, Divider, Button } from 'antd';
+import { TableProps, ColumnProps } from 'antd/es/table';
 
 import { DEFAULT_PAGE_OPTIONS, DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
-import { IID, TIDs } from '@xf/common/src/interfaces/id.interface';
+import { TIDs } from '@xf/common/src/interfaces/id.interface';
 
 import styles from './index.less';
 
 export interface IStandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
-  ref: Ref<any>;
   columns: ColumnProps<T>[];
-  // selectedRows: ITableListItem[];
-  onSelectRows?: (keys: TIDs, rows: any[]) => void;
-  onDeleteRow?: (ids: TIDs) => void;
-  onEditRow?: (row: any) => void;
-  onDeleteSelected?: (ids: TIDs) => void;
   fetchList: (payload?: Partial<IPagination>) => void;
+  onSelectRows?: (keys: TIDs, rows: T[]) => void;
+  onDeleteRow?: (row: T) => void;
+  onEditRow?: (row: T) => void;
+  onDeleteSelected?: (ids: TIDs | T) => void;
+  getCheckboxProps?: (row: T) => { disabled: boolean };
 }
 
-// export interface IStandardTableColumnProps<T> extends ColumnProps<T> {
-//   needTotal?: boolean;
-//   total?: number;
-// }
+export interface IResetSelectedFn {
+  resetSelected(): void;
+}
 
-// function initToTalList(columns: IStandardTableColumnProps[]) {
-//   if (!columns) {
-//     return [];
-//   }
-//   const toTotalList: IStandardTableColumnProps[] = [];
-//   columns.forEach(column => {
-//     if (column.needTotal) {
-//       toTotalList.push({ ...column, total: 0 });
-//     }
-//   });
-//   return toTotalList;
-// }
+function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
+  const [selectedRowKeys, setSelectedRowKeys] = useState<TIDs>([]);
+  const [selectedRows, setSelectedRows] = useState<any>([]);
+  const hasSelected = selectedRows.length > 0;
 
-export default forwardRef((props: IStandardTableProps<any>, tableRef: any) => {
   const {
     columns,
     dataSource = [],
     pagination = false,
     rowKey,
     fetchList,
-    onDeleteSelected,
     onDeleteRow,
+    onDeleteSelected,
     onEditRow,
     onSelectRows,
+    getCheckboxProps,
     ...rest
   } = props;
-
-  const [selectedRowKeys, setSelectedRowKeys] = useState<TIDs>([]);
-  const [selectedRows, setSelectedRows] = useState<any>([]);
-  const hasSelected = selectedRows.length > 0;
 
   const paginationProps = pagination
     ? {
@@ -66,34 +52,40 @@ export default forwardRef((props: IStandardTableProps<any>, tableRef: any) => {
       }
     : false;
 
-  const columnsProps = columns.concat({
+  const operationColumn: ColumnProps<T> = {
     key: 'operation',
     dataIndex: 'operation',
     title: '操作',
-    render: (_, record: IID) => (
+    width: 150,
+    render: (_, record) => (
       <>
-        <a onClick={() => (onEditRow ? onEditRow(record) : null)}>编辑</a>
+        <Button type="link" size="small" onClick={() => (onEditRow ? onEditRow(record) : null)}>
+          编辑
+        </Button>
         <Divider type="vertical" />
-        <Popconfirm
-          title="确定删除吗?"
-          onConfirm={() => onDeleteRow && onDeleteRow(new Array<any>(record.id))}
-        >
-          <a>删除</a>
+        <Popconfirm title="确定删除吗?" onConfirm={() => onDeleteRow && onDeleteRow(record)}>
+          <Button
+            disabled={getCheckboxProps ? getCheckboxProps(record).disabled : false}
+            type="link"
+            size="small"
+          >
+            删除
+          </Button>
         </Popconfirm>
       </>
     ),
-  });
+  };
+
+  const columnsProps = columns.concat(operationColumn);
 
   const rowSelection = {
     selectedRowKeys,
-    onChange: (keys: TIDs, rows: any[]) => {
-      setSelectedRowKeys(keys);
+    onChange: (keys: TIDs, rows: T[]) => {
+      keys && setSelectedRowKeys(keys);
       setSelectedRows(rows);
-      onSelectRows && onSelectRows(keys, rows);
+      keys && onSelectRows && onSelectRows(keys, rows);
     },
-    // getCheckboxProps: (record: TableListItem) => ({
-    //   disabled: record.disabled,
-    // }),
+    getCheckboxProps,
   };
 
   const handleTableChange = ({ pageSize, current }: Partial<IPagination>) => {
@@ -148,11 +140,11 @@ export default forwardRef((props: IStandardTableProps<any>, tableRef: any) => {
           </div>
 
           <Table
-            columns={columnsProps}
             rowKey={rowKey}
-            rowSelection={rowSelection}
+            columns={columnsProps}
             dataSource={dataSource}
             pagination={paginationProps}
+            rowSelection={rowSelection}
             onChange={handleTableChange}
             {...rest}
           />
@@ -160,4 +152,8 @@ export default forwardRef((props: IStandardTableProps<any>, tableRef: any) => {
       </Card>
     </div>
   );
-});
+}
+
+export default function create<T>() {
+  return forwardRef<IResetSelectedFn, IStandardTableProps<T>>(StandardTable);
+}

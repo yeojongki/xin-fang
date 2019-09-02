@@ -30,7 +30,7 @@ export abstract class CurdController<E extends IFindIdResult, U extends IID> ext
   async getList(
     @Query('current') skip: number = 0,
     @Query('pageSize') take: number = DEFAULT_PAGE_SIZE,
-  ): Promise<IPaginationList> {
+  ): Promise<IPaginationList<E>> {
     return await this.service.getList(skip, take);
   }
 
