@@ -14,13 +14,19 @@ import UpdateForm from './components/UpdateForm';
 interface IRoleListProps {
   dispatch: Dispatch<any>;
   role: IRoleStateType;
-  loading: boolean;
+  fetching: boolean;
+  editing: boolean;
 }
 
 const RoleTable = create<IRole>();
 
-const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { pagination, list } }) => {
-  const tableRef = useRef<IResetSelectedFn | null>(null);
+const RoleList: React.FC<IRoleListProps> = ({
+  dispatch,
+  fetching,
+  role: { pagination, list },
+  editing,
+}) => {
+  const roleTableRef = useRef<IResetSelectedFn | null>(null);
 
   const fetchList = useCallback(
     (payload: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
@@ -40,7 +46,7 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
       payload: {
         ids,
         callback: () => {
-          const { current } = tableRef;
+          const { current } = roleTableRef;
           current && current.resetSelected();
           fetchList();
         },
@@ -49,12 +55,26 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
   };
 
   // edit
-  const [updateFormVisible, setUpdateFormVisible] = useState<boolean>(false);
+  const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<IRole>();
 
   const handleEditRole = (role: IRole): void => {
     setCurrentRow(role);
-    setUpdateFormVisible(true);
+    setEditFormVisible(true);
+  };
+
+  const submitEditForm = values => {
+    // console.log('submit', values);
+    dispatch({
+      type: 'role/update',
+      payload: {
+        values,
+        callback: () => {
+          fetchList();
+          setEditFormVisible(false);
+        },
+      },
+    });
   };
 
   const columns: ColumnProps<IRole>[] = [
@@ -84,10 +104,9 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
     <>
       <RoleTable
         columns={columns}
-        ref={tableRef}
-        // getCheckboxProps={record=>  }
+        ref={roleTableRef}
         rowKey={record => record.id}
-        loading={loading}
+        loading={fetching}
         pagination={pagination}
         fetchList={fetchList}
         dataSource={list}
@@ -97,12 +116,12 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
         onEditRow={handleEditRole}
       />
       <UpdateForm
-        visible={updateFormVisible}
-        handleUpdateVisible={setUpdateFormVisible}
+        loading={editing}
+        visible={editFormVisible}
+        handleUpdateVisible={setEditFormVisible}
         initValue={currentRow}
-        handleOk={() => {
-          console.log('ok');
-        }}
+        onCancel={() => setEditFormVisible(false)}
+        onSubmit={submitEditForm}
       />
     </>
   );
@@ -121,6 +140,7 @@ export default connect(
     };
   }) => ({
     role,
-    loading: loading.effects['role/getList'],
+    fetching: loading.effects['role/getList'],
+    editing: loading.effects['role/update'],
   }),
 )(RoleList);

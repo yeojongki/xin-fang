@@ -1,12 +1,15 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Form, Modal, Input } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
+import { UpdateRoleInput } from '@xf/common/src/dtos/role/update-role.input';
 
 interface IUpdateFormProps extends FormComponentProps {
   visible: boolean;
   handleUpdateVisible: (visible: boolean) => void;
-  handleOk: () => void;
+  onSubmit: (values: UpdateRoleInput) => void;
+  onCancel: () => void;
+  loading: boolean;
   initValue: IRole | undefined;
 }
 
@@ -23,27 +26,35 @@ const formItemLayout = {
   },
 };
 
-const UpdateForm: FC<IUpdateFormProps> = ({
-  visible,
-  handleUpdateVisible,
-  handleOk,
-  form,
-  initValue,
-}) => {
+function UpdateForm({ visible, onCancel, onSubmit, form, initValue, loading }: IUpdateFormProps) {
   // const [formVals, setFormVals] = useState<IRole | undefined>(
   //   initValue ? { ...initValue } : undefined,
   // );
 
   const { getFieldDecorator } = form;
+  const onOk = () => {
+    form.validateFields((err: any, values: any) => {
+      if (err) {
+        return;
+      }
+      onSubmit(values);
+    });
+  };
+
   return (
     <Modal
-      destroyOnClose
+      okButtonProps={{ loading }}
       visible={visible}
       title="编辑角色"
-      onOk={handleOk}
-      onCancel={() => handleUpdateVisible(false)}
+      onOk={onOk}
+      onCancel={onCancel}
     >
       <Form {...formItemLayout}>
+        <FormItem>
+          {getFieldDecorator('id', {
+            initialValue: initValue ? initValue.id : '',
+          })(<Input hidden maxLength={16} placeholder="标识" />)}
+        </FormItem>
         <FormItem label="标识" hasFeedback>
           {getFieldDecorator('token', {
             initialValue: initValue ? initValue.token : '',
@@ -55,13 +66,20 @@ const UpdateForm: FC<IUpdateFormProps> = ({
             ],
           })(<Input maxLength={16} placeholder="标识" />)}
         </FormItem>
+        <FormItem label="名称" hasFeedback>
+          {getFieldDecorator('name', {
+            initialValue: initValue ? initValue.name : '',
+            rules: [
+              {
+                required: true,
+                message: '请输入名称！',
+              },
+            ],
+          })(<Input maxLength={16} placeholder="名称" />)}
+        </FormItem>
       </Form>
     </Modal>
   );
-};
-
-UpdateForm.defaultProps = {
-  handleUpdateVisible: () => {},
-};
+}
 
 export default Form.create<IUpdateFormProps>()(UpdateForm);
