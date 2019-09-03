@@ -5,17 +5,20 @@ import DEFALT_ROLES from '@xf/common/src/constants/roles.const';
 import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
+import { Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
+import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { IRoleStateType } from './model';
-import UpdateForm from './components/UpdateForm';
+import BaseForm from './components/_baseForm';
 
 interface IRoleListProps {
   dispatch: Dispatch<any>;
   role: IRoleStateType;
   fetching: boolean;
   editing: boolean;
+  creating: boolean;
 }
 
 const RoleTable = create<IRole>();
@@ -25,6 +28,7 @@ const RoleList: React.FC<IRoleListProps> = ({
   fetching,
   role: { pagination, list },
   editing,
+  creating,
 }) => {
   const roleTableRef = useRef<IResetSelectedFn | null>(null);
 
@@ -64,7 +68,6 @@ const RoleList: React.FC<IRoleListProps> = ({
   };
 
   const submitEditForm = values => {
-    // console.log('submit', values);
     dispatch({
       type: 'role/update',
       payload: {
@@ -72,6 +75,26 @@ const RoleList: React.FC<IRoleListProps> = ({
         callback: () => {
           fetchList();
           setEditFormVisible(false);
+        },
+      },
+    });
+  };
+
+  // create
+  const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);
+  const createFormRef = useRef<any>();
+
+  const submitCreateForm = values => {
+    dispatch({
+      type: 'role/create',
+      payload: {
+        values,
+        callback: () => {
+          fetchList();
+          setCreateFormVisible(false);
+          // reset fields
+          const form: WrappedFormUtils = createFormRef.current;
+          form.resetFields();
         },
       },
     });
@@ -102,6 +125,16 @@ const RoleList: React.FC<IRoleListProps> = ({
 
   return (
     <>
+      <Button
+        icon="plus"
+        type="primary"
+        style={{ marginBottom: '10px' }}
+        onClick={() => {
+          setCreateFormVisible(true);
+        }}
+      >
+        新建
+      </Button>
       <RoleTable
         columns={columns}
         ref={roleTableRef}
@@ -115,13 +148,23 @@ const RoleList: React.FC<IRoleListProps> = ({
         getCheckboxProps={row => ({ disabled: DEFALT_ROLES.includes(row.token) })}
         onEditRow={handleEditRole}
       />
-      <UpdateForm
+      <BaseForm
+        type="edit"
+        title="编辑角色"
         loading={editing}
         visible={editFormVisible}
-        handleUpdateVisible={setEditFormVisible}
         initValue={currentRow}
         onCancel={() => setEditFormVisible(false)}
         onSubmit={submitEditForm}
+      />
+      <BaseForm
+        type="create"
+        title="创建角色"
+        ref={createFormRef}
+        loading={creating}
+        visible={createFormVisible}
+        onCancel={() => setCreateFormVisible(false)}
+        onSubmit={submitCreateForm}
       />
     </>
   );
@@ -142,5 +185,6 @@ export default connect(
     role,
     fetching: loading.effects['role/getList'],
     editing: loading.effects['role/update'],
+    creating: loading.effects['role/create'],
   }),
 )(RoleList);

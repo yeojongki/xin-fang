@@ -1,36 +1,25 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Form, Modal, Input } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
-import { UpdateRoleInput } from '@xf/common/src/dtos/role/update-role.input';
+import formItemLayout from './_formItemLayout';
 
-interface IUpdateFormProps extends FormComponentProps {
+export interface IBaseFormProps extends FormComponentProps {
+  title: string;
+  type: 'create' | 'edit';
   visible: boolean;
-  handleUpdateVisible: (visible: boolean) => void;
-  onSubmit: (values: UpdateRoleInput) => void;
+  onSubmit: (values: any) => void;
   onCancel: () => void;
   loading: boolean;
-  initValue: IRole | undefined;
+  initValue?: IRole | undefined;
 }
 
 const FormItem = Form.Item;
 
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-  },
-};
-
-function UpdateForm({ visible, onCancel, onSubmit, form, initValue, loading }: IUpdateFormProps) {
-  // const [formVals, setFormVals] = useState<IRole | undefined>(
-  //   initValue ? { ...initValue } : undefined,
-  // );
-
+const BaseForm = (
+  { visible, title, onCancel, onSubmit, form, initValue, loading, type }: IBaseFormProps,
+  ref: React.Ref<any>,
+) => {
   const { getFieldDecorator } = form;
   const onOk = () => {
     form.validateFields((err: any, values: any) => {
@@ -45,16 +34,20 @@ function UpdateForm({ visible, onCancel, onSubmit, form, initValue, loading }: I
     <Modal
       okButtonProps={{ loading }}
       visible={visible}
-      title="编辑角色"
+      title={title}
       onOk={onOk}
       onCancel={onCancel}
     >
-      <Form {...formItemLayout}>
-        <FormItem>
-          {getFieldDecorator('id', {
-            initialValue: initValue ? initValue.id : '',
-          })(<Input hidden maxLength={16} placeholder="标识" />)}
-        </FormItem>
+      <Form {...formItemLayout} ref={ref}>
+        {/* id for edit */}
+        {type === 'edit' ? (
+          <FormItem style={{ marginBottom: 0 }}>
+            {getFieldDecorator('id', {
+              initialValue: initValue ? initValue.id : '',
+            })(<Input hidden maxLength={16} placeholder="标识" />)}
+          </FormItem>
+        ) : null}
+
         <FormItem label="标识" hasFeedback>
           {getFieldDecorator('token', {
             initialValue: initValue ? initValue.token : '',
@@ -80,6 +73,6 @@ function UpdateForm({ visible, onCancel, onSubmit, form, initValue, loading }: I
       </Form>
     </Modal>
   );
-}
+};
 
-export default Form.create<IUpdateFormProps>()(UpdateForm);
+export default Form.create<IBaseFormProps>()(forwardRef(BaseForm));

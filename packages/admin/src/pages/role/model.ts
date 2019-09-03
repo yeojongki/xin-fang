@@ -17,6 +17,7 @@ export interface ModelType {
     getList: Effect;
     deleteRoles: Effect;
     update: Effect;
+    create: Effect;
   };
   reducers: {
     setList: Reducer<IRoleStateType>;
@@ -52,6 +53,12 @@ const Model: ModelType = {
     *update({ payload }, { call }) {
       const { callback, values } = payload;
       const { message }: HttpSuccessResponse = yield call(Api.update, values);
+      Message.success(message);
+      callback();
+    },
+    *create({ payload }, { call }) {
+      const { callback, values } = payload;
+      const { message }: HttpSuccessResponse = yield call(Api.create, values);
       Message.success(message);
       callback();
     },
