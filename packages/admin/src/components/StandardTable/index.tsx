@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useImperativeHandle, forwardRef } from 'react';
+import React, { useEffect, useState, useImperativeHandle, forwardRef, ReactNode } from 'react';
 import { Card, Alert, Table, Popconfirm, Divider, Button } from 'antd';
 import { TableProps, ColumnProps } from 'antd/es/table';
 
@@ -16,6 +16,8 @@ export interface IStandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
   onEditRow?: (row: T) => void;
   onDeleteSelected?: (ids: TIDs | T) => void;
   getCheckboxProps?: (row: T) => { disabled: boolean };
+  onAdd?: () => void;
+  renderSearchForm?: () => ReactNode;
 }
 
 export interface IResetSelectedFn {
@@ -38,6 +40,8 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
     onEditRow,
     onSelectRows,
     getCheckboxProps,
+    onAdd,
+    renderSearchForm,
     ...rest
   } = props;
 
@@ -114,6 +118,10 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
     <div ref={tableRef}>
       <Card>
         <div className={styles.standardTable}>
+          {renderSearchForm && renderSearchForm()}
+          <Button icon="plus" type="primary" className={styles.addBtn} onClick={onAdd}>
+            新建
+          </Button>
           <div className={styles.tableAlert}>
             <Alert
               message={

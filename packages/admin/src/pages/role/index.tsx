@@ -6,21 +6,31 @@ import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
+import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { IRoleStateType } from './model';
-import UpdateForm from './components/UpdateForm';
+import ModalForm from './components/_ModalForm';
+import { getForm, generateField } from '@/utils/form';
 
 interface IRoleListProps {
   dispatch: Dispatch<any>;
   role: IRoleStateType;
-  loading: boolean;
+  fetching: boolean;
+  editing: boolean;
+  creating: boolean;
 }
 
 const RoleTable = create<IRole>();
 
-const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { pagination, list } }) => {
-  const tableRef = useRef<IResetSelectedFn | null>(null);
+const RoleList: React.FC<IRoleListProps> = ({
+  dispatch,
+  fetching,
+  role: { pagination, list },
+  editing,
+  creating,
+}) => {
+  const roleTableRef = useRef<IResetSelectedFn | null>(null);
 
   const fetchList = useCallback(
     (payload: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
@@ -40,7 +50,7 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
       payload: {
         ids,
         callback: () => {
-          const { current } = tableRef;
+          const { current } = roleTableRef;
           current && current.resetSelected();
           fetchList();
         },
@@ -49,12 +59,53 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
   };
 
   // edit
-  const [updateFormVisible, setUpdateFormVisible] = useState<boolean>(false);
+  const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<IRole>();
+  const editFormRef = useRef<any>();
 
   const handleEditRole = (role: IRole): void => {
-    setCurrentRow(role);
-    setUpdateFormVisible(true);
+    // set fields
+    const form = getForm(editFormRef);
+    if (form) {
+      form.setFields(generateField(role));
+    } else {
+      // init
+      setCurrentRow(role);
+    }
+    setEditFormVisible(true);
+  };
+
+  const submitEditForm = values => {
+    dispatch({
+      type: 'role/update',
+      payload: {
+        values,
+        callback: () => {
+          fetchList();
+          setEditFormVisible(false);
+        },
+      },
+    });
+  };
+
+  // create
+  const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);
+  const createFormRef = useRef<any>();
+
+  const submitCreateForm = (values: IRole) => {
+    dispatch({
+      type: 'role/create',
+      payload: {
+        values,
+        callback: () => {
+          fetchList();
+          setCreateFormVisible(false);
+          // reset fields
+          const form: WrappedFormUtils = createFormRef.current;
+          form.resetFields();
+        },
+      },
+    });
   };
 
   const columns: ColumnProps<IRole>[] = [
@@ -83,11 +134,13 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
   return (
     <>
       <RoleTable
+        onAdd={() => {
+          setCreateFormVisible(true);
+        }}
         columns={columns}
-        ref={tableRef}
-        // getCheckboxProps={record=>  }
+        ref={roleTableRef}
         rowKey={record => record.id}
-        loading={loading}
+        loading={fetching}
         pagination={pagination}
         fetchList={fetchList}
         dataSource={list}
@@ -96,13 +149,24 @@ const RoleList: React.FC<IRoleListProps> = ({ dispatch, loading, role: { paginat
         getCheckboxProps={row => ({ disabled: DEFALT_ROLES.includes(row.token) })}
         onEditRow={handleEditRole}
       />
-      <UpdateForm
-        visible={updateFormVisible}
-        handleUpdateVisible={setUpdateFormVisible}
+      <ModalForm
+        ref={editFormRef}
+        type="edit"
+        title="编辑角色"
+        loading={editing}
+        visible={editFormVisible}
         initValue={currentRow}
-        handleOk={() => {
-          console.log('ok');
-        }}
+        onCancel={() => setEditFormVisible(false)}
+        onSubmit={submitEditForm}
+      />
+      <ModalForm
+        ref={createFormRef}
+        type="create"
+        title="创建角色"
+        loading={creating}
+        visible={createFormVisible}
+        onCancel={() => setCreateFormVisible(false)}
+        onSubmit={submitCreateForm}
       />
     </>
   );
@@ -121,6 +185,8 @@ export default connect(
     };
   }) => ({
     role,
-    loading: loading.effects['role/getList'],
+    fetching: loading.effects['role/getList'],
+    editing: loading.effects['role/update'],
+    creating: loading.effects['role/create'],
   }),
 )(RoleList);

@@ -17,7 +17,6 @@ export class Role extends Base {
   @Column({ comment: '标识', unique: true })
   token!: string;
 
-  @Exclude()
   @Column({ comment: '描述', default: null, nullable: true })
   desc?: string;
 
