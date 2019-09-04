@@ -5,6 +5,7 @@ import DEFALT_ROLES from '@xf/common/src/constants/roles.const';
 import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
+import { Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
@@ -133,6 +134,16 @@ const RoleList: React.FC<IRoleListProps> = ({
 
   return (
     <>
+      <Button
+        icon="plus"
+        type="primary"
+        style={{ marginBottom: '10px' }}
+        onClick={() => {
+          setCreateFormVisible(true);
+        }}
+      >
+        新建
+      </Button>
       <RoleTable
         onAdd={() => {
           setCreateFormVisible(true);
