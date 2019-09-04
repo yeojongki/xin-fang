@@ -11,7 +11,7 @@ import { StateType } from './model';
 interface UsersProps {
   dispatch: Dispatch<any>;
   fetching: boolean;
-  usersManage: StateType;
+  users: StateType;
 }
 
 interface UsersState {
@@ -20,18 +20,18 @@ interface UsersState {
 
 @connect(
   ({
-    usersManage,
+    users,
     loading,
   }: {
-    usersManage: StateType;
+    users: StateType;
     loading: {
       effects: {
         [key: string]: string;
       };
     };
-  }) => ({ usersManage, fetching: loading.effects['usersManage/getList'] }),
+  }) => ({ users, fetching: loading.effects['users/getList'] }),
 )
-class Users extends Component<UsersProps, UsersState> {
+export default class UsersManage extends Component<UsersProps, UsersState> {
   columns: ColumnProps<IUser>[] = [
     {
       key: 'id',
@@ -47,6 +47,11 @@ class Users extends Component<UsersProps, UsersState> {
       key: 'createdAt',
       dataIndex: 'createdAt',
       title: '创建时间',
+    },
+    {
+      key: 'updatedAt',
+      dataIndex: 'updatedAt',
+      title: '更新时间',
     },
     {
       key: 'operation',
@@ -79,15 +84,15 @@ class Users extends Component<UsersProps, UsersState> {
   setPaginationChange({ pageSize, current }: Partial<IPagination>) {
     const params: Partial<IPagination> = {
       pageSize: pageSize ? +pageSize : DEFAULT_PAGE_SIZE,
-      current: (current as number) - 1,
+      current,
     };
     this.fetchUsers(params);
   }
 
-  fetchUsers = (pagination: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 0 }) => {
+  fetchUsers = (pagination: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'usersManage/getList',
+      type: 'users/getList',
       payload: pagination,
     });
   };
@@ -95,7 +100,7 @@ class Users extends Component<UsersProps, UsersState> {
   handleDeleteUser = (id: string) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'usersManage/deleteUser',
+      type: 'users/deleteUser',
       payload: {
         ids: [id],
         callback: () => {
@@ -109,7 +114,7 @@ class Users extends Component<UsersProps, UsersState> {
     const { selectedRowKeys } = this.state;
     const { dispatch } = this.props;
     dispatch({
-      type: 'usersManage/deleteUser',
+      type: 'users/deleteUser',
       payload: {
         ids: selectedRowKeys,
         callback: () => {
@@ -121,9 +126,9 @@ class Users extends Component<UsersProps, UsersState> {
 
   render() {
     const { columns } = this;
-    const { usersManage, fetching } = this.props;
+    const { users, fetching } = this.props;
     const { selectedRowKeys } = this.state;
-    const { list, pagination } = usersManage;
+    const { list, pagination } = users;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -171,5 +176,3 @@ class Users extends Component<UsersProps, UsersState> {
     );
   }
 }
-
-export default Users;

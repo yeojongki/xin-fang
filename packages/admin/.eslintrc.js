@@ -6,6 +6,7 @@ strictEslint.rules = {
   'class-methods-use-this': 0,
   '@typescript-eslint/no-explicit-any': 0,
   'no-console': 0,
+  'no-unused-expressions': [2, { allowShortCircuit: true }],
 };
 
 module.exports = {

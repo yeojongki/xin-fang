@@ -3,6 +3,7 @@ import { parse, stringify } from 'qs';
 
 import { EffectsCommandMap } from 'dva';
 import { routerRedux } from 'dva/router';
+import { removeStorageToken, removeStorageRoles } from '@/utils/authority';
 
 export function getPageQuery(): {
   [key: string]: string;
@@ -38,6 +39,10 @@ const Model: ModelType = {
       const { redirect } = getPageQuery();
       // redirect
       if (window.location.pathname !== '/user/login' && !redirect) {
+        // 清除 token 和 角色
+        removeStorageToken();
+        removeStorageRoles();
+
         yield put(
           routerRedux.replace({
             pathname: '/user/login',

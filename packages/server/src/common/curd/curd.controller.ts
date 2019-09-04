@@ -1,5 +1,7 @@
-import { Delete, UseGuards, Param, Body } from '@nestjs/common';
+import { Delete, UseGuards, Param, Body, Get, Query } from '@nestjs/common';
 import { IID, TID, TIDs } from '@xf/common/src/interfaces/id.interface';
+import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { CurdService } from './curd.service';
 import { Message } from '@/decorators/http.decorator';
 import { JwtAuthGuard } from '@/guard/auth.guard';
@@ -23,6 +25,14 @@ export abstract class CurdController<E extends IFindIdResult, U extends IID> ext
   abstract async create(dto: any): Promise<any>;
 
   abstract async update(dto: U): Promise<any>;
+
+  @Get('list')
+  async getList(
+    @Query('current') skip: number = 0,
+    @Query('pageSize') take: number = DEFAULT_PAGE_SIZE,
+  ): Promise<IPaginationList<E>> {
+    return await this.service.getList(skip, take);
+  }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('superAdmin')

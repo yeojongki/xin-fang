@@ -5,8 +5,7 @@
 import { extend } from 'umi-request';
 import { notification } from 'antd';
 import { router } from 'umi';
-import { TOKEN_KEY } from '@/config';
-import { checkTokenExpired } from '.';
+import { getStorageToken } from './authority';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -75,8 +74,7 @@ const request = extend({
 request.interceptors.request.use((url, options) => {
   const newOptions = options;
   // add token to header
-  const tokenInfo = JSON.parse(window.localStorage.getItem(TOKEN_KEY) as string);
-  const token = checkTokenExpired(tokenInfo);
+  const token = getStorageToken();
   if (token) {
     newOptions.headers = {
       ...newOptions.headers,

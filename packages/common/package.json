@@ -17,6 +17,7 @@
     "@nestjs/common": "^6.5.3",
     "@nestjs/core": "^6.5.3",
     "@xf/common": "0.0.1",
+    "class-transformer": "^0.2.3",
     "class-validator": "^0.10.0",
     "typeorm": "^0.2.18"
   }

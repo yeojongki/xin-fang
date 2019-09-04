@@ -9,7 +9,6 @@ export class LoginController {
 
   @Post()
   public async login(@Body() user: AuthLoginInput): Promise<ITokenResult> {
-    const token = await this.authService.auth(user);
-    return token;
+    return await this.authService.auth(user);
   }
 }

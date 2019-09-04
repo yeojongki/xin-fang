@@ -1,5 +1,7 @@
 import { Repository } from 'typeorm';
+import { TransformClassToPlain } from 'class-transformer';
 import { TID, IID, TIDs } from '@xf/common/src/interfaces/id.interface';
+import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { BaseService } from '../base/base.service';
 
 /**
@@ -21,45 +23,61 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
 
   /**
    * 创建数据
-   * @abstract
    * @param {*} dto
-   * @memberof CommonService
+   * @returns {Promise<any>}
+   * @memberof CurdService
    */
-  abstract async create(dto: any);
+  async create(dto: any): Promise<any> {
+    const toSave = this.repository.create(dto);
+    return await this.repository.save(toSave);
+  }
 
   /**
    * 更新数据 数据实体不存在 id 时抛错
-   * @param {*} dto
-   * @returns {Promise<void>}
-   * @memberof CommonService
+   * @param {U} dto
+   * @returns {(Promise<T & U>)}
+   * @memberof CurdService
    */
-  async update(dto: U): Promise<void> {
+  async update(dto: U): Promise<T & U> {
     const { id } = dto;
     const toUpdate = await this.findByIdAndThrowError(id);
-    await this.repository.save(Object.assign(toUpdate as T, dto));
-    return Promise.resolve();
+    return await this.repository.save(Object.assign(toUpdate as T, dto));
   }
 
   /**
    * 删除一条数据
-   * @param {string} id
-   * @returns {Promise<void>}
-   * @memberof CommonService
+   * @param {TID} id
+   * @returns {Promise<T>}
+   * @memberof CurdService
    */
-  async delete(id: TID): Promise<void> {
+  async delete(id: TID): Promise<T> {
     const toDelete = await this.findByIdAndThrowError(id);
-    await this.repository.remove(toDelete as T);
-    return Promise.resolve();
+    return await this.repository.remove(toDelete as T);
   }
 
   /**
    * 删除多条数据
    * @param {TIDs} ids
-   * @returns {Promise<void>}
+   * @returns {Promise<T[]>}
    * @memberof CurdService
    */
-  async deleteByIds(ids: TIDs): Promise<void> {
-    await this.repository.remove(await this.repository.findByIds(ids));
-    return Promise.resolve();
+  async deleteByIds(ids: TIDs): Promise<T[]> {
+    return await this.repository.remove(await this.repository.findByIds(ids));
+  }
+
+  @TransformClassToPlain()
+  async getList(skip: number, take: number): Promise<IPaginationList<T>> {
+    const [list, count] = await this.repository.findAndCount({
+      skip,
+      take,
+    });
+    return {
+      list,
+      pagination: {
+        current: skip + 1,
+        pageSize: +take,
+        total: count,
+      },
+    };
   }
 }

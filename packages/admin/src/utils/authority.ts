@@ -1,8 +1,10 @@
+import { IRole } from '@xf/common/src/interfaces/role.interfaces';
+import { ITokenResult, ITokenResultWithTs } from '@xf/common/src/interfaces/auth.interface';
+import { STORAGE_TOKEN_KEY, STORAGE_ROLE_KEY } from '@/config';
+
 // use localStorage to store the authority info, which might be sent from server in actual project.
-export function getAuthority(str?: string): string | string[] {
-  // return localStorage.getItem('antd-pro-authority') || ['admin', 'user'];
-  const authorityString =
-    typeof str === 'undefined' ? localStorage.getItem('antd-pro-authority') : str;
+export function getStorageRoles(): string | string[] {
+  const authorityString = localStorage.getItem(STORAGE_ROLE_KEY);
   // authorityString could be admin, "admin", ["admin"]
   let authority;
   try {
@@ -15,15 +17,74 @@ export function getAuthority(str?: string): string | string[] {
   if (typeof authority === 'string') {
     return [authority];
   }
-  // preview.pro.ant.design only do not use in your production.
-  // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
-  if (!authority && ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site') {
-    return ['admin'];
-  }
+
   return authority;
 }
 
-export function setAuthority(authority: string | string[]): void {
-  const proAuthority = typeof authority === 'string' ? [authority] : authority;
-  return localStorage.setItem('antd-pro-authority', JSON.stringify(proAuthority));
+/**
+ * 存储角色 到 storage 中
+ * @export
+ * @param {IRole[]} roles
+ * @returns {void}
+ */
+export function setStorageRoles(roles: IRole[]): void {
+  const userRoles = roles.map(role => role.token);
+  return localStorage.setItem(STORAGE_ROLE_KEY, JSON.stringify(userRoles));
+}
+
+/**
+ * 移除 角色
+ */
+export function removeStorageRoles(): void {
+  localStorage.removeItem(STORAGE_ROLE_KEY);
+}
+
+/**
+ * 存储 token 到 storage 中
+ * @param {ITokenResult} token
+ */
+export function setStorageToken(token: ITokenResult): void {
+  localStorage.setItem(STORAGE_TOKEN_KEY, JSON.stringify({ ...token, ts: +new Date() }));
+}
+
+/**
+ * 从 storage 中获取 token 过期或不存在则为 false
+ * @export
+ * @returns {(string| boolean)}
+ */
+export function getStorageToken(): string | boolean {
+  let tokenInfo: ITokenResultWithTs;
+  try {
+    tokenInfo = JSON.parse(window.localStorage.getItem(STORAGE_TOKEN_KEY) as string);
+    return checkTokenExpired(tokenInfo);
+  } catch (error) {
+    console.error('parse token error', error);
+    return false;
+  }
+}
+
+/**
+ * 移除 token
+ */
+export function removeStorageToken(): void {
+  localStorage.removeItem(STORAGE_TOKEN_KEY);
+}
+
+/**
+ * 检测token是否失效 有效时返回token 反之为false
+ * @param {ICheckToken} info
+ * @returns {(boolean | string)}
+ */
+export function checkTokenExpired(
+  info: ITokenResult & { ts: number } | undefined,
+): boolean | string {
+  if (info) {
+    const { expiredIn, ts, accessToken } = info;
+    if (expiredIn * 1000 + ts < +new Date()) {
+      removeStorageToken();
+      return true;
+    }
+    return accessToken;
+  }
+  return false;
 }

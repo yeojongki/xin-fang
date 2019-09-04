@@ -17,11 +17,8 @@ import { THttpResponseMsg } from '@/decorators/http.decorator';
 export class HttpResInterceptor implements NestInterceptor {
   constructor(private readonly reflector: Reflector) {}
 
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Observable<HttpSuccessResponse | any> {
-    let message = '';
+  intercept(context: ExecutionContext, next: CallHandler): Observable<HttpSuccessResponse | any> {
+    let message = 'success';
     // set default code -> 200
     let httpCode: number = HttpStatus.OK;
     const metadata = this.reflector.get<THttpResponseMsg | string>(

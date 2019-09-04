@@ -2,23 +2,18 @@
 /* eslint-disable import/no-mutable-exports */
 let CURRENT: string | string[] = 'NULL';
 
-type CurrentAuthorityType = string | string[] | (() => typeof CURRENT);
+type rolesType = string | string[] | (() => typeof CURRENT);
 /**
  * use  authority or getAuthority
- * @param {string|()=>String} currentAuthority
+ * @param {string|()=>String} roles
  */
-const renderAuthorize = <T>(Authorized: T): ((currentAuthority: CurrentAuthorityType) => T) => (
-  currentAuthority: CurrentAuthorityType,
-): T => {
-  if (currentAuthority) {
-    if (typeof currentAuthority === 'function') {
-      CURRENT = currentAuthority();
+const renderAuthorize = <T>(Authorized: T): ((roles: rolesType) => T) => (roles: rolesType): T => {
+  if (roles) {
+    if (typeof roles === 'function') {
+      CURRENT = roles();
     }
-    if (
-      Object.prototype.toString.call(currentAuthority) === '[object String]' ||
-      Array.isArray(currentAuthority)
-    ) {
-      CURRENT = currentAuthority as string[];
+    if (Object.prototype.toString.call(roles) === '[object String]' || Array.isArray(roles)) {
+      CURRENT = roles as string[];
     }
   } else {
     CURRENT = 'NULL';

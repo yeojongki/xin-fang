@@ -1,7 +1,8 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-
 import { queryCurrent, query as queryUsers } from '@/services/user';
+import { setStorageRoles } from '@/utils/authority';
+import { reloadAuthorized } from '@/utils/Authorized';
 
 export interface CurrentUser {
   avatar?: string;
@@ -64,6 +65,9 @@ const UserModel: UserModelType = {
       },
       { payload },
     ) {
+      // 刷新角色和路由
+      setStorageRoles(payload.roles);
+      reloadAuthorized();
       return {
         ...state,
         currentUser: {

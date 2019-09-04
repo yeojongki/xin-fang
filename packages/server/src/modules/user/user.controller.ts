@@ -3,7 +3,9 @@ import { User } from '@xf/common/src/entities/user.entity';
 import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
+import { SUPER_ADMIN } from '@xf/common/src/constants/roles.const';
 import { UserService } from './user.service';
 import { RolesGuard } from '@/guard/roles.guard';
 import { JwtAuthGuard } from '@/guard/auth.guard';
@@ -25,14 +27,13 @@ export class UserController extends CurdController<User, UpdateUserInput> {
    * @memberof UserController
    */
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('superAdmin')
+  @Roles(SUPER_ADMIN)
   @Get('list')
-  async getUserList(
-    @Query('current') skip: number = 0,
+  async getList(
+    @Query('current') skip: number = 1,
     @Query('pageSize') take: number = DEFAULT_PAGE_SIZE,
-  ): Promise<IPaginationList> {
-    const result = await this.userService.getUserList(skip, take);
-    return result;
+  ): Promise<IPaginationList<IUser>> {
+    return this.userService.getList(skip - 1, take);
   }
 
   /**
@@ -41,12 +42,11 @@ export class UserController extends CurdController<User, UpdateUserInput> {
    * @returns
    * @memberof UserController
    */
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('currentUser')
   async getProfile(@Request() req) {
     const { id } = req.user;
-    const user = await this.userService.findByIdAndThrowError(id);
-    return this.userService.buildUser(user as User);
+    return await this.userService.findOneAndThrowError({ id });
   }
 
   /**
@@ -56,9 +56,10 @@ export class UserController extends CurdController<User, UpdateUserInput> {
    * @memberof UserController
    */
   @Get(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(SUPER_ADMIN)
   async findById(@Param('id') id: string) {
-    const user = await this.userService.findByIdAndThrowError(id);
-    return this.userService.buildUser(user as User);
+    return await this.userService.findByIdAndThrowError(id);
   }
 
   @Post()
@@ -69,6 +70,7 @@ export class UserController extends CurdController<User, UpdateUserInput> {
   }
 
   @Put()
+  @UseGuards(JwtAuthGuard)
   @Message('更新成功')
   async update(@Body() entity: UpdateUserInput): Promise<void> {
     await this.userService.update(entity);

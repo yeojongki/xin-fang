@@ -5,7 +5,7 @@ import * as Api from './service';
 
 export interface StateType {
   errno?: number;
-  // currentAuthority?: 'user' | 'guest' | 'admin';
+  // roles?: 'user' | 'guest' | 'admin';
 }
 
 export type Effect = (

@@ -1,12 +1,12 @@
 import RenderAuthorize from '@/components/Authorized';
-import { getAuthority } from './authority';
+import { getStorageRoles } from './authority';
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable import/no-mutable-exports */
-let Authorized = RenderAuthorize(getAuthority());
+let Authorized = RenderAuthorize(getStorageRoles());
 
 // Reload the rights component
 const reloadAuthorized = (): void => {
-  Authorized = RenderAuthorize(getAuthority());
+  Authorized = RenderAuthorize(getStorageRoles());
 };
 
 export { reloadAuthorized };

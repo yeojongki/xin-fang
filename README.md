@@ -25,7 +25,7 @@ $ lerna add @xf/common --scope @xf/admin    # 为 @xf/admin 添加内部模块 @
 
 # yarn workspace 方式
 # 注意：对于安装 `local dependency` yarn的实现暂时有bug 第一次安装需要指明版本号
-$ yarn workspace add `moduleName`           # 为 root package 添加 `moduleName` 模块
+$ yarn add -W `moduleName`           # 为 root package 添加 `moduleName` 模块
 $ yarn workspace @xf/admin add `moduleName` # 为  @xf/admin 添加 `moduleName` 模块
 ```
 
