@@ -5,13 +5,13 @@ import DEFALT_ROLES from '@xf/common/src/constants/roles.const';
 import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { IRoleStateType } from './model';
-import ModalForm from './components/_ModalForm';
+import ModalForm from '@/components/BaseForm/ModalForm';
+import { Base } from './components/Base';
 import { getForm, generateField } from '@/utils/form';
 
 interface IRoleListProps {
@@ -134,16 +134,6 @@ const RoleList: React.FC<IRoleListProps> = ({
 
   return (
     <>
-      <Button
-        icon="plus"
-        type="primary"
-        style={{ marginBottom: '10px' }}
-        onClick={() => {
-          setCreateFormVisible(true);
-        }}
-      >
-        新建
-      </Button>
       <RoleTable
         onAdd={() => {
           setCreateFormVisible(true);
@@ -161,9 +151,10 @@ const RoleList: React.FC<IRoleListProps> = ({
         onEditRow={handleEditRole}
       />
       <ModalForm
-        ref={editFormRef}
-        type="edit"
         title="编辑角色"
+        type="edit"
+        ref={editFormRef}
+        renderItems={props => Base(props)}
         loading={editing}
         visible={editFormVisible}
         initValue={currentRow}
@@ -171,9 +162,10 @@ const RoleList: React.FC<IRoleListProps> = ({
         onSubmit={submitEditForm}
       />
       <ModalForm
-        ref={createFormRef}
-        type="create"
         title="创建角色"
+        type="create"
+        ref={createFormRef}
+        renderItems={props => Base(props)}
         loading={creating}
         visible={createFormVisible}
         onCancel={() => setCreateFormVisible(false)}

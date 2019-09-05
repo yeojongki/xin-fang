@@ -4,8 +4,7 @@ import { TransformClassToPlain } from 'class-transformer';
 import { Repository } from 'typeorm';
 import { User } from '@xf/common/src/entities/user.entity';
 import { Role } from '@xf/common/src/entities/role.entity';
-import { IKeyStringObj } from '@xf/common/src/interfaces/common.interface';
-import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import { TKeyStringObj } from '@xf/common/src/interfaces/common.interface';
 import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
 import { errorCode } from '@/constants/error-code';
@@ -29,7 +28,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @memberof UserService
    */
   @TransformClassToPlain()
-  async findOne(query: IKeyStringObj): Promise<User | undefined> {
+  async findOne(query: TKeyStringObj): Promise<User | undefined> {
     return await this.userRepository.findOne(query, {
       relations: ['roles'],
     });
@@ -37,11 +36,11 @@ export class UserService extends CurdService<User, UpdateUserInput> {
 
   /**
    * 查找用户 (返回含 `密码` 字段)
-   * @param {IKeyStringObj} query
+   * @param {TKeyStringObj} query
    * @returns
    * @memberof UserService
    */
-  async findOneWithPassword(query: IKeyStringObj) {
+  async findOneWithPassword(query: TKeyStringObj) {
     return await this.userRepository.findOne(query, {
       relations: ['roles'],
     });
@@ -49,11 +48,11 @@ export class UserService extends CurdService<User, UpdateUserInput> {
 
   /**
    * 查找用户 不存在时报错
-   * @param {IKeyStringObj} query
+   * @param {TKeyStringObj} query
    * @returns {Promise<User>}
    * @memberof UserService
    */
-  async findOneAndThrowError(query: IKeyStringObj): Promise<User | void> {
+  async findOneAndThrowError(query: TKeyStringObj): Promise<User | void> {
     const user = this.findOne(query);
     if (user) {
       return user;

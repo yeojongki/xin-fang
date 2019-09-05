@@ -1,10 +1,9 @@
 import { MutableRefObject } from 'react';
 import { WrappedFormUtils } from 'antd/es/form/Form';
+import { TKeyStringObj } from '@xf/common/src/interfaces/common.interface';
 
-type TStringKeyObject = Record<string, any>;
-
-export const generateField = (obj: TStringKeyObject) => {
-  const result: TStringKeyObject = {};
+export const generateField = (obj: TKeyStringObj) => {
+  const result: TKeyStringObj = {};
   Object.keys(obj).forEach(key => {
     result[key] = {
       value: obj[key],

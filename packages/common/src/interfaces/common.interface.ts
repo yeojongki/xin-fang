@@ -1,3 +1,1 @@
-export interface IKeyStringObj {
-  [key: string]: any;
-}
+export type TKeyStringObj = Record<string, any>;
