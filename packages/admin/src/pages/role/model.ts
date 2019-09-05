@@ -5,6 +5,7 @@ import { IRole } from '@xf/common/src/interfaces/role.interfaces';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { HttpSuccessResponse } from '@/utils/request';
 import * as Api from './service';
+import { namespace } from '.';
 
 export type IRoleStateType = IPaginationList<IRole>;
 
@@ -15,7 +16,7 @@ export interface ModelType {
   state: IRoleStateType;
   effects: {
     getList: Effect;
-    deleteRoles: Effect;
+    delete: Effect;
     update: Effect;
     create: Effect;
   };
@@ -25,7 +26,7 @@ export interface ModelType {
 }
 
 const Model: ModelType = {
-  namespace: 'role',
+  namespace,
 
   state: {
     list: [],
@@ -44,9 +45,9 @@ const Model: ModelType = {
         payload: result,
       });
     },
-    *deleteRoles({ payload }, { call }) {
+    *delete({ payload }, { call }) {
       const { callback, ids } = payload;
-      const { message }: HttpSuccessResponse = yield call(Api.deleteRoles, ids);
+      const { message }: HttpSuccessResponse = yield call(Api.deleteByIds, ids);
       Message.success(message);
       callback();
     },

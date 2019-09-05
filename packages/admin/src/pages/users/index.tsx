@@ -1,38 +1,116 @@
-import React, { Component } from 'react';
-import { Table, Popconfirm, Alert, Divider } from 'antd';
+import React, { FC, useState, useRef, useCallback } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_OPTIONS } from '@xf/common/src/constants/pagination.const';
+import { WrappedFormUtils } from 'antd/es/form/Form';
+import { TIDs } from '@xf/common/src/interfaces/id.interface';
+import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { StateType } from './model';
+import create, { IResetSelectedFn } from '@/components/StandardTable';
+import { getForm, generateField } from '@/utils/form';
+import { Base } from './components/Base';
+import ModalForm from '@/components/BaseForm/ModalForm';
 
-interface UsersProps {
+interface IUsersProps {
   dispatch: Dispatch<any>;
   fetching: boolean;
+  editing: boolean;
+  creating: boolean;
   users: StateType;
 }
 
-interface UsersState {
-  selectedRowKeys: string[];
-}
+export const namespace = 'users';
+const pageName = '用户';
+const UsersTable = create<IUser>();
 
-@connect(
-  ({
-    users,
-    loading,
-  }: {
-    users: StateType;
-    loading: {
-      effects: {
-        [key: string]: string;
-      };
-    };
-  }) => ({ users, fetching: loading.effects['users/getList'] }),
-)
-export default class UsersManage extends Component<UsersProps, UsersState> {
-  columns: ColumnProps<IUser>[] = [
+const Users: FC<IUsersProps> = ({
+  dispatch,
+  fetching,
+  editing,
+  creating,
+  users: { pagination, list },
+}) => {
+  const tableRef = useRef<IResetSelectedFn | null>(null);
+
+  const fetchList = useCallback(
+    (payload: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
+      dispatch({
+        type: `${namespace}/getList`,
+        payload,
+      });
+    },
+    [pagination],
+  );
+
+  // create
+  const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);
+  const createFormRef = useRef<any>();
+
+  const submitCreateForm = (values: IUser) => {
+    dispatch({
+      type: `${namespace}/create`,
+      payload: {
+        values,
+        callback: () => {
+          fetchList();
+          setCreateFormVisible(false);
+          // reset fields
+          const form: WrappedFormUtils = createFormRef.current;
+          form.resetFields();
+        },
+      },
+    });
+  };
+
+  // edit
+  const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
+  const [currentRow, setCurrentRow] = useState<IUser>();
+  const editFormRef = useRef<any>();
+
+  const handleEdit = (row: IUser): void => {
+    // set fields
+    const form = getForm(editFormRef);
+    if (form) {
+      form.setFields(generateField(row));
+    } else {
+      // init
+      setCurrentRow(row);
+    }
+    setEditFormVisible(true);
+  };
+
+  const submitEditForm = values => {
+    dispatch({
+      type: `${namespace}/update`,
+      payload: {
+        values,
+        callback: () => {
+          fetchList();
+          setEditFormVisible(false);
+        },
+      },
+    });
+  };
+
+  // delete
+  const handleDelete = (rows: IUser | TIDs) => {
+    const ids = Array.isArray(rows) ? rows : [rows.id];
+    dispatch({
+      type: `${namespace}/delete`,
+      payload: {
+        ids,
+        callback: () => {
+          const { current } = tableRef;
+          current && current.resetSelected();
+          fetchList();
+        },
+      },
+    });
+  };
+
+  const columns: ColumnProps<IUser>[] = [
     {
       key: 'id',
       dataIndex: 'id',
@@ -44,6 +122,16 @@ export default class UsersManage extends Component<UsersProps, UsersState> {
       title: '用户名',
     },
     {
+      key: 'mobile',
+      dataIndex: 'mobile',
+      title: '手机号',
+    },
+    {
+      key: 'email',
+      dataIndex: 'email',
+      title: '邮箱',
+    },
+    {
       key: 'createdAt',
       dataIndex: 'createdAt',
       title: '创建时间',
@@ -53,126 +141,66 @@ export default class UsersManage extends Component<UsersProps, UsersState> {
       dataIndex: 'updatedAt',
       title: '更新时间',
     },
-    {
-      key: 'operation',
-      dataIndex: 'operation',
-      title: '操作',
-      render: (_, record: IUser) => (
-        <>
-          <a>编辑</a>
-          <Divider type="vertical" />
-          <Popconfirm title="确定删除吗?" onConfirm={() => this.handleDeleteUser(record.id)}>
-            <a>删除</a>
-          </Popconfirm>
-        </>
-      ),
-    },
   ];
 
-  state: UsersState = {
-    selectedRowKeys: [],
-  };
+  return (
+    <>
+      <UsersTable
+        onAdd={() => {
+          setCreateFormVisible(true);
+        }}
+        columns={columns}
+        ref={tableRef}
+        rowKey={record => record.id}
+        loading={fetching}
+        pagination={pagination}
+        fetchList={fetchList}
+        dataSource={list}
+        onDeleteRow={handleDelete}
+        onDeleteSelected={handleDelete}
+        // getCheckboxProps={row => ({ disabled: DEFALT_ROLES.includes(row.token) })}
+        onEditRow={handleEdit}
+      />
+      <ModalForm
+        title={`编辑${pageName}`}
+        type="edit"
+        ref={editFormRef}
+        renderItems={props => Base(props)}
+        loading={editing}
+        visible={editFormVisible}
+        initValue={currentRow}
+        onCancel={() => setEditFormVisible(false)}
+        onSubmit={submitEditForm}
+      />
+      <ModalForm
+        title={`创建${pageName}`}
+        type="create"
+        ref={createFormRef}
+        renderItems={props => Base(props)}
+        loading={creating}
+        visible={createFormVisible}
+        onCancel={() => setCreateFormVisible(false)}
+        onSubmit={submitCreateForm}
+      />
+    </>
+  );
+};
 
-  componentDidMount() {
-    this.fetchUsers();
-  }
-
-  onSelectChange = (selectedRowKeys: any) => {
-    this.setState({ selectedRowKeys });
-  };
-
-  setPaginationChange({ pageSize, current }: Partial<IPagination>) {
-    const params: Partial<IPagination> = {
-      pageSize: pageSize ? +pageSize : DEFAULT_PAGE_SIZE,
-      current,
+export default connect(
+  ({
+    users,
+    loading,
+  }: {
+    users: StateType;
+    loading: {
+      effects: {
+        [key: string]: string;
+      };
     };
-    this.fetchUsers(params);
-  }
-
-  fetchUsers = (pagination: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'users/getList',
-      payload: pagination,
-    });
-  };
-
-  handleDeleteUser = (id: string) => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'users/deleteUser',
-      payload: {
-        ids: [id],
-        callback: () => {
-          this.fetchUsers();
-        },
-      },
-    });
-  };
-
-  deleteSelectedUsers = () => {
-    const { selectedRowKeys } = this.state;
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'users/deleteUser',
-      payload: {
-        ids: selectedRowKeys,
-        callback: () => {
-          this.fetchUsers();
-        },
-      },
-    });
-  };
-
-  render() {
-    const { columns } = this;
-    const { users, fetching } = this.props;
-    const { selectedRowKeys } = this.state;
-    const { list, pagination } = users;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-    };
-    const hasSelected = selectedRowKeys.length > 0;
-
-    return (
-      <>
-        <div style={{ marginBottom: 16 }}>
-          <Alert
-            message={
-              <>
-                <span>当前选中 {selectedRowKeys.length} 位用户</span>{' '}
-                {hasSelected ? (
-                  <Popconfirm title="确定删除吗?" onConfirm={() => this.deleteSelectedUsers()}>
-                    <a style={{ marginLeft: '20px' }}>删除选中</a>
-                  </Popconfirm>
-                ) : null}
-              </>
-            }
-            type="info"
-            showIcon
-          />
-        </div>
-        <Table
-          rowKey={record => record.id}
-          rowSelection={rowSelection}
-          loading={fetching}
-          pagination={{
-            showTotal: total => `共${total}条记录 `,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            defaultCurrent: 1,
-            ...pagination,
-            current: pagination.current + 1,
-            pageSizeOptions: DEFAULT_PAGE_OPTIONS,
-          }}
-          onChange={_pagination => {
-            this.setPaginationChange(_pagination);
-          }}
-          columns={columns}
-          dataSource={list}
-        />
-      </>
-    );
-  }
-}
+  }) => ({
+    users,
+    fetching: loading.effects[`${namespace}/getList`],
+    editing: loading.effects[`${namespace}/update`],
+    creating: loading.effects[`${namespace}/create`],
+  }),
+)(Users);

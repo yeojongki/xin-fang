@@ -19,7 +19,7 @@ export class UpdateUserInput extends AuthBaseInput {
   mobile?: string;
 
   @MaxLength(MAX_LENGTH_EMAIL, { message: `邮箱最多为${MAX_LENGTH_EMAIL}位` })
-  @ValidateIf(o => o.email !== '')
+  @ValidateIf(o => !o.email)
   @IsEmail({ allow_utf8_local_part: false }, { message: '邮箱格式不正确' })
   email?: string;
 

@@ -5,6 +5,7 @@ import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { HttpSuccessResponse } from '@/utils/request';
 import * as Api from './service';
+import { namespace } from '.';
 
 export type StateType = IPaginationList<IUser>;
 
@@ -15,7 +16,9 @@ export interface ModelType {
   state: StateType;
   effects: {
     getList: Effect;
-    deleteUser: Effect;
+    delete: Effect;
+    update: Effect;
+    create: Effect;
   };
   reducers: {
     getListHandle: Reducer<StateType>;
@@ -23,7 +26,7 @@ export interface ModelType {
 }
 
 const Model: ModelType = {
-  namespace: 'users',
+  namespace,
 
   state: {
     list: [],
@@ -42,13 +45,23 @@ const Model: ModelType = {
         payload: result,
       });
     },
-    *deleteUser({ payload }, { call }) {
+    *delete({ payload }, { call }) {
       const { callback, ids } = payload;
-      const { errno, message }: HttpSuccessResponse = yield call(Api.deleteUsers, ids);
-      if (errno === 0) {
-        Message.success(message);
-        callback();
-      }
+      const { message }: HttpSuccessResponse = yield call(Api.deleteByIds, ids);
+      Message.success(message);
+      callback();
+    },
+    *update({ payload }, { call }) {
+      const { callback, values } = payload;
+      const { message }: HttpSuccessResponse = yield call(Api.update, values);
+      Message.success(message);
+      callback();
+    },
+    *create({ payload }, { call }) {
+      const { callback, values } = payload;
+      const { message }: HttpSuccessResponse = yield call(Api.create, values);
+      Message.success(message);
+      callback();
     },
   },
 

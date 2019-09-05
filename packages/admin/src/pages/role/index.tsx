@@ -22,21 +22,22 @@ interface IRoleListProps {
   creating: boolean;
 }
 
+export const namespace = 'role';
 const RoleTable = create<IRole>();
 
 const RoleList: React.FC<IRoleListProps> = ({
   dispatch,
   fetching,
-  role: { pagination, list },
   editing,
   creating,
+  role: { pagination, list },
 }) => {
-  const roleTableRef = useRef<IResetSelectedFn | null>(null);
+  const tableRef = useRef<IResetSelectedFn | null>(null);
 
   const fetchList = useCallback(
     (payload: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
       dispatch({
-        type: 'role/getList',
+        type: `${namespace}/getList`,
         payload,
       });
     },
@@ -44,14 +45,14 @@ const RoleList: React.FC<IRoleListProps> = ({
   );
 
   // delete
-  const handleDeleteRoles = (rows: IRole | TIDs) => {
+  const handleDelete = (rows: IRole | TIDs) => {
     const ids = Array.isArray(rows) ? rows : [rows.id];
     dispatch({
-      type: 'role/deleteRoles',
+      type: `${namespace}/delete`,
       payload: {
         ids,
         callback: () => {
-          const { current } = roleTableRef;
+          const { current } = tableRef;
           current && current.resetSelected();
           fetchList();
         },
@@ -64,21 +65,21 @@ const RoleList: React.FC<IRoleListProps> = ({
   const [currentRow, setCurrentRow] = useState<IRole>();
   const editFormRef = useRef<any>();
 
-  const handleEditRole = (role: IRole): void => {
+  const handleEdit = (row: IRole): void => {
     // set fields
     const form = getForm(editFormRef);
     if (form) {
-      form.setFields(generateField(role));
+      form.setFields(generateField(row));
     } else {
       // init
-      setCurrentRow(role);
+      setCurrentRow(row);
     }
     setEditFormVisible(true);
   };
 
   const submitEditForm = values => {
     dispatch({
-      type: 'role/update',
+      type: `${namespace}/update`,
       payload: {
         values,
         callback: () => {
@@ -95,7 +96,7 @@ const RoleList: React.FC<IRoleListProps> = ({
 
   const submitCreateForm = (values: IRole) => {
     dispatch({
-      type: 'role/create',
+      type: `${namespace}/create`,
       payload: {
         values,
         callback: () => {
@@ -139,16 +140,16 @@ const RoleList: React.FC<IRoleListProps> = ({
           setCreateFormVisible(true);
         }}
         columns={columns}
-        ref={roleTableRef}
+        ref={tableRef}
         rowKey={record => record.id}
         loading={fetching}
         pagination={pagination}
         fetchList={fetchList}
         dataSource={list}
-        onDeleteRow={handleDeleteRoles}
-        onDeleteSelected={handleDeleteRoles}
+        onDeleteRow={handleDelete}
+        onDeleteSelected={handleDelete}
         getCheckboxProps={row => ({ disabled: DEFALT_ROLES.includes(row.token) })}
-        onEditRow={handleEditRole}
+        onEditRow={handleEdit}
       />
       <ModalForm
         title="编辑角色"
@@ -188,8 +189,8 @@ export default connect(
     };
   }) => ({
     role,
-    fetching: loading.effects['role/getList'],
-    editing: loading.effects['role/update'],
-    creating: loading.effects['role/create'],
+    fetching: loading.effects[`${namespace}/getList`],
+    editing: loading.effects[`${namespace}/update`],
+    creating: loading.effects[`${namespace}/create`],
   }),
 )(RoleList);
