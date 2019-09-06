@@ -30,7 +30,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
   @TransformClassToPlain()
   async findOne(query: TKeyStringObj): Promise<User | undefined> {
     return await this.userRepository.findOne(query, {
-      relations: ['roles'],
+      relations: ['_roles'],
     });
   }
 
@@ -42,7 +42,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    */
   async findOneWithPassword(query: TKeyStringObj) {
     return await this.userRepository.findOne(query, {
-      relations: ['roles'],
+      relations: ['_roles'],
     });
   }
 
@@ -95,5 +95,13 @@ export class UserService extends CurdService<User, UpdateUserInput> {
     const toSave = this.userRepository.create(toCreate);
     await this.userRepository.save(toSave);
     return Promise.resolve();
+  }
+
+  async findAndCount(skip: number, take: number): Promise<[User[], number]> {
+    return await this.userRepository.findAndCount({
+      relations: ['_roles'],
+      skip,
+      take,
+    });
   }
 }

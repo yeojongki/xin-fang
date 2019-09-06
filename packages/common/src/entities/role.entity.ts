@@ -20,7 +20,7 @@ export class Role extends Base {
   @Column({ comment: '描述', default: null, nullable: true })
   desc?: string;
 
-  @ManyToMany(() => User, user => user.roles)
+  @ManyToMany(() => User, user => user._roles)
   @JoinTable({
     name: 'user_role',
     joinColumn: { name: 'role_id' },

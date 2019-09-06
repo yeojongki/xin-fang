@@ -61,23 +61,27 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
     dataIndex: 'operation',
     title: '操作',
     width: 150,
-    render: (_, record) => (
-      <>
-        <Button type="link" size="small" onClick={() => (onEditRow ? onEditRow(record) : null)}>
-          编辑
-        </Button>
-        <Divider type="vertical" />
-        <Popconfirm title="确定删除吗?" onConfirm={() => onDeleteRow && onDeleteRow(record)}>
-          <Button
-            disabled={getCheckboxProps ? getCheckboxProps(record).disabled : false}
-            type="link"
-            size="small"
-          >
-            删除
+    fixed: 'right',
+    render: (_, record) => {
+      const disabled = getCheckboxProps ? getCheckboxProps(record).disabled : false;
+      return (
+        <>
+          <Button type="link" size="small" onClick={() => (onEditRow ? onEditRow(record) : null)}>
+            编辑
           </Button>
-        </Popconfirm>
-      </>
-    ),
+          <Divider type="vertical" />
+          <Popconfirm
+            title="确定删除吗?"
+            disabled={disabled}
+            onConfirm={() => onDeleteRow && onDeleteRow(record)}
+          >
+            <Button disabled={disabled} type="link" size="small">
+              删除
+            </Button>
+          </Popconfirm>
+        </>
+      );
+    },
   };
 
   const columnsProps = columns.concat(operationColumn);
@@ -148,6 +152,7 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
           </div>
 
           <Table
+            scroll={{ x: 'max-content' }}
             rowKey={rowKey}
             columns={columnsProps}
             dataSource={dataSource}

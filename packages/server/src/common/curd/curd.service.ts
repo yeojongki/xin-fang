@@ -65,12 +65,20 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
     return await this.repository.remove(await this.repository.findByIds(ids));
   }
 
+  /**
+   * 查找并记数
+   * @param {number} skip
+   * @param {number} take
+   * @returns {Promise<[T[], number]>}
+   * @memberof CurdService
+   */
+  async findAndCount(skip: number, take: number): Promise<[T[], number]> {
+    return this.repository.findAndCount({ skip, take });
+  }
+
   @TransformClassToPlain()
   async getList(skip: number, take: number): Promise<IPaginationList<T>> {
-    const [list, count] = await this.repository.findAndCount({
-      skip,
-      take,
-    });
+    const [list, count] = await this.findAndCount(skip, take);
     return {
       list,
       pagination: {

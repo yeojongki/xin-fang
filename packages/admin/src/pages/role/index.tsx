@@ -1,18 +1,17 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
-import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import DEFALT_ROLES from '@xf/common/src/constants/roles.const';
-import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
-import { IRoleStateType } from './model';
+import { IRoleStateType } from '@/models/role';
 import ModalForm from '@/components/BaseForm/ModalForm';
 import { Base } from './components/Base';
 import { getForm, generateField } from '@/utils/form';
+import { IDColumn } from '@/components/TableColumn';
 
 interface IRoleListProps {
   dispatch: Dispatch<any>;
@@ -30,19 +29,16 @@ const RoleList: React.FC<IRoleListProps> = ({
   fetching,
   editing,
   creating,
-  role: { pagination, list },
+  role: { list },
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
-  const fetchList = useCallback(
-    (payload: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
-      dispatch({
-        type: `${namespace}/getList`,
-        payload,
-      });
-    },
-    [pagination],
-  );
+  const fetchList = (payload?: any) => {
+    dispatch({
+      type: `${namespace}/getList`,
+      payload,
+    });
+  };
 
   // delete
   const handleDelete = (rows: IRole | TIDs) => {
@@ -115,6 +111,7 @@ const RoleList: React.FC<IRoleListProps> = ({
       key: 'id',
       dataIndex: 'id',
       title: 'id',
+      render: (id: string) => <IDColumn id={id} />,
     },
     {
       key: 'token',
@@ -143,7 +140,7 @@ const RoleList: React.FC<IRoleListProps> = ({
         ref={tableRef}
         rowKey={record => record.id}
         loading={fetching}
-        pagination={pagination}
+        pagination={false}
         fetchList={fetchList}
         dataSource={list}
         onDeleteRow={handleDelete}

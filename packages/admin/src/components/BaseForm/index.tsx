@@ -14,7 +14,8 @@ export interface IBaseFormProps<V = any> extends FormComponentProps {
   layout?: FormLayout;
 }
 
-export type TRenderItems<T> = Pick<IBaseFormProps<T>, 'initValue' | 'form' | 'type'>;
+export type TRenderItems<T> = Pick<IBaseFormProps<T>, 'initValue' | 'form' | 'type'> &
+  TKeyStringObj;
 
 /**
  * 表单项的布局

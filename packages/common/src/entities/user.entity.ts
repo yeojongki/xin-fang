@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { Gender } from '@xf/common/src/constants/gender.const';
 import { Base } from './base.entity';
 import { Role } from './role.entity';
@@ -28,11 +28,17 @@ export class User extends Base {
   @Column({ default: null })
   avatar?: string;
 
+  @Exclude()
   @ManyToMany(() => Role, role => role.users)
   @JoinTable({
     name: 'user_role',
     joinColumn: { name: 'user_id' },
     inverseJoinColumn: { name: 'role_id' },
   })
-  roles?: Role[];
+  _roles!: Role[];
+
+  @Expose({ name: 'roles' })
+  getRoles() {
+    return this._roles.map(role => role.token);
+  }
 }

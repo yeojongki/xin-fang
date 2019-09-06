@@ -7,11 +7,14 @@ import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
+import { Gender, GenderMap } from '@xf/common/src/constants/gender.const';
 import { StateType } from './model';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { getForm, generateField } from '@/utils/form';
 import { Base } from './components/Base';
 import ModalForm from '@/components/BaseForm/ModalForm';
+import { IDColumn, DateColumn } from '@/components/TableColumn';
+import { Md5 } from '@/utils';
 
 interface IUsersProps {
   dispatch: Dispatch<any>;
@@ -49,10 +52,11 @@ const Users: FC<IUsersProps> = ({
   const createFormRef = useRef<any>();
 
   const submitCreateForm = (values: IUser) => {
+    const input = { ...values, password: Md5(values.password) };
     dispatch({
       type: `${namespace}/create`,
       payload: {
-        values,
+        values: input,
         callback: () => {
           fetchList();
           setCreateFormVisible(false);
@@ -81,7 +85,11 @@ const Users: FC<IUsersProps> = ({
     setEditFormVisible(true);
   };
 
-  const submitEditForm = values => {
+  const submitEditForm = (values: IUser) => {
+    // 加密 password
+    if (values.password) {
+      values.password = Md5(values.password);
+    }
     dispatch({
       type: `${namespace}/update`,
       payload: {
@@ -115,11 +123,17 @@ const Users: FC<IUsersProps> = ({
       key: 'id',
       dataIndex: 'id',
       title: 'id',
+      render: (id: string) => <IDColumn id={id} />,
     },
     {
       key: 'username',
       dataIndex: 'username',
       title: '用户名',
+    },
+    {
+      key: 'roles',
+      dataIndex: 'roles',
+      title: '角色',
     },
     {
       key: 'mobile',
@@ -132,14 +146,24 @@ const Users: FC<IUsersProps> = ({
       title: '邮箱',
     },
     {
+      key: 'gender',
+      dataIndex: 'gender',
+      title: '性别',
+      render: (gender: Gender) => GenderMap[gender],
+    },
+    {
       key: 'createdAt',
       dataIndex: 'createdAt',
       title: '创建时间',
+      width: 150,
+      render: date => <DateColumn date={date} />,
     },
     {
       key: 'updatedAt',
       dataIndex: 'updatedAt',
       title: '更新时间',
+      width: 150,
+      render: date => <DateColumn date={date} />,
     },
   ];
 
