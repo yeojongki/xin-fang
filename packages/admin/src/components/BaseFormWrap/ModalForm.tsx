@@ -1,9 +1,9 @@
 import React from 'react';
 import { Modal } from 'antd';
 import { WrappedFormUtils } from 'antd/es/form/Form';
-import BaseForm, { IBaseFormProps } from '.';
+import BaseFormWrap, { IBaseFormWrapProps } from '.';
 
-export interface IModalFormProps extends Omit<IBaseFormProps, 'form'> {
+export interface IModalFormProps extends Omit<IBaseFormWrapProps, 'form'> {
   title: string;
   visible: boolean;
   onSubmit: (values: any) => void;
@@ -41,7 +41,7 @@ const ModalForm = ({
       onOk={onOk}
       onCancel={onCancel}
     >
-      <BaseForm {...rest} ref={forwardRef} />
+      <BaseFormWrap {...rest} ref={forwardRef} />
     </Modal>
   );
 };

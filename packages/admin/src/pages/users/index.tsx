@@ -8,13 +8,15 @@ import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { Gender, GenderMap } from '@xf/common/src/constants/gender.const';
+import { Tag } from 'antd';
 import { StateType } from './model';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { getForm, generateField } from '@/utils/form';
-import { Base } from './components/Base';
-import ModalForm from '@/components/BaseForm/ModalForm';
+import { BaseForm } from './components/Base';
+import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { IDColumn, DateColumn } from '@/components/TableColumn';
 import { Md5 } from '@/utils';
+import { IRoleStateType } from '@/models/role';
 
 interface IUsersProps {
   dispatch: Dispatch<any>;
@@ -22,6 +24,8 @@ interface IUsersProps {
   editing: boolean;
   creating: boolean;
   users: StateType;
+  roleList: IRoleStateType['list'];
+  roleMap: IRoleStateType['map'];
 }
 
 export const namespace = 'users';
@@ -34,6 +38,8 @@ const Users: FC<IUsersProps> = ({
   editing,
   creating,
   users: { pagination, list },
+  roleList,
+  roleMap,
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
@@ -134,6 +140,7 @@ const Users: FC<IUsersProps> = ({
       key: 'roles',
       dataIndex: 'roles',
       title: '角色',
+      render: (roles: string[]) => roles.map(role => <Tag key={role}>{roleMap[role]}</Tag>),
     },
     {
       key: 'mobile',
@@ -189,7 +196,7 @@ const Users: FC<IUsersProps> = ({
         title={`编辑${pageName}`}
         type="edit"
         ref={editFormRef}
-        renderItems={props => Base(props)}
+        renderItems={props => BaseForm({ ...props, roleList })}
         loading={editing}
         visible={editFormVisible}
         initValue={currentRow}
@@ -200,7 +207,7 @@ const Users: FC<IUsersProps> = ({
         title={`创建${pageName}`}
         type="create"
         ref={createFormRef}
-        renderItems={props => Base(props)}
+        renderItems={props => BaseForm({ ...props, roleList })}
         loading={creating}
         visible={createFormVisible}
         onCancel={() => setCreateFormVisible(false)}
@@ -213,9 +220,11 @@ const Users: FC<IUsersProps> = ({
 export default connect(
   ({
     users,
+    role,
     loading,
   }: {
     users: StateType;
+    role: IRoleStateType;
     loading: {
       effects: {
         [key: string]: string;
@@ -223,6 +232,8 @@ export default connect(
     };
   }) => ({
     users,
+    roleList: role.list,
+    roleMap: role.map,
     fetching: loading.effects[`${namespace}/getList`],
     editing: loading.effects[`${namespace}/update`],
     creating: loading.effects[`${namespace}/create`],

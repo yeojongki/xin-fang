@@ -35,10 +35,10 @@ export class User extends Base {
     joinColumn: { name: 'user_id' },
     inverseJoinColumn: { name: 'role_id' },
   })
-  _roles!: Role[];
+  roles!: Role[];
 
   @Expose({ name: 'roles' })
-  getRoles() {
-    return this._roles.map(role => role.token);
+  getRoles(): string[] {
+    return this.roles.map(role => role.token);
   }
 }

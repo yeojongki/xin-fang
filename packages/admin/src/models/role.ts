@@ -6,8 +6,13 @@ import { HttpSuccessResponse } from '@/utils/request';
 import * as Api from '@/services/role';
 import { namespace } from '@/pages/role';
 
+export interface IRoleMap {
+  [token: string]: IRole;
+}
+
 export interface IRoleStateType {
   list: IRole[];
+  map: IRoleMap;
 }
 
 export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;
@@ -31,14 +36,21 @@ const Model: ModelType = {
 
   state: {
     list: [],
+    map: {},
   },
 
   effects: {
     *getList({ payload }, { call, put }) {
-      const { result }: HttpSuccessResponse = yield call(Api.getList, payload);
+      const {
+        result: { list },
+      }: HttpSuccessResponse = yield call(Api.getList, payload);
+      const map = (list as IRole[]).reduce((p, n) => {
+        p[n.token] = n.name;
+        return p;
+      }, {});
       yield put({
         type: 'setList',
-        payload: result,
+        payload: { list, map },
       });
     },
     *delete({ payload }, { call }) {
@@ -62,9 +74,10 @@ const Model: ModelType = {
   },
 
   reducers: {
-    setList(_, { payload: { list } }) {
+    setList(_, { payload: { list, map } }) {
       return {
         list,
+        map,
       };
     },
   },

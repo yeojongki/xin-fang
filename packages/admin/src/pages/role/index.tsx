@@ -8,7 +8,7 @@ import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { IRoleStateType } from '@/models/role';
-import ModalForm from '@/components/BaseForm/ModalForm';
+import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { Base } from './components/Base';
 import { getForm, generateField } from '@/utils/form';
 import { IDColumn } from '@/components/TableColumn';

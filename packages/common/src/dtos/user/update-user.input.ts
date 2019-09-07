@@ -14,7 +14,6 @@ import {
   ENCODED_PASSWORD_LENGTH,
 } from '@xf/common/src/constants/validation.const';
 import { Gender } from '@xf/common/src/constants/gender.const';
-import { Role } from '@xf/common/src/entities/role.entity';
 import { AuthBaseInput } from '../auth/auth-base.input';
 
 export class UpdateUserInput extends AuthBaseInput {
@@ -31,6 +30,7 @@ export class UpdateUserInput extends AuthBaseInput {
 
   @IsOptional()
   @MaxLength(MAX_LENGTH_MOBILE)
+  @ValidateIf(o => o.mobile)
   @IsMobilePhone('zh-CN')
   mobile?: string;
 
@@ -46,5 +46,5 @@ export class UpdateUserInput extends AuthBaseInput {
   // todo custom validation https://github.com/typestack/class-validator#custom-validation-decorators
   gender?: Gender;
 
-  roles?: Role[];
+  roles?: string[];
 }

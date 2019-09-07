@@ -9,13 +9,18 @@ import {
   MIN_LENGTH_PASSWORD,
   MOBILE_REG,
 } from '@xf/common/src/constants/validation.const';
-import { TRenderItems } from '@/components/BaseForm';
+import { IRole } from '@xf/common/src/interfaces/role.interfaces';
+import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
+import { TRenderItems } from '@/components/BaseFormWrap';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 
-export const Base = (props: TRenderItems<IUser>) => {
-  const { initValue, form, type } = props;
+interface IBaseProps extends TRenderItems<IUser> {
+  roleList: IRole[];
+}
+
+export const BaseForm = ({ initValue, form, type, roleList }: IBaseProps) => {
   const { getFieldDecorator } = form;
   const isQueryForm = type === 'query';
 
@@ -65,11 +70,15 @@ export const Base = (props: TRenderItems<IUser>) => {
 
       <FormItem label="角色" hasFeedback>
         {getFieldDecorator('roles', {
+          initialValue: initValue ? initValue.roles : DEFAULT_ROLE,
           rules: [{ required: true, message: '请选择用户角色!' }],
         })(
-          <Select placeholder="请选择用户角色">
-            <Option value="china">China</Option>
-            <Option value="usa">U.S.A</Option>
+          <Select mode="tags" placeholder="请选择用户角色">
+            {roleList.map(({ token, name }) => (
+              <Option key={token} value={token}>
+                {name}
+              </Option>
+            ))}
           </Select>,
         )}
       </FormItem>
