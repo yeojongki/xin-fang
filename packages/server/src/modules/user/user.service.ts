@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TransformClassToPlain, Transform } from 'class-transformer';
+import { TransformClassToPlain } from 'class-transformer';
 import { Repository } from 'typeorm';
 import { User } from '@xf/common/src/entities/user.entity';
 import { Role } from '@xf/common/src/entities/role.entity';
