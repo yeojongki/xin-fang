@@ -73,7 +73,7 @@ export const BaseForm = ({ initValue, form, type, roleList }: IBaseProps) => {
           initialValue: initValue ? initValue.roles : DEFAULT_ROLE,
           rules: [{ required: true, message: '请选择用户角色!' }],
         })(
-          <Select mode="tags" placeholder="请选择用户角色">
+          <Select mode="multiple" placeholder="请选择用户角色">
             {roleList.map(({ token, name }) => (
               <Option key={token} value={token}>
                 {name}
