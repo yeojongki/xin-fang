@@ -10,7 +10,7 @@ export class TypeormService implements TypeOrmOptionsFactory {
       type: 'mysql',
       host: 'localhost',
       port: 3306,
-      charset: 'utf8mb4',
+      charset: 'utf8mb4_unicode_ci',
       username: 'root',
       password: '123456',
       database: 'xin-fang',
