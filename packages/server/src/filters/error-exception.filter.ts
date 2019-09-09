@@ -1,11 +1,5 @@
-import {
-  ExceptionFilter,
-  HttpException,
-  ArgumentsHost,
-  Catch,
-  HttpStatus,
-} from '@nestjs/common';
-import { HttpErrorResponse } from '@/interfaces/http.interface';
+import { ExceptionFilter, HttpException, ArgumentsHost, Catch, HttpStatus } from '@nestjs/common';
+import { HttpErrorResponse } from '@xf/common/src/interfaces/http.interface';
 import { errorCode } from '@/constants/error-code';
 
 @Catch()
@@ -33,8 +27,12 @@ export class ErrorExceptionFilter implements ExceptionFilter {
 
     // 数据库错误
     if (errorResponse.sqlMessage) {
-      message = '数据库操作失败';
+      message = 'Error in DB：';
       error = errorResponse.sqlMessage;
+      if ((error as string).indexOf('Duplicate') > -1) {
+        const params = errorResponse.parameters;
+        error = (params && `<${params[0]}> 已重复!`) || error;
+      }
       errno = errorCode.DB_OPERATE_ERROR;
     }
 

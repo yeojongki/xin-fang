@@ -5,6 +5,7 @@
 import { extend } from 'umi-request';
 import { notification } from 'antd';
 import { router } from 'umi';
+import { HttpErrorResponse } from '@xf/common/src/interfaces/http.interface';
 import { getStorageToken } from './authority';
 
 const codeMessage = {
@@ -24,21 +25,6 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 };
-
-export interface HttpBaseResponse {
-  errno: number;
-  message: string;
-}
-
-export interface HttpErrorResponse extends HttpBaseResponse {
-  error?: any;
-  sqlMessage?: string;
-  name?: string;
-}
-
-export interface HttpSuccessResponse extends HttpBaseResponse {
-  result: any;
-}
 
 let isCapturedByInterceptor = false;
 
@@ -90,16 +76,16 @@ request.interceptors.request.use((url, options) => {
 
 request.interceptors.response.use(async response => {
   const { url, status } = response;
-  const data = await response.clone().json();
+  const data: HttpErrorResponse = await response.clone().json();
   if (data && data.errno === 0) return response;
 
   isCapturedByInterceptor = true;
 
   // 自定义错误
   if (data && data.message !== undefined) {
-    const { message, errno } = data;
+    const { message, errno, error } = data;
     notification.error({
-      message: `${message}`,
+      message: `${message} ${error}`,
       description: errno ? `errno: ${errno}` : '',
     });
 
