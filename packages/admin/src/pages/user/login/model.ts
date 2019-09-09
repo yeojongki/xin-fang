@@ -3,7 +3,7 @@ import { EffectsCommandMap } from 'dva';
 import { routerRedux } from 'dva/router';
 import * as Api from './service';
 import { getPageQuery } from './utils/utils';
-import { HttpSuccessResponse } from '@/utils/request';
+import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
 import { setStorageToken } from '@/utils/authority';
 
 export interface StateType {

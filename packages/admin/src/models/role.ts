@@ -2,7 +2,7 @@ import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { message as Message } from 'antd';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
-import { HttpSuccessResponse } from '@/utils/request';
+import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
 import * as Api from '@/services/role';
 import { namespace } from '@/pages/role';
 

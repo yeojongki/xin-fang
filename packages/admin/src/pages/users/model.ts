@@ -3,7 +3,7 @@ import { EffectsCommandMap } from 'dva';
 import { message as Message } from 'antd';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
-import { HttpSuccessResponse } from '@/utils/request';
+import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
 import * as Api from './service';
 import { namespace } from '.';
 
