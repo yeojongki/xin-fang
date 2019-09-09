@@ -12,6 +12,7 @@ import { JwtAuthGuard } from '@/guard/auth.guard';
 import { CurdController } from '@/common/curd/curd.controller';
 import { Message } from '@/decorators/http.decorator';
 import { Roles } from '@/decorators/roles.decorator';
+import { TListQuery } from '@/interfaces/list.query.interfact';
 
 @Controller('user')
 export class UserController extends CurdController<User, UpdateUserInput> {
@@ -20,20 +21,16 @@ export class UserController extends CurdController<User, UpdateUserInput> {
   }
 
   /**
-   * 获取所有的用户
-   * @param {number} [skip=0]
-   * @param {number} [take=20]
-   * @returns
+   * 获取用户列表
+   * @param {TListQuery<User>} query
+   * @returns {Promise<IPaginationList<IUser>>}
    * @memberof UserController
    */
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(SUPER_ADMIN)
   @Get('list')
-  async getList(
-    @Query('current') skip: number = 1,
-    @Query('pageSize') take: number = DEFAULT_PAGE_SIZE,
-  ): Promise<IPaginationList<IUser>> {
-    return this.userService.getList(skip - 1, take);
+  async getList(@Query() query: TListQuery<User>): Promise<IPaginationList<IUser>> {
+    return this.userService.getList(query);
   }
 
   /**

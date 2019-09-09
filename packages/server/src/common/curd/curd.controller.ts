@@ -1,4 +1,13 @@
-import { Delete, UseGuards, Param, Body, Get, Query } from '@nestjs/common';
+import {
+  Delete,
+  UseGuards,
+  Param,
+  Body,
+  Get,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { IID, TID, TIDs } from '@xf/common/src/interfaces/id.interface';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
@@ -8,6 +17,8 @@ import { JwtAuthGuard } from '@/guard/auth.guard';
 import { RolesGuard } from '@/guard/roles.guard';
 import { Roles } from '@/decorators/roles.decorator';
 import { BaseController, IFindIdResult } from '../base/base.controller';
+import { TKeyStringObj } from '@xf/common/src/interfaces/common.interface';
+import { TListQuery } from '@/interfaces/list.query.interfact';
 
 /**
  * curd controller
@@ -27,11 +38,9 @@ export abstract class CurdController<E extends IFindIdResult, U extends IID> ext
   abstract async update(dto: U): Promise<any>;
 
   @Get('list')
-  async getList(
-    @Query('current') skip: number = 0,
-    @Query('pageSize') take: number = DEFAULT_PAGE_SIZE,
-  ): Promise<IPaginationList<E>> {
-    return await this.service.getList(skip, take);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async getList(@Query('query') query: TListQuery<E>): Promise<IPaginationList<E>> {
+    return await this.service.getList(query);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

@@ -2,11 +2,18 @@ import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { message as Message } from 'antd';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
-import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { HttpSuccessResponse } from '@/utils/request';
-import * as Api from './service';
+import * as Api from '@/services/role';
+import { namespace } from '@/pages/role';
 
-export type IRoleStateType = IPaginationList<IRole>;
+export interface IRoleMap {
+  [token: string]: IRole;
+}
+
+export interface IRoleStateType {
+  list: IRole[];
+  map: IRoleMap;
+}
 
 export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;
 
@@ -15,7 +22,7 @@ export interface ModelType {
   state: IRoleStateType;
   effects: {
     getList: Effect;
-    deleteRoles: Effect;
+    delete: Effect;
     update: Effect;
     create: Effect;
   };
@@ -25,28 +32,30 @@ export interface ModelType {
 }
 
 const Model: ModelType = {
-  namespace: 'role',
+  namespace,
 
   state: {
     list: [],
-    pagination: {
-      total: 0,
-      current: 0,
-      pageSize: 0,
-    },
+    map: {},
   },
 
   effects: {
     *getList({ payload }, { call, put }) {
-      const { result }: HttpSuccessResponse = yield call(Api.getList, payload);
+      const {
+        result: { list },
+      }: HttpSuccessResponse = yield call(Api.getList, payload);
+      const map = (list as IRole[]).reduce((p, n) => {
+        p[n.token] = n.name;
+        return p;
+      }, {});
       yield put({
         type: 'setList',
-        payload: result,
+        payload: { list, map },
       });
     },
-    *deleteRoles({ payload }, { call }) {
+    *delete({ payload }, { call }) {
       const { callback, ids } = payload;
-      const { message }: HttpSuccessResponse = yield call(Api.deleteRoles, ids);
+      const { message }: HttpSuccessResponse = yield call(Api.deleteByIds, ids);
       Message.success(message);
       callback();
     },
@@ -65,10 +74,10 @@ const Model: ModelType = {
   },
 
   reducers: {
-    setList(_, { payload: { list, pagination } }) {
+    setList(_, { payload: { list, map } }) {
       return {
         list,
-        pagination,
+        map,
       };
     },
   },

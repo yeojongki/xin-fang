@@ -5,7 +5,7 @@ import { FormLayout } from 'antd/es/form/Form';
 import { TKeyStringObj } from '@xf/common/src/interfaces/common.interface';
 import defaultFormItemLayout from './_defaultFormItemLayout';
 
-export interface IBaseFormProps<V = any> extends FormComponentProps {
+export interface IBaseFormWrapProps<V = any> extends FormComponentProps {
   initValue?: V | undefined;
   type: TFormType;
   onSubmit?: (values: V) => void;
@@ -14,7 +14,8 @@ export interface IBaseFormProps<V = any> extends FormComponentProps {
   layout?: FormLayout;
 }
 
-export type TRenderItems<T> = Pick<IBaseFormProps<T>, 'initValue' | 'form' | 'type'>;
+export type TRenderItems<T> = Pick<IBaseFormWrapProps<T>, 'initValue' | 'form' | 'type'> &
+  TKeyStringObj;
 
 /**
  * 表单项的布局
@@ -27,7 +28,7 @@ export interface IFormItemLayout {
 
 export type TFormType = 'create' | 'edit' | 'query';
 
-const BaseForm = (props: IBaseFormProps, ref: Ref<any>) => {
+const BaseFormWrap = (props: IBaseFormWrapProps, ref: Ref<any>) => {
   const {
     form,
     type,
@@ -66,4 +67,4 @@ const BaseForm = (props: IBaseFormProps, ref: Ref<any>) => {
   );
 };
 
-export default memo(Form.create<IBaseFormProps>()(forwardRef(BaseForm)));
+export default memo(Form.create<IBaseFormWrapProps>()(forwardRef(BaseFormWrap)));

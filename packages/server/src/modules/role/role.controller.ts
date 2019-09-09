@@ -11,6 +11,7 @@ import { RoleService } from './role.service';
 import { Roles } from '@/decorators/roles.decorator';
 import { JwtAuthGuard } from '@/guard/auth.guard';
 import { RolesGuard } from '@/guard/roles.guard';
+import { TListQuery } from '@/interfaces/list.query.interfact';
 
 @Controller('role')
 export class RoleController extends CurdController<Role, UpdateRoleInput> {
@@ -21,11 +22,8 @@ export class RoleController extends CurdController<Role, UpdateRoleInput> {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(SUPER_ADMIN)
   @Get('list')
-  async getList(
-    @Query('current') skip: number = 1,
-    @Query('pageSize') take: number = DEFAULT_PAGE_SIZE,
-  ): Promise<IPaginationList<IRole>> {
-    return await this.roleService.getList(skip - 1, take);
+  async getList(@Query() query: TListQuery<Role>): Promise<IPaginationList<IRole>> {
+    return await this.roleService.getList(query);
   }
 
   @Put()

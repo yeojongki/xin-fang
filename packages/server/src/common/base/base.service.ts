@@ -38,13 +38,13 @@ export abstract class BaseService<T> implements IServiceName {
   /**
    * 根据Id查找数据 查找结果为空时抛错
    * @param {TID} id
-   * @returns {(Promise<T | undefined>)}
+   * @returns {(Promise<T>)}
    * @memberof BaseService
    */
-  async findByIdAndThrowError(id: TID): Promise<T | undefined> {
+  async findByIdAndThrowError(id: TID): Promise<T> {
     const entity = await this.findById(id);
     if (!entity) {
-      this.handleNotFoundError(id);
+      throw this.handleNotFoundError(id);
     }
     return entity;
   }

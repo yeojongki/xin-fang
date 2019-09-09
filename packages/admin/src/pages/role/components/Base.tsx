@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
-import { TRenderItems } from '@/components/BaseForm';
+import { TRenderItems } from '@/components/BaseFormWrap';
 
 const FormItem = Form.Item;
 

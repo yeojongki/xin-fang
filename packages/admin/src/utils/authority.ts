@@ -1,4 +1,4 @@
-import { IRole } from '@xf/common/src/interfaces/role.interfaces';
+import { TRole } from '@xf/common/src/interfaces/role.interfaces';
 import { ITokenResult, ITokenResultWithTs } from '@xf/common/src/interfaces/auth.interface';
 import { STORAGE_TOKEN_KEY, STORAGE_ROLE_KEY } from '@/config';
 
@@ -24,12 +24,11 @@ export function getStorageRoles(): string | string[] {
 /**
  * 存储角色 到 storage 中
  * @export
- * @param {IRole[]} roles
+ * @param {TRole[]} roles
  * @returns {void}
  */
-export function setStorageRoles(roles: IRole[]): void {
-  const userRoles = roles.map(role => role.token);
-  return localStorage.setItem(STORAGE_ROLE_KEY, JSON.stringify(userRoles));
+export function setStorageRoles(roles: TRole[]): void {
+  return localStorage.setItem(STORAGE_ROLE_KEY, JSON.stringify(roles));
 }
 
 /**

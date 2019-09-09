@@ -1,8 +1,11 @@
-import { Repository } from 'typeorm';
+import { Repository, FindConditions } from 'typeorm';
 import { TransformClassToPlain } from 'class-transformer';
 import { TID, IID, TIDs } from '@xf/common/src/interfaces/id.interface';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { BaseService } from '../base/base.service';
+import { TKeyStringObj } from '@xf/common/src/interfaces/common.interface';
+import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
+import { TListQuery } from '@/interfaces/list.query.interfact';
 
 /**
  * @class CurdService
@@ -35,13 +38,13 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
   /**
    * 更新数据 数据实体不存在 id 时抛错
    * @param {U} dto
-   * @returns {(Promise<T & U>)}
+   * @returns {(Promise<T>)}
    * @memberof CurdService
    */
-  async update(dto: U): Promise<T & U> {
+  async update(dto: U): Promise<T> {
     const { id } = dto;
     const toUpdate = await this.findByIdAndThrowError(id);
-    return await this.repository.save(Object.assign(toUpdate as T, dto));
+    return await this.repository.save(Object.assign(toUpdate, dto));
   }
 
   /**
@@ -65,16 +68,24 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
     return await this.repository.remove(await this.repository.findByIds(ids));
   }
 
+  /**
+   * 查找并记数
+   * @param {TListQuery<T>} query
+   * @returns {Promise<[T[], number]>}
+   * @memberof CurdService
+   */
+  async findAndCount(query: TListQuery<T>): Promise<[T[], number]> {
+    return this.repository.findAndCount(query);
+  }
+
   @TransformClassToPlain()
-  async getList(skip: number, take: number): Promise<IPaginationList<T>> {
-    const [list, count] = await this.repository.findAndCount({
-      skip,
-      take,
-    });
+  async getList(query: TListQuery<T>): Promise<IPaginationList<T>> {
+    const { skip, take } = query;
+    const [list, count] = await this.findAndCount(query);
     return {
       list,
       pagination: {
-        current: skip + 1,
+        current: +skip + 1,
         pageSize: +take,
         total: count,
       },

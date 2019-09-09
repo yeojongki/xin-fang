@@ -1,9 +1,10 @@
 import { Length } from 'class-validator';
+import { MAX_LENGTH_USERNAME, ENCODED_PASSWORD_LENGTH } from '../../constants/validation.const';
 
 export class AuthBaseInput {
-  @Length(1, 16, { message: '用户名只能是 1-16 位' })
+  @Length(1, MAX_LENGTH_USERNAME)
   username!: string;
 
-  @Length(6, 64, { message: '密码只能是 6-64 位 ' })
+  @Length(ENCODED_PASSWORD_LENGTH, ENCODED_PASSWORD_LENGTH)
   password!: string;
 }

@@ -57,6 +57,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       dispatch({
         type: 'settings/getSetting',
       });
+      dispatch({
+        type: 'role/getList',
+      });
     }
   }, []);
   /**
