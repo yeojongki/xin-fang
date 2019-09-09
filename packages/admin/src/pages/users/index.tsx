@@ -17,6 +17,7 @@ import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { IDColumn, DateColumn } from '@/components/TableColumn';
 import { Md5 } from '@/utils';
 import { IRoleStateType } from '@/models/role';
+import Query from './components/Query';
 
 interface IUsersProps {
   dispatch: Dispatch<any>;
@@ -181,6 +182,13 @@ const Users: FC<IUsersProps> = ({
         onAdd={() => {
           setCreateFormVisible(true);
         }}
+        renderSearchForm={() => (
+          <Query
+            onSearch={val => {
+              console.log(val);
+            }}
+          />
+        )}
         columns={columns}
         ref={tableRef}
         rowKey={record => record.id}

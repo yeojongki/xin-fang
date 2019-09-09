@@ -10,15 +10,13 @@ import {
 } from '@nestjs/common';
 import { IID, TID, TIDs } from '@xf/common/src/interfaces/id.interface';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
-import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { CurdService } from './curd.service';
 import { Message } from '@/decorators/http.decorator';
 import { JwtAuthGuard } from '@/guard/auth.guard';
 import { RolesGuard } from '@/guard/roles.guard';
 import { Roles } from '@/decorators/roles.decorator';
 import { BaseController, IFindIdResult } from '../base/base.controller';
-import { TKeyStringObj } from '@xf/common/src/interfaces/common.interface';
-import { TListQuery } from '@/interfaces/list.query.interfact';
 
 /**
  * curd controller

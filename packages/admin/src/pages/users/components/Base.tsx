@@ -22,7 +22,6 @@ interface IBaseProps extends TRenderItems<IUser> {
 
 export const BaseForm = ({ initValue, form, type, roleList }: IBaseProps) => {
   const { getFieldDecorator } = form;
-  const isQueryForm = type === 'query';
 
   return (
     <>
@@ -39,11 +38,11 @@ export const BaseForm = ({ initValue, form, type, roleList }: IBaseProps) => {
           initialValue: initValue ? initValue.username : '',
           rules: [
             {
-              required: !isQueryForm,
+              required: true,
               message: '请输入用户名！',
             },
           ],
-        })(<Input maxLength={MAX_LENGTH_USERNAME} placeholder="用户名" />)}
+        })(<Input maxLength={MAX_LENGTH_USERNAME} placeholder="请输入用户名" />)}
       </FormItem>
 
       <FormItem label="密码" hasFeedback>

@@ -4,15 +4,14 @@ import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
-import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { SUPER_ADMIN } from '@xf/common/src/constants/roles.const';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { UserService } from './user.service';
 import { RolesGuard } from '@/guard/roles.guard';
 import { JwtAuthGuard } from '@/guard/auth.guard';
 import { CurdController } from '@/common/curd/curd.controller';
 import { Message } from '@/decorators/http.decorator';
 import { Roles } from '@/decorators/roles.decorator';
-import { TListQuery } from '@/interfaces/list.query.interfact';
 
 @Controller('user')
 export class UserController extends CurdController<User, UpdateUserInput> {

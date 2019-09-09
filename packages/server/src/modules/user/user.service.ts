@@ -7,10 +7,10 @@ import { Role } from '@xf/common/src/entities/role.entity';
 import { TKeyStringObj } from '@xf/common/src/interfaces/common.interface';
 import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
 import { errorCode } from '@/constants/error-code';
 import { CurdService } from '@/common/curd/curd.service';
-import { TListQuery } from '@/interfaces/list.query.interfact';
 
 @Injectable()
 export class UserService extends CurdService<User, UpdateUserInput> {

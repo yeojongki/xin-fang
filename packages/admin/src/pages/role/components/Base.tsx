@@ -8,7 +8,6 @@ const FormItem = Form.Item;
 export const Base = (props: TRenderItems<IRole>) => {
   const { initValue, form, type } = props;
   const { getFieldDecorator } = form;
-  const isQueryForm = type === 'query';
 
   return (
     <>
@@ -20,31 +19,31 @@ export const Base = (props: TRenderItems<IRole>) => {
         </FormItem>
       ) : null}
 
-      <FormItem label="标识" hasFeedback={!isQueryForm}>
+      <FormItem label="标识" hasFeedback>
         {getFieldDecorator('token', {
           initialValue: initValue ? initValue.token : '',
           rules: [
             {
-              required: !isQueryForm,
+              required: true,
               message: '请输入标识！',
             },
           ],
         })(<Input maxLength={16} placeholder="标识" />)}
       </FormItem>
 
-      <FormItem label="名称" hasFeedback={!isQueryForm}>
+      <FormItem label="名称" hasFeedback>
         {getFieldDecorator('name', {
           initialValue: initValue ? initValue.name : '',
           rules: [
             {
-              required: !isQueryForm,
+              required: true,
               message: '请输入名称！',
             },
           ],
         })(<Input maxLength={16} placeholder="名称" />)}
       </FormItem>
 
-      <FormItem label="描述" hasFeedback={!isQueryForm}>
+      <FormItem label="描述" hasFeedback>
         {getFieldDecorator('desc', {
           initialValue: initValue ? initValue.desc : '',
         })(<Input maxLength={16} placeholder="描述" />)}

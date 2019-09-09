@@ -1,11 +1,9 @@
-import { Repository, FindConditions } from 'typeorm';
+import { Repository } from 'typeorm';
 import { TransformClassToPlain } from 'class-transformer';
 import { TID, IID, TIDs } from '@xf/common/src/interfaces/id.interface';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { BaseService } from '../base/base.service';
-import { TKeyStringObj } from '@xf/common/src/interfaces/common.interface';
-import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
-import { TListQuery } from '@/interfaces/list.query.interfact';
 
 /**
  * @class CurdService

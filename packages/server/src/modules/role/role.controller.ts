@@ -3,15 +3,14 @@ import { Role } from '@xf/common/src/entities/role.entity';
 import { UpdateRoleInput } from '@xf/common/src/dtos/role/update-role.input';
 import { CreateRoleInput } from '@xf/common/src/dtos/role/create-role.input';
 import { SUPER_ADMIN } from '@xf/common/src/constants/roles.const';
-import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { CurdController } from '@/common/curd/curd.controller';
 import { RoleService } from './role.service';
 import { Roles } from '@/decorators/roles.decorator';
 import { JwtAuthGuard } from '@/guard/auth.guard';
 import { RolesGuard } from '@/guard/roles.guard';
-import { TListQuery } from '@/interfaces/list.query.interfact';
 
 @Controller('role')
 export class RoleController extends CurdController<Role, UpdateRoleInput> {
