@@ -70,7 +70,7 @@ export const BaseForm = ({ initValue, form, type, roleList }: IBaseProps) => {
 
       <FormItem label="角色" hasFeedback>
         {getFieldDecorator('roles', {
-          initialValue: initValue ? initValue.roles : DEFAULT_ROLE,
+          initialValue: initValue ? initValue.roles : [DEFAULT_ROLE],
           rules: [{ required: true, message: '请选择用户角色!' }],
         })(
           <Select mode="multiple" placeholder="请选择用户角色">

@@ -83,12 +83,10 @@ export class UserService extends CurdService<User, UpdateUserInput> {
     }
 
     // 添加默认角色
-    if (!toCreate.roles) {
-      toCreate.roles = await this.getRolesByToken();
-    }
-
-    const toSave = this.userRepository.create(toCreate);
+    const roles = await this.getRolesByToken(toCreate.roles);
+    const toSave = this.userRepository.create({ ...toCreate, roles });
     await this.userRepository.save(toSave);
+
     return Promise.resolve();
   }
 
@@ -109,16 +107,20 @@ export class UserService extends CurdService<User, UpdateUserInput> {
 
   /**
    * 根据标识获取角色完整信息
-   * @param {string[]} [token=[DEFAULT_ROLE]]
-   * @returns {(Promise<Role[]>)}
+   * @param {(string[] | undefined | null)} tokenArr
+   * @returns {Promise<Role[]>}
    * @memberof UserService
    */
-  async getRolesByToken(token: string[] = [DEFAULT_ROLE]): Promise<Role[]> {
+  async getRolesByToken(tokenArr: string[] | undefined | null): Promise<Role[]> {
+    const toFind = tokenArr && tokenArr.length ? tokenArr : [DEFAULT_ROLE];
     // query for role
-    const where = token.map(item => ({ token: item }));
+    const where = toFind.map(token => ({ token }));
     const roles = await this.rolesRepository.find({
       where,
     });
+    if (!roles) {
+      console.warn('role not found：', tokenArr);
+    }
     return roles || [];
   }
 

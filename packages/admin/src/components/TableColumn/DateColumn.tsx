@@ -6,6 +6,6 @@ interface IDateCoumnProps {
   format?: string;
 }
 
-export default ({ date, format = 'YYYY/MM/DD hh:mm' }: IDateCoumnProps): JSX.Element => (
+export default ({ date, format = 'YYYY/MM/DD HH:mm' }: IDateCoumnProps): JSX.Element => (
   <> {dayjs(date).format(format)}</>
 );

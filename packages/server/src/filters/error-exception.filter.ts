@@ -27,7 +27,7 @@ export class ErrorExceptionFilter implements ExceptionFilter {
 
     // 数据库错误
     if (errorResponse.sqlMessage) {
-      message = 'Error in DB：';
+      message = 'DB Error：';
       error = errorResponse.sqlMessage;
       if ((error as string).indexOf('Duplicate') > -1) {
         const params = errorResponse.parameters;
