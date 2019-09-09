@@ -83,7 +83,8 @@ const Users: FC<IUsersProps> = ({
     // set fields
     const form = getForm(editFormRef);
     if (form) {
-      form.setFields(generateField(row));
+      const { avatar, createdAt, updatedAt, gender, ...rest } = row;
+      form.setFields(generateField(rest));
     } else {
       // init
       setCurrentRow(row);

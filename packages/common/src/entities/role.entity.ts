@@ -1,9 +1,10 @@
-import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, ManyToMany, JoinTable, Index } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Base } from './base.entity';
 import { User } from './user.entity';
 
 @Entity('role')
+@Index('role_token', ['token'], { unique: true })
 export class Role extends Base {
   @Exclude()
   readonly createdAt!: Date;
