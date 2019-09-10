@@ -1,16 +1,5 @@
-import {
-  Delete,
-  UseGuards,
-  Param,
-  Body,
-  Get,
-  Query,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Delete, UseGuards, Param, Body } from '@nestjs/common';
 import { IID, TID, TIDs } from '@xf/common/src/interfaces/id.interface';
-import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
-import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { CurdService } from './curd.service';
 import { Message } from '@/decorators/http.decorator';
 import { JwtAuthGuard } from '@/guard/auth.guard';
@@ -34,12 +23,6 @@ export abstract class CurdController<E extends IFindIdResult, U extends IID> ext
   abstract async create(dto: any): Promise<any>;
 
   abstract async update(dto: U): Promise<any>;
-
-  @Get('list')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async getList(@Query('query') query: TListQuery<E>): Promise<IPaginationList<E>> {
-    return await this.service.getList(query);
-  }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('superAdmin')

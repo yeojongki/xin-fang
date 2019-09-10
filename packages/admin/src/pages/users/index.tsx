@@ -3,9 +3,9 @@ import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
-import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { Gender, GenderMap } from '@xf/common/src/constants/gender.const';
 import { Tag } from 'antd';
@@ -45,11 +45,20 @@ const Users: FC<IUsersProps> = ({
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
   const fetchList = useCallback(
-    (payload: Partial<IPagination> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
+    (payload: Partial<TListQuery<IUser>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
       dispatch({
         type: `${namespace}/getList`,
         payload,
       });
+    },
+    [pagination],
+  );
+
+  // query
+  const handleSearch = useCallback(
+    (query: TListQuery<IUser>) => {
+      const { total, ...rest } = pagination;
+      fetchList({ ...rest, ...query });
     },
     [pagination],
   );
@@ -183,11 +192,7 @@ const Users: FC<IUsersProps> = ({
           setCreateFormVisible(true);
         }}
         renderSearchForm={() => (
-          <Query
-            onSearch={val => {
-              console.log(val);
-            }}
-          />
+          <Query roleList={roleList} onSearch={handleSearch} onReset={fetchList} />
         )}
         columns={columns}
         ref={tableRef}

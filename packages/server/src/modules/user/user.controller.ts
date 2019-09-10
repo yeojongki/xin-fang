@@ -1,4 +1,15 @@
-import { Controller, Put, Body, Post, Get, Param, Request, UseGuards, Query } from '@nestjs/common';
+import {
+  Controller,
+  Put,
+  Body,
+  Post,
+  Get,
+  Param,
+  Request,
+  UseGuards,
+  Query,
+  UsePipes,
+} from '@nestjs/common';
 import { User } from '@xf/common/src/entities/user.entity';
 import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
@@ -12,6 +23,7 @@ import { JwtAuthGuard } from '@/guard/auth.guard';
 import { CurdController } from '@/common/curd/curd.controller';
 import { Message } from '@/decorators/http.decorator';
 import { Roles } from '@/decorators/roles.decorator';
+import { ParseListQuery } from '@/pipes/parse-list-query.pipe';
 
 @Controller('user')
 export class UserController extends CurdController<User, UpdateUserInput> {
@@ -28,8 +40,8 @@ export class UserController extends CurdController<User, UpdateUserInput> {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(SUPER_ADMIN)
   @Get('list')
-  async getList(@Query() query: TListQuery<User>): Promise<IPaginationList<IUser>> {
-    return this.userService.getList(query);
+  async getList(@Query(ParseListQuery) query: TListQuery<User>): Promise<IPaginationList<IUser>> {
+    return this.userService.getList(query, ['roles']);
   }
 
   /**

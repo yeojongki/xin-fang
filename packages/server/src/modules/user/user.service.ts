@@ -99,10 +99,18 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @memberof UserService
    */
   async findAndCount(query: TListQuery<User>): Promise<[User[], number]> {
-    return await this.userRepository.findAndCount({
-      relations: ['roles'],
-      ...query,
-    });
+    const { skip, take, roles, ...rest } = query;
+    const qb = this.userRepository.createQueryBuilder('user');
+    qb.leftJoinAndSelect('user.roles', 'role');
+
+    if (roles && Array.isArray(roles)) {
+      console.log('roles', roles);
+      qb.where('role.token = :roles', { roles });
+    }
+
+    // qb.skip(skip).take(take);
+
+    return await qb.getManyAndCount();
   }
 
   /**

@@ -4,7 +4,6 @@ import { Base } from './base.entity';
 import { User } from './user.entity';
 
 @Entity('role')
-@Index('role_token', ['token'], { unique: true })
 export class Role extends Base {
   @Exclude()
   readonly createdAt!: Date;
@@ -15,6 +14,7 @@ export class Role extends Base {
   @Column({ comment: '名称', unique: true })
   name!: string;
 
+  @Index({ unique: true })
   @Column({ comment: '标识', unique: true })
   token!: string;
 
