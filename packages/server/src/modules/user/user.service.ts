@@ -7,10 +7,11 @@ import { Role } from '@xf/common/src/entities/role.entity';
 import { TKeyStringObj } from '@xf/common/src/interfaces/common.interface';
 import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
 import { errorCode } from '@/constants/error-code';
 import { CurdService } from '@/common/curd/curd.service';
-import { TListQuery } from '@/interfaces/list.query.interfact';
+import { isNotEmpty } from '@xf/common/src/utils/is-empty';
 
 @Injectable()
 export class UserService extends CurdService<User, UpdateUserInput> {
@@ -99,10 +100,30 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @memberof UserService
    */
   async findAndCount(query: TListQuery<User>): Promise<[User[], number]> {
-    return await this.userRepository.findAndCount({
-      relations: ['roles'],
-      ...query,
-    });
+    const { skip, take, roles, ...rest } = query;
+    const qb = this.userRepository.createQueryBuilder('user');
+    qb.leftJoinAndSelect('user.roles', 'role');
+
+    // if (roles && Array.isArray(roles)) {
+    //   const length = roles.length;
+    //   console.log('roles', roles);
+    //   qb.where('role.token IN (:...roles)', { roles });
+    //   // qb.where('role.token IN (:...roles)', { roles }).groupBy('user.username');
+
+    //   // .having('COUNT(user.username) = :length', { length });
+    // } else if (isNotEmpty(roles)) {
+    //   qb.where('role.token = :roles', { roles });
+    // }
+
+    qb.where({ ...rest });
+
+    if (isNotEmpty(roles)) {
+      qb.andWhere('role.token = :roles', { roles });
+    }
+
+    qb.skip(skip).take(take);
+
+    return await qb.getManyAndCount();
   }
 
   /**

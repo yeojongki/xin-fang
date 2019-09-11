@@ -2,6 +2,8 @@ import { BadRequestException } from '@nestjs/common';
 import { TransformClassToPlain } from 'class-transformer';
 import { TID } from '@xf/common/src/interfaces/id.interface';
 import { Repository } from 'typeorm';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
+import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { errorCode } from '@/constants/error-code';
 
 interface IServiceName {
@@ -25,24 +27,63 @@ export abstract class BaseService<T> implements IServiceName {
   ) {}
 
   /**
-   * 根据Id查找数据
-   * @param {string} id
-   * @returns {Promise<T>}
+   * 查找并记数
+   * @param {TListQuery<T>} query
+   * @returns {Promise<[T[], number]>}
+   * @memberof BaseService
+   */
+  async findAndCount(query: TListQuery<T>, relations: string[] = []): Promise<[T[], number]> {
+    const { skip, take, roles, ...rest } = query;
+    return this.repository.findAndCount({
+      relations,
+      where: rest,
+      skip,
+      take,
+    });
+  }
+
+  /**
+   * 查找列表
+   * @param {TListQuery<T>} query
+   * @param {string[]} [relations=[]]
+   * @returns {Promise<IPaginationList<T>>}
    * @memberof BaseService
    */
   @TransformClassToPlain()
-  async findById(id: TID): Promise<T | undefined> {
-    return await this.repository.findOne(id);
+  async getList(query: TListQuery<T>, relations: string[] = []): Promise<IPaginationList<T>> {
+    const { skip, take } = query;
+    const [list, count] = await this.findAndCount(query, relations);
+    return {
+      list,
+      pagination: {
+        current: +skip + 1,
+        pageSize: +take,
+        total: count,
+      },
+    };
+  }
+
+  /**
+   * 根据Id查找数据
+   * @param {TID} id
+   * @param {string[]} [relations=[]]
+   * @returns {(Promise<T | undefined>)}
+   * @memberof BaseService
+   */
+  @TransformClassToPlain()
+  async findById(id: TID, relations: string[] = []): Promise<T | undefined> {
+    return await this.repository.findOne({ where: { id }, relations });
   }
 
   /**
    * 根据Id查找数据 查找结果为空时抛错
    * @param {TID} id
-   * @returns {(Promise<T>)}
+   * @param {string[]} [relations=[]]
+   * @returns {Promise<T>}
    * @memberof BaseService
    */
-  async findByIdAndThrowError(id: TID): Promise<T> {
-    const entity = await this.findById(id);
+  async findByIdAndThrowError(id: TID, relations: string[] = []): Promise<T> {
+    const entity = await this.findById(id, relations);
     if (!entity) {
       throw this.handleNotFoundError(id);
     }

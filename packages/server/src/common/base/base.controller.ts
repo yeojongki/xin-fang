@@ -1,5 +1,8 @@
-import { Get, Param } from '@nestjs/common';
+import { Get, Param, Query } from '@nestjs/common';
 import { TID } from '@xf/common/src/interfaces/id.interface';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
+import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import { ParseListQuery } from '@/pipes/parse-list-query.pipe';
 import { BaseService } from './base.service';
 
 export interface IFindIdResult {
@@ -21,5 +24,10 @@ export abstract class BaseController<E extends IFindIdResult> {
   @Get(':id')
   async findById(@Param('id') id: TID): Promise<Partial<E> | undefined> {
     return await this.service.findById(id);
+  }
+
+  @Get('list')
+  async getList(@Query(ParseListQuery) query: TListQuery<E>): Promise<IPaginationList<E>> {
+    return await this.service.getList(query);
   }
 }
