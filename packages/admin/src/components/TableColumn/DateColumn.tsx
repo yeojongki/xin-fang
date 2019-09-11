@@ -1,5 +1,5 @@
 import React from 'react';
-import dayjs from 'dayjs';
+import moment from 'moment';
 
 interface IDateCoumnProps {
   date: Date;
@@ -7,5 +7,5 @@ interface IDateCoumnProps {
 }
 
 export default ({ date, format = 'YYYY/MM/DD HH:mm' }: IDateCoumnProps): JSX.Element => (
-  <> {dayjs(date).format(format)}</>
+  <> {moment(date).format(format)}</>
 );
