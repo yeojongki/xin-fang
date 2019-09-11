@@ -15,7 +15,7 @@ export class TypeormService implements TypeOrmOptionsFactory {
       password: '123456',
       database: 'xin-fang',
       synchronize: true,
-      logging: ['query'],
+      // logging: ['query'],
       entities: [User, Role, City, Subway],
     };
     return options;

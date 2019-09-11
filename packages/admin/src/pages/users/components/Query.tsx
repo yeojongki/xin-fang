@@ -25,7 +25,6 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
   const onSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      console.log(form.getFieldsValue(['roles']).roles);
       onSearch(form.getFieldsValue());
     },
     [onSearch],
@@ -60,7 +59,7 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
 
           <FormItem label="角色">
             {getFieldDecorator('roles')(
-              <Select style={{ minWidth: '174px' }} mode="multiple" placeholder="请选择用户角色">
+              <Select style={{ minWidth: '174px' }} placeholder="请选择用户角色">
                 {roleList.map(({ token, name }) => (
                   <Option key={token} value={token}>
                     {name}
