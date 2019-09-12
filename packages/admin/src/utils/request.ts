@@ -26,26 +26,22 @@ const codeMessage = {
   504: '网关超时。',
 };
 
-let isCapturedByInterceptor = false;
-
 const errorHandler = (error: {
   response: Response;
   data: HttpErrorResponse;
   message?: string;
-}): void => {
-  if (isCapturedByInterceptor) {
-    isCapturedByInterceptor = false;
-    return;
-  }
-  const { message, data } = error;
-  console.log(error);
-  // 服务器错误没有返回数据
-  if (!data) {
+}): Response => {
+  const { response } = error;
+
+  // 网络异常
+  if (!response) {
     notification.error({
       message: '服务器发生错误',
-      description: message || '未知错误',
+      description: '请检查你的网络或刷新重试',
     });
   }
+
+  return response;
 };
 
 /**
@@ -78,8 +74,6 @@ request.interceptors.response.use(async response => {
   const { url, status } = response;
   const data: HttpErrorResponse = await response.clone().json();
   if (data && data.errno === 0) return response;
-
-  isCapturedByInterceptor = true;
 
   // 自定义错误
   if (data && data.message !== undefined) {
