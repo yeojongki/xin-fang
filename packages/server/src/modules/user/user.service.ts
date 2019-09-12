@@ -100,7 +100,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @memberof UserService
    */
   async findAndCount(query: TListQuery<User>): Promise<[User[], number]> {
-    const { skip, take, roles, ...rest } = query;
+    const { skip, take, roles, createdAt, ...rest } = query;
     const qb = this.userRepository.createQueryBuilder('user');
     qb.leftJoinAndSelect('user.roles', 'role');
 
@@ -116,6 +116,10 @@ export class UserService extends CurdService<User, UpdateUserInput> {
     // }
 
     qb.where({ ...rest });
+
+    if (isNotEmpty(createdAt) && Array.isArray(createdAt)) {
+      qb.andWhere(`user.createdAt BETWEEN '${createdAt[0]}' AND '${createdAt[1]}'`);
+    }
 
     if (isNotEmpty(roles)) {
       qb.andWhere('role.token = :roles', { roles });

@@ -5,6 +5,8 @@ interface IListQuery {
   take: number;
   pageSize: number;
   current: number;
+  createdAt: Date[];
+  updateAt: Date[];
   [key: string]: any;
 }
 

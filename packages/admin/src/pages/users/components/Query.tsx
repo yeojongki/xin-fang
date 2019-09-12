@@ -1,5 +1,5 @@
 import React, { FC, useMemo, useCallback, FormEvent } from 'react';
-import { Form, Input, Select, Button } from 'antd';
+import { Form, Input, Select, Button, DatePicker } from 'antd';
 import {
   MAX_LENGTH_USERNAME,
   MAX_LENGTH_MOBILE,
@@ -8,6 +8,7 @@ import {
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
 import { FormComponentProps } from 'antd/lib/form';
 import styles from '@/assets/styles/form.less';
+import moment, { Moment } from 'moment';
 
 interface IQueryProps extends FormComponentProps {
   onSearch: Function;
@@ -17,6 +18,7 @@ interface IQueryProps extends FormComponentProps {
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const Query: FC<IQueryProps> = (props: IQueryProps) => {
   const { onSearch, onReset, form, roleList } = props;
@@ -25,7 +27,13 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
   const onSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      onSearch(form.getFieldsValue());
+      const values = form.getFieldsValue();
+      if (values.createdAt) {
+        values.createdAt = values.createdAt.map((time: Moment) =>
+          time.format('YYYY-MM-DD HH:mm:ss'),
+        );
+      }
+      onSearch(values);
     },
     [onSearch],
   );
@@ -34,6 +42,11 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
     form.resetFields();
     onReset();
   }, [form]);
+
+  const disabledEndDate = (endvalue: Moment | undefined) => {
+    if (endvalue === undefined) return false;
+    return endvalue.valueOf() > moment().valueOf();
+  };
 
   return useMemo(
     () => (
@@ -66,6 +79,20 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
                   </Option>
                 ))}
               </Select>,
+            )}
+          </FormItem>
+
+          <FormItem label="注册时间">
+            {getFieldDecorator('createdAt')(
+              <RangePicker
+                disabledDate={disabledEndDate}
+                ranges={{
+                  Today: [moment(), moment()],
+                }}
+                showTime={{ format: 'HH:mm' }}
+                format="YYYY-MM-DD HH:mm"
+                placeholder={['开始时间', '结束时间']}
+              />,
             )}
           </FormItem>
 
