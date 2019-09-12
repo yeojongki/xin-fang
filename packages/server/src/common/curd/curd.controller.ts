@@ -30,7 +30,6 @@ export abstract class CurdController<E extends IFindIdResult, U extends IID> ext
   @Message('删除成功')
   async deleteById(@Param('id') id: TID): Promise<void> {
     await this.service.delete(id);
-    return Promise.resolve();
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -39,6 +38,5 @@ export abstract class CurdController<E extends IFindIdResult, U extends IID> ext
   @Message('删除成功')
   async deleteByIds(@Body() ids: TIDs): Promise<void> {
     await this.service.deleteByIds(ids);
-    return Promise.resolve();
   }
 }

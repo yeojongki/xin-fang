@@ -28,12 +28,10 @@ export class RoleController extends CurdController<Role, UpdateRoleInput> {
   @Put()
   async update(@Body() dto: UpdateRoleInput): Promise<void> {
     await this.roleService.update(dto);
-    return Promise.resolve();
   }
 
   @Post()
   async create(@Body() dto: CreateRoleInput): Promise<void> {
     await this.roleService.create(dto);
-    return Promise.resolve();
   }
 }

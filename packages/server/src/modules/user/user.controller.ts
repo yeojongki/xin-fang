@@ -74,7 +74,6 @@ export class UserController extends CurdController<User, UpdateUserInput> {
   @Message('注册成功')
   async create(@Body() entity: CreateUserInput): Promise<void> {
     await this.userService.create(entity);
-    return Promise.resolve();
   }
 
   @Put()
@@ -82,6 +81,5 @@ export class UserController extends CurdController<User, UpdateUserInput> {
   @Message('更新成功')
   async update(@Body() entity: UpdateUserInput): Promise<void> {
     await this.userService.update(entity);
-    return Promise.resolve();
   }
 }
