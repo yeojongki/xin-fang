@@ -21,6 +21,7 @@ export class AuthService {
   public async auth(auth: AuthLoginInput): Promise<ITokenResult> {
     const { username, password } = auth;
     const user = await this.userService.findOneWithPassword({ username });
+    console.log(user, password);
     if (user && user.password === password) {
       return this.generateJWT(user.id);
     }

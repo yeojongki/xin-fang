@@ -2,6 +2,7 @@ import { Entity, Column, ManyToMany, JoinTable, Index } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Base } from './base.entity';
 import { User } from './user.entity';
+import { Permission } from './permission.entity';
 
 @Entity('role')
 export class Role extends Base {
@@ -15,7 +16,7 @@ export class Role extends Base {
   name!: string;
 
   @Index({ unique: true })
-  @Column({ comment: '标识', unique: true })
+  @Column({ comment: '标识' })
   token!: string;
 
   @Column({ comment: '描述', default: null, nullable: true })
@@ -28,4 +29,12 @@ export class Role extends Base {
     inverseJoinColumn: { name: 'user_id' },
   })
   users?: User[];
+
+  @ManyToMany(() => Permission, permission => permission.roles)
+  @JoinTable({
+    name: 'role_permission',
+    joinColumn: { name: 'role_id' },
+    inverseJoinColumn: { name: 'permission_id' },
+  })
+  permissions?: Permission[];
 }

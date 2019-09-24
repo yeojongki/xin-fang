@@ -1,19 +1,19 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { message as Message } from 'antd';
-import { IUser } from '@xf/common/src/interfaces/user.interfaces';
-import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
-import * as Api from './service';
-import { namespace } from '.';
+import * as Api from '@/services/permission';
+import { namespace } from '@/pages/permission';
+import { Permission } from '@xf/common/src/entities';
+import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 
-export type StateType = IPaginationList<IUser>;
+export type IPermissionStateType = IPaginationList<Permission>;
 
 export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;
 
 export interface ModelType {
   namespace: string;
-  state: StateType;
+  state: IPermissionStateType;
   effects: {
     getList: Effect;
     delete: Effect;
@@ -21,7 +21,7 @@ export interface ModelType {
     create: Effect;
   };
   reducers: {
-    getListHandle: Reducer<StateType>;
+    getListHandle: Reducer<IPermissionStateType>;
   };
 }
 
@@ -66,10 +66,10 @@ const Model: ModelType = {
   },
 
   reducers: {
-    getListHandle(_, { payload: { list, pagination } }) {
+    getListHandle(_, { payload }) {
       return {
-        list,
-        pagination,
+        list: payload.list as any[],
+        pagination: payload.pagination,
       };
     },
   },

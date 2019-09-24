@@ -5,9 +5,12 @@ import { TKeyStringObj } from '@xf/common/src/interfaces/common.interface';
 export const generateField = (obj: TKeyStringObj) => {
   const result: TKeyStringObj = {};
   Object.keys(obj).forEach(key => {
-    result[key] = {
-      value: obj[key],
-    };
+    const value = obj[key];
+    if (value) {
+      result[key] = {
+        value,
+      };
+    }
   });
   return result;
 };
