@@ -1,7 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenResult } from '@xf/common/src/interfaces/auth.interface';
-import { Role } from '@xf/common/src/entities/role.entity';
 import { AuthLoginInput } from '@xf/common/src/dtos/auth/auth-login.input';
 import { User } from '@xf/common/src/entities';
 import { errorCode } from '@/constants/error-code';
@@ -21,7 +20,6 @@ export class AuthService {
   public async auth(auth: AuthLoginInput): Promise<ITokenResult> {
     const { username, password } = auth;
     const user = await this.userService.findOneWithPassword({ username });
-    console.log(user, password);
     if (user && user.password === password) {
       return this.generateJWT(user.id);
     }

@@ -6,7 +6,9 @@ import { extend } from 'umi-request';
 import { notification } from 'antd';
 import { router } from 'umi';
 import { HttpErrorResponse } from '@xf/common/src/interfaces/http.interface';
-import { getStorageToken } from './authority';
+import { getStorageToken, removeStorageToken } from './authority';
+
+let isCapturedByInterceptor = false;
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -30,8 +32,13 @@ const errorHandler = (error: {
   response: Response;
   data: HttpErrorResponse;
   message?: string;
-}): Response => {
+}): Response | false => {
   const { response } = error;
+
+  if (isCapturedByInterceptor) {
+    isCapturedByInterceptor = false;
+    return false;
+  }
 
   // 网络异常
   if (!response) {
@@ -75,20 +82,24 @@ request.interceptors.response.use(async response => {
   const data: HttpErrorResponse = await response.clone().json();
   if (data && data.errno === 0) return response;
 
+  isCapturedByInterceptor = true;
+
   // 自定义错误
   if (data && data.message !== undefined) {
     const { message, errno, error } = data;
     notification.error({
-      message: `${message} ${error}`,
+      message: `${message} ${error || ''}`,
       description: errno ? `errno: ${errno}` : '',
     });
 
     // match exception routes
     if (status === 401) {
-      const { search } = window.location;
-      const href = encodeURIComponent(window.location.href);
-      // 判断 search 避免在当前页面刷新 url 会重复添加 search
-      router.replace(`/exception/401${search || `?redirect=${href}`}`);
+      // const { search } = window.location;
+      // const href = encodeURIComponent(window.location.href);
+      // // 判断 search 避免在当前页面刷新 url 会重复添加 search
+      // router.replace(`/exception/401${search || `?redirect=${href}`}`);
+      router.replace('/user/login');
+      removeStorageToken();
     }
     if (status === 403) {
       router.push('/exception/403');

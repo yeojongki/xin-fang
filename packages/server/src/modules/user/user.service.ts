@@ -9,9 +9,9 @@ import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
+import { isNotEmpty } from '@xf/common/src/utils/is-empty';
 import { errorCode } from '@/constants/error-code';
 import { CurdService } from '@/common/curd/curd.service';
-import { isNotEmpty } from '@xf/common/src/utils/is-empty';
 
 @Injectable()
 export class UserService extends CurdService<User, UpdateUserInput> {
@@ -33,7 +33,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
   @TransformClassToPlain()
   async findOne(query: TKeyStringObj): Promise<User | undefined> {
     return await this.userRepository.findOne(query, {
-      relations: ['roles'],
+      relations: ['roles', 'roles.permissions'],
     });
   }
 
