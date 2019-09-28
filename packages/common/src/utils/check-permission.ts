@@ -30,6 +30,11 @@ export const checkPermission = (
     return permissions.includes(`${controllerName}.update`);
   }
 
+  // PUT => 更新权限
+  if (method === RequestMethod.POST) {
+    return permissions.includes(`${controllerName}.create`);
+  }
+
   // DELETE => 删除权限
   if (method === RequestMethod.DELETE) {
     return permissions.includes(`${controllerName}.delete`);

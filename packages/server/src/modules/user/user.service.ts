@@ -87,8 +87,6 @@ export class UserService extends CurdService<User, UpdateUserInput> {
     const roles = await this.getRolesByToken(toCreate.roles);
     const toSave = this.userRepository.create({ ...toCreate, roles });
     await this.userRepository.save(toSave);
-
-    return Promise.resolve();
   }
 
   /**

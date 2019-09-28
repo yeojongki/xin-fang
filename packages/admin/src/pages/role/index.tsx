@@ -64,7 +64,24 @@ const RoleList: React.FC<IRoleListProps> = ({
   };
 
   // get all permissions
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch({
+      type: 'permission/getList',
+      payload: {
+        pagination: { pageSize: 99999, current: 1 },
+        shouldSetList: false,
+        callback: (pagination: IPaginationList<Permission>) => {
+          // set permissions
+          dispatch({
+            type: 'permission/setAllPermissions',
+            payload: {
+              permissions: pagination.list,
+            },
+          });
+        },
+      },
+    });
+  }, []);
 
   // edit
   const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
@@ -72,40 +89,16 @@ const RoleList: React.FC<IRoleListProps> = ({
   const editFormRef = useRef<any>();
 
   const handleEdit = (row: IRole): void => {
-    const openForm = () => {
-      // set fields
-      const form = getForm(editFormRef);
-      if (form) {
-        form.setFields(generateField(row));
-      } else {
-        // init
-        setCurrentRow(row);
-      }
-      setEditFormVisible(true);
-    };
-
-    // ! it is assumed that the system has at least one permission
-    if (allPermissions.length) {
-      openForm();
+    console.log('edit', allPermissions);
+    // set fields
+    const form = getForm(editFormRef);
+    if (form) {
+      form.setFields(generateField(row));
     } else {
-      dispatch({
-        type: 'permission/getList',
-        payload: {
-          pagination: { pageSize: 99999, current: 1 },
-          shouldSetList: false,
-          callback: (pagination: IPaginationList<Permission>) => {
-            // set permissions
-            dispatch({
-              type: 'permission/setAllPermissions',
-              payload: {
-                permissions: pagination.list,
-                callback: () => openForm(),
-              },
-            });
-          },
-        },
-      });
+      // init
+      setCurrentRow(row);
     }
+    setEditFormVisible(true);
   };
 
   const submitEditForm = values => {
@@ -198,7 +191,7 @@ const RoleList: React.FC<IRoleListProps> = ({
         title="创建角色"
         type="create"
         ref={createFormRef}
-        renderItems={props => Base(props)}
+        renderItems={props => Base({ ...props, permissions: allPermissions })}
         loading={creating}
         visible={createFormVisible}
         onCancel={() => setCreateFormVisible(false)}

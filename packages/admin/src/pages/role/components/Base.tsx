@@ -17,8 +17,6 @@ export const Base = (props: TRenderItems<IRole> & { permissions?: Permission[] }
   const { initValue, form, type, permissions = [] } = props;
   const { getFieldDecorator } = form;
 
-  console.log('Base', props);
-
   const permissionsGourp = groupBy(permissions || [], 'module');
 
   // 当前角色拥有的权限
