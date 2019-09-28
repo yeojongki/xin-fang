@@ -7,7 +7,7 @@ import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface'
 import * as Api from '@/services/permission';
 import { namespace } from '@/pages/permission';
 
-export type IPermissionStateType = IPaginationList<Permission>;
+export type IPermissionStateType = IPaginationList<Permission> & { allPermissions: Permission[] };
 
 export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;
 
@@ -19,23 +19,28 @@ export interface ModelType {
     delete: Effect;
     update: Effect;
     create: Effect;
+    setAllPermissions: Effect;
   };
   reducers: {
     getListHandle: Reducer<IPermissionStateType>;
+    setAll: Reducer<IPermissionStateType>;
   };
 }
+
+const initialState = {
+  list: [],
+  pagination: {
+    total: 0,
+    current: 0,
+    pageSize: 0,
+  },
+  allPermissions: [],
+};
 
 const Model: ModelType = {
   namespace,
 
-  state: {
-    list: [],
-    pagination: {
-      total: 0,
-      current: 0,
-      pageSize: 0,
-    },
-  },
+  state: initialState,
 
   effects: {
     *getList({ payload }, { call, put }) {
@@ -53,27 +58,42 @@ const Model: ModelType = {
       const { callback, ids } = payload;
       const { message }: HttpSuccessResponse = yield call(Api.deleteByIds, ids);
       Message.success(message);
-      callback();
+      callback && callback();
     },
     *update({ payload }, { call }) {
       const { callback, values } = payload;
       const { message }: HttpSuccessResponse = yield call(Api.update, values);
       Message.success(message);
-      callback();
+      callback && callback();
     },
     *create({ payload }, { call }) {
       const { callback, values } = payload;
       const { message }: HttpSuccessResponse = yield call(Api.create, values);
       Message.success(message);
-      callback();
+      callback && callback();
+    },
+    *setAllPermissions({ payload }, { put }) {
+      const { callback, permissions } = payload;
+      yield put({
+        type: 'setAll',
+        payload: permissions,
+      });
+      callback && callback();
     },
   },
 
   reducers: {
-    getListHandle(_, { payload }) {
+    getListHandle(state = initialState, { payload }) {
       return {
+        ...state,
         list: payload.list as any[],
         pagination: payload.pagination,
+      };
+    },
+    setAll(state = initialState, { payload }) {
+      return {
+        ...state,
+        allPermissions: payload,
       };
     },
   },

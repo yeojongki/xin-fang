@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
 import DEFALT_ROLES from '@xf/common/src/constants/roles.const';
 import { Dispatch } from 'redux';
@@ -14,10 +14,12 @@ import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { Base } from './components/Base';
 import { getForm, generateField } from '@/utils/form';
 import { IDColumn } from '@/components/TableColumn';
+import { IPermissionStateType } from '@/models/permission';
 
 interface IRoleListProps {
   dispatch: Dispatch<any>;
   role: IRoleStateType;
+  permission: IPermissionStateType;
   fetching: boolean;
   editing: boolean;
   creating: boolean;
@@ -33,6 +35,7 @@ const RoleList: React.FC<IRoleListProps> = ({
   editing,
   creating,
   role: { list },
+  permission: { allPermissions },
   getPermissionsing,
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
@@ -60,34 +63,49 @@ const RoleList: React.FC<IRoleListProps> = ({
     });
   };
 
+  // get all permissions
+  useEffect(() => {}, []);
+
   // edit
   const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<IRole>();
   const editFormRef = useRef<any>();
-  const [allPermissions, setAllPermissions] = useState<Permission[]>([]);
 
   const handleEdit = (row: IRole): void => {
-    // get all permissions
-    dispatch({
-      type: 'permission/getList',
-      payload: {
-        pagination: { pageSize: 99999, current: 1 },
-        shouldSetList: false,
-        callback: (pagination: IPaginationList<Permission>) => {
-          // set permissions
-          setAllPermissions(pagination.list);
-          // set fields
-          const form = getForm(editFormRef);
-          if (form) {
-            form.setFields(generateField(row));
-          } else {
-            // init
-            setCurrentRow(row);
-          }
-          setEditFormVisible(true);
+    const openForm = () => {
+      // set fields
+      const form = getForm(editFormRef);
+      if (form) {
+        form.setFields(generateField(row));
+      } else {
+        // init
+        setCurrentRow(row);
+      }
+      setEditFormVisible(true);
+    };
+
+    // ! it is assumed that the system has at least one permission
+    if (allPermissions.length) {
+      openForm();
+    } else {
+      dispatch({
+        type: 'permission/getList',
+        payload: {
+          pagination: { pageSize: 99999, current: 1 },
+          shouldSetList: false,
+          callback: (pagination: IPaginationList<Permission>) => {
+            // set permissions
+            dispatch({
+              type: 'permission/setAllPermissions',
+              payload: {
+                permissions: pagination.list,
+                callback: () => openForm(),
+              },
+            });
+          },
         },
-      },
-    });
+      });
+    }
   };
 
   const submitEditForm = values => {
@@ -193,9 +211,11 @@ const RoleList: React.FC<IRoleListProps> = ({
 export default connect(
   ({
     role,
+    permission,
     loading,
   }: {
     role: IRoleStateType;
+    permission: IPermissionStateType;
     loading: {
       effects: {
         [key: string]: string;
@@ -203,6 +223,7 @@ export default connect(
     };
   }) => ({
     role,
+    permission,
     fetching: loading.effects[`${namespace}/getList`],
     editing: loading.effects[`${namespace}/update`],
     creating: loading.effects[`${namespace}/create`],
