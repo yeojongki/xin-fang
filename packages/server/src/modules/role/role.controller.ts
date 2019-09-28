@@ -16,7 +16,7 @@ export class RoleController extends CurdController<Role, UpdateRoleInput> {
 
   @Get('list')
   async getList(@Query() query: TListQuery<Role>): Promise<IPaginationList<IRole>> {
-    return await this.roleService.getList(query);
+    return await this.roleService.getList(query, ['permissions']);
   }
 
   @Put()

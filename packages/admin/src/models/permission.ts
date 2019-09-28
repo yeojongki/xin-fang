@@ -2,10 +2,10 @@ import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { message as Message } from 'antd';
 import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
-import * as Api from '@/services/permission';
-import { namespace } from '@/pages/permission';
 import { Permission } from '@xf/common/src/entities';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import * as Api from '@/services/permission';
+import { namespace } from '@/pages/permission';
 
 export type IPermissionStateType = IPaginationList<Permission>;
 
@@ -39,11 +39,15 @@ const Model: ModelType = {
 
   effects: {
     *getList({ payload }, { call, put }) {
-      const { result }: HttpSuccessResponse = yield call(Api.getList, payload);
-      yield put({
-        type: 'getListHandle',
-        payload: result,
-      });
+      const { pagination, callback, shouldSetList = true } = payload;
+      const { result }: HttpSuccessResponse = yield call(Api.getList, pagination);
+      if (shouldSetList) {
+        yield put({
+          type: 'getListHandle',
+          payload: result,
+        });
+      }
+      callback && callback(result);
     },
     *delete({ payload }, { call }) {
       const { callback, ids } = payload;

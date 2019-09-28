@@ -6,6 +6,8 @@ import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
+import { Permission } from '@xf/common/src/entities';
+import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { IRoleStateType } from '@/models/role';
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
@@ -19,6 +21,7 @@ interface IRoleListProps {
   fetching: boolean;
   editing: boolean;
   creating: boolean;
+  getPermissionsing: boolean;
 }
 
 export const namespace = 'role';
@@ -30,6 +33,7 @@ const RoleList: React.FC<IRoleListProps> = ({
   editing,
   creating,
   role: { list },
+  getPermissionsing,
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
@@ -60,17 +64,30 @@ const RoleList: React.FC<IRoleListProps> = ({
   const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<IRole>();
   const editFormRef = useRef<any>();
+  const [allPermissions, setAllPermissions] = useState<Permission[]>([]);
 
   const handleEdit = (row: IRole): void => {
-    // set fields
-    const form = getForm(editFormRef);
-    if (form) {
-      form.setFields(generateField(row));
-    } else {
-      // init
-      setCurrentRow(row);
-    }
-    setEditFormVisible(true);
+    // get all permissions
+    dispatch({
+      type: 'permission/getList',
+      payload: {
+        pagination: { pageSize: 99999, current: 1 },
+        shouldSetList: false,
+        callback: (pagination: IPaginationList<Permission>) => {
+          // set permissions
+          setAllPermissions(pagination.list);
+          // set fields
+          const form = getForm(editFormRef);
+          if (form) {
+            form.setFields(generateField(row));
+          } else {
+            // init
+            setCurrentRow(row);
+          }
+          setEditFormVisible(true);
+        },
+      },
+    });
   };
 
   const submitEditForm = values => {
@@ -139,7 +156,7 @@ const RoleList: React.FC<IRoleListProps> = ({
         columns={columns}
         ref={tableRef}
         rowKey={record => record.id}
-        loading={fetching}
+        loading={fetching || getPermissionsing}
         pagination={false}
         fetchList={fetchList}
         dataSource={list}
@@ -152,7 +169,7 @@ const RoleList: React.FC<IRoleListProps> = ({
         title="编辑角色"
         type="edit"
         ref={editFormRef}
-        renderItems={props => Base(props)}
+        renderItems={props => Base({ ...props, permissions: allPermissions })}
         loading={editing}
         visible={editFormVisible}
         initValue={currentRow}
@@ -189,5 +206,6 @@ export default connect(
     fetching: loading.effects[`${namespace}/getList`],
     editing: loading.effects[`${namespace}/update`],
     creating: loading.effects[`${namespace}/create`],
+    getPermissionsing: loading.effects['permission/getList'],
   }),
 )(RoleList);

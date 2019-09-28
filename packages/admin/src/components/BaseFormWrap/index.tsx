@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, Ref, ReactNode } from 'react';
+import React, { forwardRef, memo, Ref, ReactNode, useCallback } from 'react';
 import { Form } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { FormLayout } from 'antd/es/form/Form';
@@ -47,6 +47,8 @@ const BaseFormWrap = (props: IBaseFormWrapProps, ref: Ref<any>) => {
     finalFormItemLayout = defaultFormItemLayout;
   }
 
+  const renderItemsHandler = useCallback(data => renderItems(data), [initValue, form, type]);
+
   return (
     <Form
       onSubmit={(e: React.FormEvent) => {
@@ -62,7 +64,7 @@ const BaseFormWrap = (props: IBaseFormWrapProps, ref: Ref<any>) => {
       layout={layout}
       ref={ref}
     >
-      {renderItems({ initValue, form, type })}
+      {renderItemsHandler({ initValue, form, type })}
     </Form>
   );
 };

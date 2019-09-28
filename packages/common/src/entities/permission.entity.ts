@@ -1,6 +1,6 @@
-import { Base } from './base.entity';
-import { Entity, Index, Column, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { Base } from './base.entity';
 import { Role } from './role.entity';
 
 @Entity('permission')
@@ -11,9 +11,11 @@ export class Permission extends Base {
   @Exclude()
   readonly updatedAt!: Date;
 
-  @Index({ unique: true })
-  @Column({ comment: '标识' })
+  @Column({ unique: true, comment: '标识' })
   token!: string;
+
+  @Column({ comment: '所属模块, 例如用户模块 user' })
+  module!: string;
 
   @Column({ comment: '名称', unique: true })
   name!: string;

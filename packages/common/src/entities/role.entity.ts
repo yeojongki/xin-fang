@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToMany, JoinTable, Index } from 'typeorm';
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { Base } from './base.entity';
 import { User } from './user.entity';
 import { Permission } from './permission.entity';
@@ -37,4 +37,9 @@ export class Role extends Base {
     inverseJoinColumn: { name: 'permission_id' },
   })
   permissions?: Permission[];
+
+  @Expose({ name: 'permissions' })
+  getPermissions(): string[] {
+    return this.permissions ? this.permissions.map(p => p.id) : [];
+  }
 }

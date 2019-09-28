@@ -2,13 +2,13 @@ import React, { FC, useState, useRef, useCallback } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
-import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { Permission } from '@xf/common/src/entities';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { generateField, getForm } from '@/utils/form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
+import create, { IResetSelectedFn } from '@/components/StandardTable';
+import { generateField, getForm } from '@/utils/form';
 import { IDColumn } from '@/components/TableColumn';
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { Base } from './components/Base';
@@ -39,7 +39,7 @@ const PermissionList: FC<IPermissionListProps> = ({
     (payload: Partial<TListQuery<Permission>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
       dispatch({
         type: `${namespace}/getList`,
-        payload,
+        payload: { pagination: payload },
       });
     },
     [pagination],
