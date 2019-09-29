@@ -89,7 +89,6 @@ const RoleList: React.FC<IRoleListProps> = ({
   const editFormRef = useRef<any>();
 
   const handleEdit = (row: IRole): void => {
-    console.log('edit', allPermissions);
     // set fields
     const form = getForm(editFormRef);
     if (form) {
