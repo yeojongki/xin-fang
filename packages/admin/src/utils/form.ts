@@ -6,11 +6,9 @@ export const generateField = (obj: TKeyStringObj) => {
   const result: TKeyStringObj = {};
   Object.keys(obj).forEach(key => {
     const value = obj[key];
-    if (value) {
-      result[key] = {
-        value,
-      };
-    }
+    result[key] = {
+      value,
+    };
   });
   return result;
 };
