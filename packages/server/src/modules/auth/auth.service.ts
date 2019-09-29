@@ -1,7 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenResult } from '@xf/common/src/interfaces/auth.interface';
-import { Role } from '@xf/common/src/entities/role.entity';
 import { AuthLoginInput } from '@xf/common/src/dtos/auth/auth-login.input';
 import { User } from '@xf/common/src/entities';
 import { errorCode } from '@/constants/error-code';

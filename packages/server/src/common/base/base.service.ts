@@ -33,7 +33,7 @@ export abstract class BaseService<T> implements IServiceName {
    * @memberof BaseService
    */
   async findAndCount(query: TListQuery<T>, relations: string[] = []): Promise<[T[], number]> {
-    const { skip, take, roles, ...rest } = query;
+    const { skip, take, ...rest } = query;
     return this.repository.findAndCount({
       relations,
       where: rest,

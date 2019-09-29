@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { User, Role, City, Subway } from '@xf/common/src/entities';
+import * as Entities from '@xf/common/src/entities';
 
 @Injectable()
 export class TypeormService implements TypeOrmOptionsFactory {
@@ -16,7 +16,7 @@ export class TypeormService implements TypeOrmOptionsFactory {
       database: 'xin-fang',
       synchronize: true,
       // logging: ['query'],
-      entities: [User, Role, City, Subway],
+      entities: Object.values(Entities),
     };
     return options;
   }

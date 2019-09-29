@@ -3,6 +3,7 @@ import { Exclude, Expose } from 'class-transformer';
 import { Gender } from '@xf/common/src/constants/gender.const';
 import { Base } from './base.entity';
 import { Role } from './role.entity';
+import { Permission } from './permission.entity';
 
 @Entity('user')
 export class User extends Base {
@@ -41,4 +42,18 @@ export class User extends Base {
   getRoles(): string[] {
     return this.roles.map(role => role.token);
   }
+
+  @Expose({ name: 'permissions' })
+  getPermissions() {
+    let permissions: Permission[] = [];
+    this.roles.forEach(role => {
+      if (role.permissions && role.permissions.length > 0) {
+        permissions = permissions.concat(role.permissions);
+      }
+    });
+    return [...new Set(permissions.map(permission => permission.token))];
+  }
+
+  // not in db
+  permissions?: string[];
 }

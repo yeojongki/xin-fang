@@ -1,123 +1,65 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { IRole } from '@xf/common/src/interfaces/role.interfaces';
-import DEFALT_ROLES from '@xf/common/src/constants/roles.const';
+import React, { FC, useState, useRef, useCallback } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
-import { WrappedFormUtils } from 'antd/es/form/Form';
-import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { Permission } from '@xf/common/src/entities';
-import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
+import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
+import { WrappedFormUtils } from 'antd/lib/form/Form';
+import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
-import { IRoleStateType } from '@/models/role';
+import { generateField, getForm } from '@/utils/form';
+import { IDColumn } from '@/components/TableColumn';
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { Base } from './components/Base';
-import { getForm, generateField } from '@/utils/form';
-import { IDColumn } from '@/components/TableColumn';
 import { IPermissionStateType } from '@/models/permission';
+import Query from './components/Query';
 
-interface IRoleListProps {
+interface IPermissionListProps {
   dispatch: Dispatch<any>;
-  role: IRoleStateType;
   permission: IPermissionStateType;
   fetching: boolean;
   editing: boolean;
   creating: boolean;
-  getPermissionsing: boolean;
 }
 
-export const namespace = 'role';
-const RoleTable = create<IRole>();
+export const namespace = 'permission';
+const PermissionTable = create<Permission>();
 
-const RoleList: React.FC<IRoleListProps> = ({
+const PermissionList: FC<IPermissionListProps> = ({
   dispatch,
   fetching,
   editing,
   creating,
-  role: { list },
-  permission: { allPermissions },
-  getPermissionsing,
+  permission: { pagination, list },
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
-  const fetchList = (payload?: any) => {
-    dispatch({
-      type: `${namespace}/getList`,
-      payload,
-    });
-  };
+  const fetchList = useCallback(
+    (payload: Partial<TListQuery<Permission>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
+      dispatch({
+        type: `${namespace}/getList`,
+        payload: { pagination: payload },
+      });
+    },
+    [pagination],
+  );
 
-  // delete
-  const handleDelete = (rows: IRole | TIDs) => {
-    const ids = Array.isArray(rows) ? rows : [rows.id];
-    dispatch({
-      type: `${namespace}/delete`,
-      payload: {
-        ids,
-        callback: () => {
-          const { current } = tableRef;
-          current && current.resetSelected();
-          fetchList();
-        },
-      },
-    });
-  };
-
-  // get all permissions
-  useEffect(() => {
-    dispatch({
-      type: 'permission/getList',
-      payload: {
-        pagination: { pageSize: 99999, current: 1 },
-        shouldSetList: false,
-        callback: (pagination: IPaginationList<Permission>) => {
-          // set permissions
-          dispatch({
-            type: 'permission/setAllPermissions',
-            payload: {
-              permissions: pagination.list,
-            },
-          });
-        },
-      },
-    });
-  }, []);
-
-  // edit
-  const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<IRole>();
-  const editFormRef = useRef<any>();
-
-  const handleEdit = (row: IRole): void => {
-    // set fields
-    const form = getForm(editFormRef);
-    if (form) {
-      form.setFields(generateField(row));
-    } else {
-      // init
-      setCurrentRow(row);
-    }
-    setEditFormVisible(true);
-  };
-
-  const submitEditForm = values => {
-    dispatch({
-      type: `${namespace}/update`,
-      payload: {
-        values,
-        callback: () => {
-          fetchList();
-          setEditFormVisible(false);
-        },
-      },
-    });
-  };
+  // query
+  const handleSearch = useCallback(
+    (query: TListQuery<Permission>) => {
+      const { total, ...rest } = pagination;
+      fetchList({ ...rest, ...query });
+    },
+    [pagination],
+  );
 
   // create
   const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);
   const createFormRef = useRef<any>();
 
-  const submitCreateForm = (values: IRole) => {
+  const submitCreateForm = (values: Permission) => {
+    // const input = { ...values, password: Md5(values.password) };
     dispatch({
       type: `${namespace}/create`,
       payload: {
@@ -133,7 +75,54 @@ const RoleList: React.FC<IRoleListProps> = ({
     });
   };
 
-  const columns: ColumnProps<IRole>[] = [
+  // edit
+  const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
+  const [currentRow, setCurrentRow] = useState<Permission>();
+  const editFormRef = useRef<any>();
+
+  const handleEdit = (row: Permission): void => {
+    // set fields
+    const form = getForm(editFormRef);
+    if (form) {
+      const { desc, token, name } = row;
+      form.setFields(generateField({ desc, token, name }));
+    } else {
+      // init
+      setCurrentRow(row);
+    }
+    setEditFormVisible(true);
+  };
+
+  const submitEditForm = (values: Permission) => {
+    dispatch({
+      type: `${namespace}/update`,
+      payload: {
+        values,
+        callback: () => {
+          fetchList();
+          setEditFormVisible(false);
+        },
+      },
+    });
+  };
+
+  // delete
+  const handleDelete = (rows: Permission | TIDs) => {
+    const ids = Array.isArray(rows) ? rows : [rows.id];
+    dispatch({
+      type: `${namespace}/delete`,
+      payload: {
+        ids,
+        callback: () => {
+          const { current } = tableRef;
+          current && current.resetSelected();
+          fetchList();
+        },
+      },
+    });
+  };
+
+  const columns: ColumnProps<Permission>[] = [
     {
       key: 'id',
       dataIndex: 'id',
@@ -159,27 +148,28 @@ const RoleList: React.FC<IRoleListProps> = ({
 
   return (
     <>
-      <RoleTable
+      <PermissionTable
         onAdd={() => {
           setCreateFormVisible(true);
         }}
+        renderSearchForm={() => <Query onSearch={handleSearch} onReset={fetchList} />}
         columns={columns}
         ref={tableRef}
         rowKey={record => record.id}
-        loading={fetching || getPermissionsing}
-        pagination={false}
+        loading={fetching}
+        pagination={pagination}
         fetchList={fetchList}
         dataSource={list}
         onDeleteRow={handleDelete}
         onDeleteSelected={handleDelete}
-        getCheckboxProps={row => ({ disabled: DEFALT_ROLES.includes(row.token) })}
+        // getCheckboxProps={row => ({ disabled: DEFALT_ROLES.includes(row.token) })}
         onEditRow={handleEdit}
       />
       <ModalForm
-        title="编辑角色"
+        title="编辑权限"
         type="edit"
         ref={editFormRef}
-        renderItems={props => Base({ ...props, permissions: allPermissions })}
+        renderItems={props => Base(props)}
         loading={editing}
         visible={editFormVisible}
         initValue={currentRow}
@@ -187,10 +177,10 @@ const RoleList: React.FC<IRoleListProps> = ({
         onSubmit={submitEditForm}
       />
       <ModalForm
-        title="创建角色"
+        title="创建权限"
         type="create"
         ref={createFormRef}
-        renderItems={props => Base({ ...props, permissions: allPermissions })}
+        renderItems={props => Base(props)}
         loading={creating}
         visible={createFormVisible}
         onCancel={() => setCreateFormVisible(false)}
@@ -202,23 +192,19 @@ const RoleList: React.FC<IRoleListProps> = ({
 
 export default connect(
   ({
-    role,
     permission,
     loading,
   }: {
-    role: IRoleStateType;
-    permission: IPermissionStateType;
+    permission: IPermissionListProps;
     loading: {
       effects: {
         [key: string]: string;
       };
     };
   }) => ({
-    role,
     permission,
     fetching: loading.effects[`${namespace}/getList`],
     editing: loading.effects[`${namespace}/update`],
     creating: loading.effects[`${namespace}/create`],
-    getPermissionsing: loading.effects['permission/getList'],
   }),
-)(RoleList);
+)(PermissionList);

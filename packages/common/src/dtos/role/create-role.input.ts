@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { BaseRoleInput } from './base-role.input';
 
 export class CreateRoleInput extends BaseRoleInput {
@@ -7,4 +7,7 @@ export class CreateRoleInput extends BaseRoleInput {
 
   @IsNotEmpty({ message: '角色标识不能为空' })
   token!: string;
+
+  @IsOptional()
+  permissions?: string[];
 }

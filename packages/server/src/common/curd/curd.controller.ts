@@ -2,8 +2,6 @@ import { Delete, UseGuards, Param, Body } from '@nestjs/common';
 import { IID, TID, TIDs } from '@xf/common/src/interfaces/id.interface';
 import { CurdService } from './curd.service';
 import { Message } from '@/decorators/http.decorator';
-import { JwtAuthGuard } from '@/guard/auth.guard';
-import { RolesGuard } from '@/guard/roles.guard';
 import { Roles } from '@/decorators/roles.decorator';
 import { BaseController, IFindIdResult } from '../base/base.controller';
 
@@ -24,16 +22,12 @@ export abstract class CurdController<E extends IFindIdResult, U extends IID> ext
 
   abstract async update(dto: U): Promise<any>;
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('superAdmin')
   @Delete(':id')
   @Message('删除成功')
   async deleteById(@Param('id') id: TID): Promise<void> {
     await this.service.delete(id);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('superAdmin')
   @Delete()
   @Message('删除成功')
   async deleteByIds(@Body() ids: TIDs): Promise<void> {

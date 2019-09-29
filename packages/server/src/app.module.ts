@@ -8,6 +8,7 @@ import { LoginModule } from './modules/login/login.module';
 import { CityModule } from './common/city/city.module';
 import { SubwayModule } from './common/subway/subway.module';
 import { TypeormService } from './common/typeorm/typeorm.service';
+import { PermissionModule } from './modules/permission/permission.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TypeormService } from './common/typeorm/typeorm.service';
     AuthModule,
     UserModule,
     RoleModule,
+    PermissionModule,
     CityModule,
     SubwayModule,
   ],

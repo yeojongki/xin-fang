@@ -33,9 +33,9 @@ export enum errorCode {
   JWT_EXPIRED = -1021,
 
   /**
-   * 角色权限不足
+   * 用户权限不足
    */
-  ROLE_AUTH_ERROR = -1030,
+  PERMISSION_ERROR = -1031,
 
   /**
    * 数据库操作失败(crud)

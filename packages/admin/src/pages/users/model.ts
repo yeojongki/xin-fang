@@ -39,7 +39,7 @@ const Model: ModelType = {
 
   effects: {
     *getList({ payload }, { call, put }) {
-      const { result }: HttpSuccessResponse = yield call(Api.getUserList, payload);
+      const { result }: HttpSuccessResponse = yield call(Api.getList, payload);
       yield put({
         type: 'getListHandle',
         payload: result,
@@ -66,10 +66,10 @@ const Model: ModelType = {
   },
 
   reducers: {
-    getListHandle(_, { payload }) {
+    getListHandle(_, { payload: { list, pagination } }) {
       return {
-        list: payload.list as any[],
-        pagination: payload.pagination,
+        list,
+        pagination,
       };
     },
   },

@@ -64,6 +64,12 @@ export default [
                 icon: 'cluster',
                 component: './role',
               },
+              {
+                path: '/system/permission',
+                name: '权限管理',
+                icon: 'lock',
+                component: './permission',
+              },
             ],
           },
           {

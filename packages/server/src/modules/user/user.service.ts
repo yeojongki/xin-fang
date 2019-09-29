@@ -9,9 +9,9 @@ import { UpdateUserInput } from '@xf/common/src/dtos/user/update-user.input';
 import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
+import { isNotEmpty } from '@xf/common/src/utils/is-empty';
 import { errorCode } from '@/constants/error-code';
 import { CurdService } from '@/common/curd/curd.service';
-import { isNotEmpty } from '@xf/common/src/utils/is-empty';
 
 @Injectable()
 export class UserService extends CurdService<User, UpdateUserInput> {
@@ -33,7 +33,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
   @TransformClassToPlain()
   async findOne(query: TKeyStringObj): Promise<User | undefined> {
     return await this.userRepository.findOne(query, {
-      relations: ['roles'],
+      relations: ['roles', 'roles.permissions'],
     });
   }
 
@@ -87,8 +87,6 @@ export class UserService extends CurdService<User, UpdateUserInput> {
     const roles = await this.getRolesByToken(toCreate.roles);
     const toSave = this.userRepository.create({ ...toCreate, roles });
     await this.userRepository.save(toSave);
-
-    return Promise.resolve();
   }
 
   /**
@@ -100,7 +98,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @memberof UserService
    */
   async findAndCount(query: TListQuery<User>): Promise<[User[], number]> {
-    const { skip, take, roles, createdAt, ...rest } = query;
+    const { skip, take, roles, createdAt, username, email, ...rest } = query;
     const qb = this.userRepository.createQueryBuilder('user');
     qb.leftJoinAndSelect('user.roles', 'role');
 
@@ -116,6 +114,14 @@ export class UserService extends CurdService<User, UpdateUserInput> {
     // }
 
     qb.where({ ...rest });
+
+    if (username) {
+      qb.andWhere(`user.username LIKE '%${username}%'`);
+    }
+
+    if (email) {
+      qb.andWhere(`user.email LIKE '%${email}%'`);
+    }
 
     if (isNotEmpty(createdAt) && Array.isArray(createdAt)) {
       qb.andWhere(`user.createdAt BETWEEN '${createdAt[0]}' AND '${createdAt[1]}'`);

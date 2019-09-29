@@ -8,9 +8,10 @@ export class ParseListQuery implements PipeTransform {
     Object.keys(obj).forEach(key => {
       const value = obj[key];
       if (isNotEmpty(value)) {
-        if (typeof value === 'string') {
+        const isString = typeof value === 'string';
+        if (isString && value.trim() !== '') {
           result[key] = value.trim();
-        } else {
+        } else if (!isString) {
           result[key] = value;
         }
       }

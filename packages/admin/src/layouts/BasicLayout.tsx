@@ -45,27 +45,27 @@ const footerRender: BasicLayoutProps['footerRender'] = () => <GlobalFooter />;
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const { dispatch, children, settings } = props;
+
   /**
    * constructor
    */
-
   useEffect(() => {
     if (dispatch) {
       dispatch({
         type: 'user/fetchCurrent',
       });
       dispatch({
-        type: 'settings/getSetting',
+        type: 'role/getList',
       });
       dispatch({
-        type: 'role/getList',
+        type: 'settings/getSetting',
       });
     }
   }, []);
+
   /**
    * init variables
    */
-
   const handleMenuCollapse = (payload: boolean): void => {
     if (dispatch) {
       dispatch({

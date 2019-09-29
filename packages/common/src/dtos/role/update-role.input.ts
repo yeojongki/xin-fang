@@ -10,4 +10,7 @@ export class UpdateRoleInput extends BaseRoleInput {
 
   @IsOptional()
   token?: string;
+
+  @IsOptional()
+  permissions?: string[];
 }
