@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, useCallback } from 'react';
+import React, { FC, useState, useRef, useCallback, useEffect } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
@@ -43,6 +43,12 @@ const Users: FC<IUsersProps> = ({
   roleMap,
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
+
+  useEffect(() => {
+    dispatch({
+      type: 'role/getList',
+    });
+  }, []);
 
   const fetchList = useCallback(
     (payload: Partial<TListQuery<IUser>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {

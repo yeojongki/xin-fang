@@ -55,9 +55,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         type: 'user/fetchCurrent',
       });
       dispatch({
-        type: 'role/getList',
-      });
-      dispatch({
         type: 'settings/getSetting',
       });
     }
