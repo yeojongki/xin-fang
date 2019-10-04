@@ -19,7 +19,7 @@ export class City extends DateColumn {
   @Column({ comment: '拼音前缀' })
   pre!: string;
 
-  @Column({ default: 0, comment: '是否启用 0 未启动 1 开启' })
+  @Column({ default: 0, comment: '是否开通 0 未开通 1 已开通' })
   status!: number;
 
   @OneToMany(() => Subway, subway => subway.city)

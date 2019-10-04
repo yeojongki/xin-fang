@@ -3,13 +3,13 @@ import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { Switch } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
-import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { ICity } from '@xf/common/src/interfaces/city.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { StateType } from './model';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { IDColumn, DateColumn } from '@/components/TableColumn';
+import Query from './components/Query';
 
 interface ICityProps {
   dispatch: Dispatch<any>;
@@ -26,12 +26,26 @@ const City: FC<ICityProps> = ({ dispatch, fetching, editing, city: { pagination,
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
   const fetchList = useCallback(
-    (payload: Partial<TListQuery<IUser>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
+    (payload: Partial<TListQuery<ICity>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
       dispatch({
         type: `${namespace}/getList`,
         payload,
       });
     },
+    [pagination],
+  );
+
+  // query
+  const handleSearch = useCallback(
+    (query: TListQuery<ICity>) => {
+      const { total, ...rest } = pagination;
+      fetchList({ ...rest, ...query });
+    },
+    [pagination],
+  );
+
+  const renderSearchForm = useCallback(
+    () => <Query onSearch={handleSearch} onReset={fetchList} />,
     [pagination],
   );
 
@@ -80,7 +94,7 @@ const City: FC<ICityProps> = ({ dispatch, fetching, editing, city: { pagination,
     {
       key: 'status',
       dataIndex: 'status',
-      title: '是否启用',
+      title: '是否开通',
       render: (status: 0 | 1, record: ICity) => (
         <Switch
           defaultChecked={!!status}
@@ -108,6 +122,7 @@ const City: FC<ICityProps> = ({ dispatch, fetching, editing, city: { pagination,
   return (
     <>
       <CityTable
+        renderSearchForm={renderSearchForm}
         columns={columns}
         ref={tableRef}
         rowKey={record => `${record.id}`}

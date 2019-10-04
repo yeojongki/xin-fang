@@ -5,6 +5,7 @@ import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface'
 import { UpdateCityInput } from '@xf/common/src/dtos/city/update-city.input';
 import { CurdController } from '@/common/curd/curd.controller';
 import { CityService } from './city.service';
+import { ParseListQuery } from '@/pipes/parse-list-query.pipe';
 
 @Controller('city')
 export class CityController extends CurdController<City, UpdateCityInput> {
@@ -15,7 +16,7 @@ export class CityController extends CurdController<City, UpdateCityInput> {
   async create(): Promise<any> {}
 
   @Get('list')
-  async getList(@Query() query: TListQuery<City>): Promise<IPaginationList<City>> {
+  async getList(@Query(ParseListQuery) query: TListQuery<City>): Promise<IPaginationList<City>> {
     return await this.service.getList(query);
   }
 

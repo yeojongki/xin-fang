@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { City } from '@xf/common/src/entities/city.entity';
 import { UpdateCityInput } from '@xf/common/src/dtos/city/update-city.input';
+import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { CurdService } from '@/common/curd/curd.service';
 
 @Injectable()
@@ -23,5 +24,18 @@ export class CityService extends CurdService<City, UpdateCityInput> {
 
     const city = await this.cityRepository.findOne(cityId, { relations: ['subways'] });
     return city;
+  }
+
+  async findAndCount(query: TListQuery<City>): Promise<[City[], number]> {
+    const { skip, take, name } = query;
+    const qb = this.repository.createQueryBuilder('q');
+    if (name) {
+      qb.andWhere(`q.name LIKE '%${name}%'`);
+    }
+
+    return qb
+      .skip(skip)
+      .take(take)
+      .getManyAndCount();
   }
 }
