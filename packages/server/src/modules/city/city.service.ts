@@ -22,8 +22,7 @@ export class CityService extends CurdService<City, UpdateCityInput> {
     //   .where('city.id = :cityId', { cityId })
     //   .getMany();
 
-    const city = await this.cityRepository.findOne(cityId, { relations: ['subways'] });
-    return city;
+    return await this.cityRepository.findOne(cityId, { relations: ['subways'] });
   }
 
   async findAndCount(query: TListQuery<City>): Promise<[City[], number]> {
