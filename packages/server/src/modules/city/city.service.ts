@@ -26,10 +26,15 @@ export class CityService extends CurdService<City, UpdateCityInput> {
   }
 
   async findAndCount(query: TListQuery<City>): Promise<[City[], number]> {
-    const { skip, take, name } = query;
+    const { skip, take, name, status } = query;
     const qb = this.repository.createQueryBuilder('q');
     if (name) {
       qb.andWhere(`q.name LIKE '%${name}%'`);
+    }
+    // transform status
+    const s = Number(status);
+    if (s === 0 || s === 1) {
+      qb.andWhere(`q.status = ${s}`);
     }
 
     return qb
