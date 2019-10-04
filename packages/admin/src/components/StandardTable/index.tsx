@@ -24,6 +24,7 @@ export interface IStandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
   showOperationDelete?: boolean;
   operationWidth?: number;
   showRowSection?: boolean;
+  customOperation?: (row: T) => ReactNode;
 }
 
 export interface IResetSelectedFn {
@@ -54,6 +55,7 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
     showOperationDelete = true,
     operationWidth = 150,
     showRowSection = true,
+    customOperation = null,
     ...rest
   } = props;
 
@@ -76,6 +78,12 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
     fixed: 'right',
     render: (_, record) => {
       const disabled = getCheckboxProps ? getCheckboxProps(record).disabled : false;
+
+      // 自定义操作
+      if (customOperation) {
+        return customOperation(record);
+      }
+
       return (
         <>
           {showOperationEdit ? (

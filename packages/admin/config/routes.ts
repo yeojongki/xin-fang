@@ -74,7 +74,7 @@ export default [
           },
           {
             path: '/city',
-            name: '城市列表',
+            name: '城市地铁',
             icon: 'hdd',
             component: './city',
           },

@@ -10,3 +10,6 @@ export const getList = (params: IPagination) => {
 
 export const update = (data: any): Promise<void> =>
   request(`/${namespace}`, { data, method: 'PUT' });
+
+export const getSubwaysByCityId = (cityId: number) =>
+  request('/subway/list', { params: { cityId, pageSize: 9999 } });

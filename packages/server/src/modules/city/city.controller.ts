@@ -15,16 +15,6 @@ export class CityController extends CurdController<City, UpdateCityInput> {
 
   async create(): Promise<any> {}
 
-  @Get('list')
-  async getList(@Query(ParseListQuery) query: TListQuery<City>): Promise<IPaginationList<City>> {
-    return await this.service.getList(query);
-  }
-
-  @Get(':id/subways')
-  async getSubways(@Param('id') cityId: number) {
-    return this.cityService.getSubways(+cityId);
-  }
-
   @Put()
   async update(@Body() dto: UpdateCityInput): Promise<void> {
     await this.service.update(dto);

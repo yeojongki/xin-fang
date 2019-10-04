@@ -1,20 +1,23 @@
 import React, { FC, useRef, useCallback, useState } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { Switch } from 'antd';
+import { Switch, Modal, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { ICity } from '@xf/common/src/interfaces/city.interface';
+import { Subway } from '@xf/common/src/entities';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { StateType } from './model';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { IDColumn, DateColumn } from '@/components/TableColumn';
 import Query from './components/Query';
+import { Detail } from './components/Detail';
 
 interface ICityProps {
   dispatch: Dispatch<any>;
   fetching: boolean;
   editing: boolean;
+  viewDetailing: boolean;
   city: StateType;
 }
 
@@ -22,7 +25,13 @@ export const namespace = 'city';
 // const pageName = '城市';
 const CityTable = create<ICity>();
 
-const City: FC<ICityProps> = ({ dispatch, fetching, editing, city: { pagination, list } }) => {
+const City: FC<ICityProps> = ({
+  dispatch,
+  fetching,
+  editing,
+  viewDetailing,
+  city: { pagination, list },
+}) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
   const fetchList = useCallback(
@@ -119,6 +128,30 @@ const City: FC<ICityProps> = ({ dispatch, fetching, editing, city: { pagination,
     },
   ];
 
+  // 查看城市所有地铁
+  const [detailVisible, setDetailVisible] = useState<boolean>(false);
+  const [detailTitle, setDetailTitle] = useState<string>('');
+  const [subways, setSubways] = useState<Subway[]>([]);
+  const viewDetail = ({ id, name }: ICity) => {
+    setDetailTitle(`${name}的所有地铁`);
+    dispatch({
+      type: `${namespace}/getSubwaysByCityId`,
+      payload: {
+        id,
+        callback: (subwayList: Subway[]) => {
+          setDetailVisible(true);
+          setSubways(subwayList);
+        },
+      },
+    });
+  };
+
+  const customOperation = (row: ICity) => (
+    <Button onClick={() => viewDetail(row)} disabled={row.status !== 1} type="link" size="small">
+      查看地铁列表
+    </Button>
+  );
+
   return (
     <>
       <CityTable
@@ -126,14 +159,22 @@ const City: FC<ICityProps> = ({ dispatch, fetching, editing, city: { pagination,
         columns={columns}
         ref={tableRef}
         rowKey={record => `${record.id}`}
-        loading={fetching}
+        loading={fetching || viewDetailing}
         pagination={pagination}
         fetchList={fetchList}
         dataSource={list}
         showCreateButton={false}
-        showOperationColumn={false}
         showRowSection={false}
+        customOperation={customOperation}
       />
+      <Modal
+        title={detailTitle}
+        visible={detailVisible}
+        onCancel={() => setDetailVisible(false)}
+        onOk={() => setDetailVisible(false)}
+      >
+        <Detail subways={subways} />
+      </Modal>
     </>
   );
 };
@@ -152,6 +193,6 @@ export default connect(
   }) => ({
     city,
     fetching: loading.effects[`${namespace}/getList`],
-    editing: loading.effects[`${namespace}/update`],
+    viewDetailing: loading.effects[`${namespace}/getSubwaysByCityId`],
   }),
 )(City);

@@ -15,15 +15,15 @@ export class CityService extends CurdService<City, UpdateCityInput> {
     super(cityRepository, '城市');
   }
 
-  async getSubways(cityId: number): Promise<City | undefined> {
-    // return await this.cityRepository
-    //   .createQueryBuilder('city')
-    //   .leftJoinAndSelect('city.subways', 'subways')
-    //   .where('city.id = :cityId', { cityId })
-    //   .getMany();
+  // async getSubways(cityId: number): Promise<City | undefined> {
+  //   // return await this.cityRepository
+  //   //   .createQueryBuilder('city')
+  //   //   .leftJoinAndSelect('city.subways', 'subways')
+  //   //   .where('city.id = :cityId', { cityId })
+  //   //   .getMany();
 
-    return await this.cityRepository.findOne(cityId, { relations: ['subways'] });
-  }
+  //   return await this.cityRepository.findOne(cityId, { relations: ['subways'] });
+  // }
 
   async findAndCount(query: TListQuery<City>): Promise<[City[], number]> {
     const { skip, take, name, status } = query;

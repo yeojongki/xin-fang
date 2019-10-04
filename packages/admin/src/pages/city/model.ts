@@ -17,6 +17,7 @@ export interface ModelType {
   effects: {
     getList: Effect;
     update: Effect;
+    getSubwaysByCityId: Effect;
   };
   reducers: {
     getListHandle: Reducer<StateType>;
@@ -47,7 +48,12 @@ const Model: ModelType = {
       const { callback, values } = payload;
       const { message }: HttpSuccessResponse = yield call(Api.update, values);
       Message.success(message);
-      callback();
+      callback && callback();
+    },
+    *getSubwaysByCityId({ payload }, { call }) {
+      const { callback, id } = payload;
+      const { result }: HttpSuccessResponse = yield call(Api.getSubwaysByCityId, id);
+      callback && callback(result.list);
     },
   },
 
