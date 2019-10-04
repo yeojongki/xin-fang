@@ -1,8 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { DateColumn } from './_date.entity';
 import { Subway } from './subway.entity';
 
 @Entity('city')
-export class City {
+export class City extends DateColumn {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -17,6 +18,9 @@ export class City {
 
   @Column({ comment: '拼音前缀' })
   pre!: string;
+
+  @Column({ default: 0, comment: '是否启用 0 未启动 1 开启' })
+  status!: number;
 
   @OneToMany(() => Subway, subway => subway.city)
   subways?: Subway[];

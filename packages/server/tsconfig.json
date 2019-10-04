@@ -15,7 +15,7 @@
       "@xf/common/*": [
         "../common/*"
       ]
-    },
+    }
   },
   "include": [
     "src/**/*"

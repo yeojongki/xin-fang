@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { City } from '@xf/common/src/entities/city.entity';
-import { BaseService } from '../base/base.service';
+import { UpdateCityInput } from '@xf/common/src/dtos/city/update-city.input';
+import { CurdService } from '@/common/curd/curd.service';
 
 @Injectable()
-export class CityService extends BaseService<City> {
+export class CityService extends CurdService<City, UpdateCityInput> {
   constructor(
     @InjectRepository(City)
     protected readonly cityRepository: Repository<City>,

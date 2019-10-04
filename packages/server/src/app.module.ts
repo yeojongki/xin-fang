@@ -5,8 +5,8 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { RoleModule } from './modules/role/role.module';
 import { LoginModule } from './modules/login/login.module';
-import { CityModule } from './common/city/city.module';
-import { SubwayModule } from './common/subway/subway.module';
+import { CityModule } from './modules/city/city.module';
+import { SubwayModule } from './modules/subway/subway.module';
 import { TypeormService } from './common/typeorm/typeorm.service';
 import { PermissionModule } from './modules/permission/permission.module';
 

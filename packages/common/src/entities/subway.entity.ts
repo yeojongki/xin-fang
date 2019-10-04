@@ -1,8 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { DateColumn } from './_date.entity';
 import { City } from './city.entity';
 
 @Entity('subway')
-export class Subway {
+export class Subway extends DateColumn {
   @PrimaryGeneratedColumn()
   id!: number;
 
