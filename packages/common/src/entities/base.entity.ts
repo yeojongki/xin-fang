@@ -1,22 +1,7 @@
-import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { PrimaryGeneratedColumn } from 'typeorm';
+import { DateColumn } from './_date.entity';
 
-export class Base {
+export class Base extends DateColumn {
   @PrimaryGeneratedColumn('uuid')
   readonly id!: string;
-
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'timestamp',
-    precision: 0,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  readonly createdAt!: Date;
-
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'timestamp',
-    precision: 0,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  readonly updatedAt!: Date;
 }

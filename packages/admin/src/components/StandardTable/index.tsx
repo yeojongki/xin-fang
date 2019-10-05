@@ -18,6 +18,13 @@ export interface IStandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
   getCheckboxProps?: (row: T) => { disabled: boolean };
   onAdd?: () => void;
   renderSearchForm?: () => ReactNode;
+  showCreateButton?: boolean;
+  showOperationColumn?: boolean;
+  showOperationEdit?: boolean;
+  showOperationDelete?: boolean;
+  operationWidth?: number;
+  showRowSection?: boolean;
+  customOperation?: (row: T) => ReactNode;
 }
 
 export interface IResetSelectedFn {
@@ -42,6 +49,13 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
     getCheckboxProps,
     onAdd,
     renderSearchForm,
+    showCreateButton = true,
+    showOperationColumn = true,
+    showOperationEdit = true,
+    showOperationDelete = true,
+    operationWidth = 150,
+    showRowSection = true,
+    customOperation = null,
     ...rest
   } = props;
 
@@ -60,41 +74,55 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
     key: 'operation',
     dataIndex: 'operation',
     title: '操作',
-    width: 150,
+    width: operationWidth,
     fixed: 'right',
     render: (_, record) => {
       const disabled = getCheckboxProps ? getCheckboxProps(record).disabled : false;
+
+      // 自定义操作
+      if (customOperation) {
+        return customOperation(record);
+      }
+
       return (
         <>
-          <Button type="link" size="small" onClick={() => (onEditRow ? onEditRow(record) : null)}>
-            编辑
-          </Button>
-          <Divider type="vertical" />
-          <Popconfirm
-            title="确定删除吗?"
-            disabled={disabled}
-            onConfirm={() => onDeleteRow && onDeleteRow(record)}
-          >
-            <Button disabled={disabled} type="link" size="small">
-              删除
+          {showOperationEdit ? (
+            <Button type="link" size="small" onClick={() => (onEditRow ? onEditRow(record) : null)}>
+              编辑
             </Button>
-          </Popconfirm>
+          ) : null}
+
+          {showOperationEdit && showOperationDelete ? <Divider type="vertical" /> : null}
+
+          {showOperationDelete ? (
+            <Popconfirm
+              title="确定删除吗?"
+              disabled={disabled}
+              onConfirm={() => onDeleteRow && onDeleteRow(record)}
+            >
+              <Button disabled={disabled} type="link" size="small">
+                删除
+              </Button>
+            </Popconfirm>
+          ) : null}
         </>
       );
     },
   };
 
-  const columnsProps = columns.concat(operationColumn);
+  const finalColumns = showOperationColumn ? columns.concat(operationColumn) : columns;
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (keys: TIDs, rows: T[]) => {
-      keys && setSelectedRowKeys(keys);
-      setSelectedRows(rows);
-      keys && onSelectRows && onSelectRows(keys, rows);
-    },
-    getCheckboxProps,
-  };
+  const rowSelection = showRowSection
+    ? {
+        selectedRowKeys,
+        onChange: (keys: TIDs, rows: T[]) => {
+          keys && setSelectedRowKeys(keys);
+          setSelectedRows(rows);
+          keys && onSelectRows && onSelectRows(keys, rows);
+        },
+        getCheckboxProps,
+      }
+    : undefined;
 
   const handleTableChange = ({ pageSize, current }: Partial<IPagination>) => {
     const params: Partial<IPagination> = {
@@ -123,38 +151,43 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
       <Card>
         <div className={styles.standardTable}>
           {renderSearchForm && renderSearchForm()}
-          <Button icon="plus" type="primary" className={styles.addBtn} onClick={onAdd}>
-            新建
-          </Button>
-          <div className={styles.tableAlert}>
-            <Alert
-              message={
-                <>
-                  <span>
-                    已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a>{' '}
-                    项&nbsp;&nbsp;
-                  </span>
-                  {hasSelected ? (
-                    <Popconfirm
-                      title="确定删除吗?"
-                      onConfirm={() => {
-                        onDeleteSelected && onDeleteSelected(selectedRowKeys);
-                      }}
-                    >
-                      <a style={{ marginLeft: '20px' }}>删除选中</a>
-                    </Popconfirm>
-                  ) : null}
-                </>
-              }
-              type="info"
-              showIcon
-            />
-          </div>
+          {showCreateButton ? (
+            <Button icon="plus" type="primary" className={styles.addBtn} onClick={onAdd}>
+              新建
+            </Button>
+          ) : null}
+
+          {showRowSection ? (
+            <div className={styles.tableAlert}>
+              <Alert
+                message={
+                  <>
+                    <span>
+                      已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a>{' '}
+                      项&nbsp;&nbsp;
+                    </span>
+                    {hasSelected ? (
+                      <Popconfirm
+                        title="确定删除吗?"
+                        onConfirm={() => {
+                          onDeleteSelected && onDeleteSelected(selectedRowKeys);
+                        }}
+                      >
+                        <a style={{ marginLeft: '20px' }}>删除选中</a>
+                      </Popconfirm>
+                    ) : null}
+                  </>
+                }
+                type="info"
+                showIcon
+              />
+            </div>
+          ) : null}
 
           <Table
             scroll={{ x: 'max-content' }}
             rowKey={rowKey}
-            columns={columnsProps}
+            columns={finalColumns}
             dataSource={dataSource}
             pagination={paginationProps}
             rowSelection={rowSelection}

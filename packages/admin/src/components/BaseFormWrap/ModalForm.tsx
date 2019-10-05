@@ -6,7 +6,7 @@ import BaseFormWrap, { IBaseFormWrapProps } from '.';
 export interface IModalFormProps extends Omit<IBaseFormWrapProps, 'form'> {
   title: string;
   visible: boolean;
-  onSubmit: (values: any) => void;
+  onOk?: () => void;
   onCancel: () => void;
   loading: boolean;
   forwardRef?: any;
@@ -15,14 +15,15 @@ export interface IModalFormProps extends Omit<IBaseFormWrapProps, 'form'> {
 const ModalForm = ({
   visible,
   title,
+  onOk,
   onCancel,
   onSubmit,
   forwardRef,
   loading,
   ...rest
 }: IModalFormProps) => {
-  const onOk = () => {
-    if (forwardRef) {
+  const prepareOk = () => {
+    if (forwardRef && onSubmit) {
       const form: WrappedFormUtils = forwardRef.current;
       form.validateFields((err: any, values: any) => {
         if (err) {
@@ -31,6 +32,7 @@ const ModalForm = ({
         onSubmit(values);
       });
     }
+    onOk && onOk();
   };
 
   return (
@@ -38,7 +40,7 @@ const ModalForm = ({
       okButtonProps={{ loading, htmlType: 'submit' }}
       visible={visible}
       title={title}
-      onOk={onOk}
+      onOk={prepareOk}
       onCancel={onCancel}
     >
       <BaseFormWrap {...rest} ref={forwardRef} />

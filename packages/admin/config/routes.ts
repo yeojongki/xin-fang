@@ -42,7 +42,7 @@ export default [
           },
           {
             path: '/welcome',
-            name: 'welcome',
+            name: '欢迎',
             icon: 'smile',
             component: './Welcome',
           },
@@ -71,6 +71,12 @@ export default [
                 component: './permission',
               },
             ],
+          },
+          {
+            path: '/city',
+            name: '城市地铁',
+            icon: 'hdd',
+            component: './city',
           },
           {
             path: '/exception',

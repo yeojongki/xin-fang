@@ -21,13 +21,13 @@ export interface IFindIdResult {
 export abstract class BaseController<E extends IFindIdResult> {
   constructor(protected readonly service: BaseService<E>) {}
 
-  @Get(':id')
-  async findById(@Param('id') id: TID): Promise<Partial<E> | undefined> {
-    return await this.service.findById(id);
-  }
-
   @Get('list')
   async getList(@Query(ParseListQuery) query: TListQuery<E>): Promise<IPaginationList<E>> {
     return await this.service.getList(query);
+  }
+
+  @Get(':id')
+  async findById(@Param('id') id: TID): Promise<Partial<E> | undefined> {
+    return await this.service.findById(id);
   }
 }

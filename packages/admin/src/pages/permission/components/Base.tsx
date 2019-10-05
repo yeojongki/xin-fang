@@ -43,6 +43,18 @@ export const Base = (props: TRenderItems<Permission>) => {
         })(<Input maxLength={16} placeholder="名称" />)}
       </FormItem>
 
+      <FormItem label="模块名" hasFeedback>
+        {getFieldDecorator('module', {
+          initialValue: initValue ? initValue.module : '',
+          rules: [
+            {
+              required: true,
+              message: '请输入模块名！',
+            },
+          ],
+        })(<Input maxLength={16} placeholder="模块名" />)}
+      </FormItem>
+
       <FormItem label="描述" hasFeedback>
         {getFieldDecorator('desc', {
           initialValue: initValue ? initValue.desc : '',

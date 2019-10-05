@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subway } from '@xf/common/src/entities/subway.entity';
-import { BaseService } from '../base/base.service';
+import { BaseService } from '@/common/base/base.service';
 
 @Injectable()
 export class SubwayService extends BaseService<Subway> {

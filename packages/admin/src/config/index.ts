@@ -5,4 +5,6 @@ export enum ModuleNameMap {
   'permission' = '权限',
   'user' = '用户',
   'role' = '角色',
+  'city' = '城市',
+  'subway' = '地铁',
 }
