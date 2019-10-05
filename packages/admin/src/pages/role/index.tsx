@@ -178,6 +178,7 @@ const RoleList: React.FC<IRoleListProps> = ({
       <ModalForm
         title="编辑角色"
         type="edit"
+        bodyStyle={{ maxHeight: '600px', overflowY: 'scroll' }}
         ref={editFormRef}
         renderItems={props => Base({ ...props, permissions: allPermissions })}
         loading={editing}
@@ -189,6 +190,7 @@ const RoleList: React.FC<IRoleListProps> = ({
       <ModalForm
         title="创建角色"
         type="create"
+        bodyStyle={{ maxHeight: '600px', overflowY: 'scroll' }}
         ref={createFormRef}
         renderItems={props => Base({ ...props, permissions: allPermissions })}
         loading={creating}

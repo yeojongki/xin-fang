@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { Modal } from 'antd';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import BaseFormWrap, { IBaseFormWrapProps } from '.';
@@ -6,6 +6,7 @@ import BaseFormWrap, { IBaseFormWrapProps } from '.';
 export interface IModalFormProps extends Omit<IBaseFormWrapProps, 'form'> {
   title: string;
   visible: boolean;
+  bodyStyle?: CSSProperties;
   onOk?: () => void;
   onCancel: () => void;
   loading: boolean;
@@ -13,8 +14,9 @@ export interface IModalFormProps extends Omit<IBaseFormWrapProps, 'form'> {
 }
 
 const ModalForm = ({
-  visible,
   title,
+  visible,
+  bodyStyle,
   onOk,
   onCancel,
   onSubmit,
@@ -40,6 +42,7 @@ const ModalForm = ({
       okButtonProps={{ loading, htmlType: 'submit' }}
       visible={visible}
       title={title}
+      bodyStyle={bodyStyle}
       onOk={prepareOk}
       onCancel={onCancel}
     >
