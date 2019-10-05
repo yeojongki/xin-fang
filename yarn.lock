@@ -64,9 +64,9 @@
     yargs-parser "^13.1.1"
 
 "@ant-design/pro-layout@^4.5.9":
-  version "4.5.14"
-  resolved "https://registry.npm.taobao.org/@ant-design/pro-layout/download/@ant-design/pro-layout-4.5.14.tgz#fd5c6f72815157ebaf9f96a877b1cf7e8a04ad58"
-  integrity sha1-/VxvcoFRV+uvn5aod7HPfooErVg=
+  version "4.5.16"
+  resolved "https://registry.npm.taobao.org/@ant-design/pro-layout/download/@ant-design/pro-layout-4.5.16.tgz#dc312564bff5e01310dc749e2569546e0e37068f"
+  integrity sha1-3DElZL/14BMQ3HSeJWlUbg43Bo8=
   dependencies:
     "@types/warning" "^3.0.0"
     antd "^3.20.7"
@@ -84,7 +84,7 @@
     react-copy-to-clipboard "^5.0.1"
     react-document-title "^2.0.3"
     react-dom "^16.7.0"
-    react-media-hook2 "^1.0.2"
+    react-media-hook2 "^1.1.2"
     react-router-dom "4.3.1"
     warning "^4.0.3"
 
@@ -15246,7 +15246,7 @@ react-loadable@5.5.0:
   dependencies:
     prop-types "^15.5.0"
 
-react-media-hook2@^1.0.2:
+react-media-hook2@^1.1.2:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/react-media-hook2/download/react-media-hook2-1.1.2.tgz#e6b57f2210ce4c84e2d821fb7ed67631e7b7c14c"
   integrity sha1-5rV/IhDOTITi2CH7ftZ2Mee3wUw=
