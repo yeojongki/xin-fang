@@ -1,4 +1,4 @@
-import { MenuTheme } from 'antd/es/menu';
+import { MenuTheme } from 'antd/es/menu/MenuContext';
 
 export type ContentWidth = 'Fluid' | 'Fixed';
 
@@ -42,7 +42,7 @@ export interface DefaultSettings {
   colorWeak: boolean;
 }
 
-export default {
+const defaultSettings: DefaultSettings = {
   navTheme: 'dark',
   primaryColor: '#1890FF',
   layout: 'sidemenu',
@@ -54,7 +54,9 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Ant Design Pro',
+  title: '馨房后台管理',
   pwa: false,
   iconfontUrl: '',
-} as DefaultSettings;
+};
+
+export default defaultSettings;
