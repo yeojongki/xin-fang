@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+import { SeedModule } from './common/seed/seed.module';
+import { TypeormService } from './common/typeorm/typeorm.service';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { RoleModule } from './modules/role/role.module';
 import { LoginModule } from './modules/login/login.module';
 import { CityModule } from './modules/city/city.module';
 import { SubwayModule } from './modules/subway/subway.module';
-import { TypeormService } from './common/typeorm/typeorm.service';
 import { PermissionModule } from './modules/permission/permission.module';
 
 @Module({
@@ -15,6 +15,7 @@ import { PermissionModule } from './modules/permission/permission.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeormService,
     }),
+    SeedModule,
     LoginModule,
     AuthModule,
     UserModule,
@@ -24,6 +25,4 @@ import { PermissionModule } from './modules/permission/permission.module';
     SubwayModule,
   ],
 })
-export class AppModule {
-  constructor(private readonly connection: Connection) {}
-}
+export class AppModule {}

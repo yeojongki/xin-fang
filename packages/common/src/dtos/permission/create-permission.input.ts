@@ -7,4 +7,7 @@ export class CreatePermissionInput extends BasePermissionInput {
 
   @IsNotEmpty({ message: '权限标识不能为空' })
   token!: string;
+
+  @IsNotEmpty({ message: '权限模块名不能为空' })
+  module!: string;
 }
