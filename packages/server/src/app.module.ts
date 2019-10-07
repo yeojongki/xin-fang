@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SeedModule } from './common/seed/seed.module';
 import { TypeormService } from './common/typeorm/typeorm.service';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -15,7 +14,6 @@ import { PermissionModule } from './modules/permission/permission.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeormService,
     }),
-    SeedModule,
     LoginModule,
     AuthModule,
     UserModule,

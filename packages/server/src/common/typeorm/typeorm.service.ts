@@ -16,6 +16,7 @@ export class TypeormService implements TypeOrmOptionsFactory {
       database: 'xf-test',
       // database: 'xin-fang',
       synchronize: true,
+      migrations: ['src/migrations/*.ts'],
       // logging: ['query'],
       entities: Object.values(Entities),
     };
