@@ -4,12 +4,16 @@ import { ITokenResult } from '@xf/common/src/interfaces/auth.interface';
 import { AuthLoginInput } from '@xf/common/src/dtos/auth/auth-login.input';
 import { User } from '@xf/common/src/entities';
 import { errorCode } from '@/constants/error-code';
-import { TOKEN_EXPIRED } from '@/config';
 import { UserService } from '../user/user.service';
+import { ConfigService } from '@/common/config/config.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+  ) {}
 
   /**
    * 根据用户名和密码验证用户信息 返回 token
@@ -39,7 +43,7 @@ export class AuthService {
   public generateJWT(id: string | number): ITokenResult {
     return {
       accessToken: this.jwtService.sign({ id }),
-      expiredIn: TOKEN_EXPIRED,
+      expiredIn: +this.configService.get('TOKEN_EXPIRED'),
     };
   }
 

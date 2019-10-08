@@ -4,13 +4,12 @@ import { Reflector } from '@nestjs/core';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { PATH_METADATA, METHOD_METADATA } from '@nestjs/common/constants';
 import { errorCode } from '@/constants/error-code';
-import { API_PREFIX } from '@/config';
 import { authWhiteList, checkPermission } from '@/utils/check-permission';
 
 export type IAuthRequest = { path: string } & { user: IUser };
 
 export class PermissionAuthGuard extends AuthGuard('jwt') {
-  constructor(private readonly reflector: Reflector) {
+  constructor(private readonly reflector: Reflector, private readonly apiPrefix: string) {
     super();
   }
 
@@ -21,10 +20,10 @@ export class PermissionAuthGuard extends AuthGuard('jwt') {
     const method = this.reflector.get(METHOD_METADATA, context.getHandler());
 
     // total path without prefix
-    const path = (request.path as string).replace(`/${API_PREFIX}`, '');
+    const path = (request.path as string).replace(`/${this.apiPrefix}`, '');
 
     // check authWhiteList
-    if (authWhiteList.includes(path)) return true;
+    if (authWhiteList.includes(`${method} ${path}`)) return true;
 
     // https://github.com/nestjs/passport/blob/master/lib/auth.guard.ts#L36
     const jwtCheck = super.canActivate(context);

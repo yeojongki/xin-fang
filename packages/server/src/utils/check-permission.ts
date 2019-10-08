@@ -2,7 +2,12 @@ import { RequestMethod } from '@nestjs/common/enums';
 import { IRoute } from '@xf/common/src/interfaces/route.interface';
 import { Permission } from '@xf/common/src/entities';
 
-export const authWhiteList = ['/login'];
+export const authWhiteList = [
+  // 登录
+  `${RequestMethod.POST} /login`,
+  // 注册
+  `${RequestMethod.POST} /user`,
+];
 
 export const permissionWhiteList = {
   '/user/currentUser': true,
