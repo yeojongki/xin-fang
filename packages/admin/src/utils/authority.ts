@@ -1,6 +1,12 @@
 import { TRole } from '@xf/common/src/interfaces/role.interfaces';
 import { ITokenResult, ITokenResultWithTs } from '@xf/common/src/interfaces/auth.interface';
 import { STORAGE_TOKEN_KEY, STORAGE_ROLE_KEY } from '@/config';
+import { CurrentUser } from '@/models/user';
+
+// check user isLogin
+export function checkIsLogin(user: CurrentUser | undefined): boolean {
+  return Boolean((user && user.username) || getStorageRoles());
+}
 
 // use localStorage to store the authority info, which might be sent from server in actual project.
 export function getStorageRoles(): string | string[] {

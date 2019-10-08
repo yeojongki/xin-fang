@@ -74,6 +74,7 @@ export default [
           },
           {
             path: '/city',
+            authority: [ROLES.SUPER_ADMIN],
             name: '城市地铁',
             icon: 'hdd',
             component: './city',

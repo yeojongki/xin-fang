@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import pathToRegexp from 'path-to-regexp';
 import Authorized from '@/utils/Authorized';
 import { ConnectProps, ConnectState, Route, UserModelState } from '@/models/connect';
+import { checkIsLogin } from '@/utils/authority';
 
 interface AuthComponentProps extends ConnectProps {
   user: UserModelState;
@@ -13,9 +14,9 @@ const getRouteAuthority = (path: string, routeData: Route[]) => {
   let authorities: string[] | string | undefined;
   routeData.forEach(route => {
     // https://github.com/ant-design/ant-design-pro/issues/4883
-    if (route.authority) {
-      authorities = route.authority;
-    }
+    // if (route.authority) {
+    //   authorities = route.authority;
+    // }
     // match prefix
     if (pathToRegexp(`${route.path}(.*)`).test(path)) {
       // exact match
@@ -43,7 +44,7 @@ const AuthComponent: React.FC<AuthComponentProps> = ({
 }) => {
   const { currentUser } = user;
   const { routes = [] } = route;
-  const isLogin = currentUser && currentUser.username;
+  const isLogin = checkIsLogin(currentUser);
   return (
     <Authorized
       authority={getRouteAuthority(location.pathname, routes) || ''}
