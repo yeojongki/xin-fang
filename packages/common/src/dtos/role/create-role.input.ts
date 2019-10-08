@@ -9,5 +9,8 @@ export class CreateRoleInput extends BaseRoleInput {
   token!: string;
 
   @IsOptional()
+  desc?: string;
+
+  @IsOptional()
   permissions?: string[];
 }

@@ -8,6 +8,7 @@
     "npm": ">=6.4.0"
   },
   "scripts": {
+    "seed:dev": "cd ./packages/server && yarn seed:dev",
     "server:dev": "cd ./packages/server && yarn start:dev",
     "admin:dev": "cd ./packages/admin && yarn start"
   },
