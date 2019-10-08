@@ -1,11 +1,11 @@
 import { AuthGuard } from '@nestjs/passport';
 import { UnauthorizedException, ExecutionContext } from '@nestjs/common';
-import { authWhiteList, checkPermission } from '@xf/common/src/utils/check-permission';
 import { Reflector } from '@nestjs/core';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { PATH_METADATA, METHOD_METADATA } from '@nestjs/common/constants';
 import { errorCode } from '@/constants/error-code';
 import { API_PREFIX } from '@/config';
+import { authWhiteList, checkPermission } from '@/utils/check-permission';
 
 export type IAuthRequest = { path: string } & { user: IUser };
 

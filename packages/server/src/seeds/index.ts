@@ -21,15 +21,17 @@ class Seed {
     await NestFactory.create(AppModule);
     const connection = await getConnection();
 
+    // todo set db collate
+
     // insert datas
     const insert = (sqlName: string) => {
-      const sql = fs.readFileSync(join(__dirname, 'seeds', `${sqlName}.sql`), 'utf-8');
+      const sql = fs.readFileSync(join(__dirname, `${sqlName}.sql`), 'utf-8');
       genSql(sql, async str => {
         if (str) {
           try {
             await connection.query(str);
           } catch (error) {
-            console.log(error);
+            logger.error(error);
           }
         }
       });

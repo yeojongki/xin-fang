@@ -1,6 +1,6 @@
 import { RequestMethod } from '@nestjs/common/enums';
-import { IRoute } from '../interfaces/route.interface';
-import { Permission } from '../entities';
+import { IRoute } from '@xf/common/src/interfaces/route.interface';
+import { Permission } from '@xf/common/src/entities';
 
 export const authWhiteList = ['/login'];
 
