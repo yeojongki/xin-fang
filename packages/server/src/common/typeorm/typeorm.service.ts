@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ConnectionOptions } from 'typeorm';
 import * as Entities from '@xf/common/src/entities';
 import { ConfigService } from '../config/config.service';
 
@@ -10,7 +11,7 @@ export class TypeormService implements TypeOrmOptionsFactory {
   /** eslint-ignore */
   createTypeOrmOptions(): TypeOrmModuleOptions {
     const options: TypeOrmModuleOptions = {
-      type: this.configService.get('DB_TYPE'),
+      type: 'mysql',
       host: this.configService.get('DB_HOST'),
       port: Number(this.configService.get('DB_PORT')),
       charset: this.configService.get('DB_CHARSET'),

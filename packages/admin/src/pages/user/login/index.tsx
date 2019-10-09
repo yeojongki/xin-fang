@@ -127,7 +127,7 @@ class Login extends Component<LoginProps, LoginState> {
               this.renderMessage('账户或密码错误')}
             <UserName
               name="username"
-              placeholder="用户名"
+              placeholder="superAdmin 或者 user"
               rules={[
                 {
                   required: true,
@@ -137,7 +137,7 @@ class Login extends Component<LoginProps, LoginState> {
             />
             <Password
               name="password"
-              placeholder="密码"
+              placeholder="123456"
               rules={[
                 {
                   required: true,
@@ -145,7 +145,7 @@ class Login extends Component<LoginProps, LoginState> {
                 },
                 {
                   min: 6,
-                  message: '请输入至少6位!',
+                  message: '至少为6位!',
                 },
               ]}
               onPressEnter={e => {
