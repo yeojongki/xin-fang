@@ -13,7 +13,8 @@
     "server:dev": "cd ./packages/server && yarn start:dev",
     "server:build": "cd ./packages/server && yarn build:main",
     "admin:dev": "cd ./packages/admin && yarn start",
-    "admin:build": "cd ./packages/admin && yarn build"
+    "admin:build": "cd ./packages/admin && yarn build",
+    "publish": "lerna publish"
   },
   "author": "kk597@sina.com",
   "workspaces": {
