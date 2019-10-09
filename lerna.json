@@ -5,9 +5,21 @@
   "command": {
     "bootstrap": {
       "hoist": true
+    },
+    "publish": {
+      "message": "chore(release): publish %v"
     }
   },
   "version": "0.0.0",
   "npmClient": "yarn",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "changelog": {
+    "labels": {
+      "feat": ":rocket: New Feature",
+      "bug": ":bug: Bug Fix",
+      "doc": ":memo: Documentation",
+      "internal": ":house: Internal",
+      "breaking": ":boom: Breaking Change"
+    }
+  }
 }
