@@ -10,12 +10,13 @@
       "message": "chore(release): publish %v"
     }
   },
-  "version": "0.0.0",
+  "version": "0.0.1",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "changelog": {
     "labels": {
       "feat": ":rocket: New Feature",
+      "enhancement": ":rocket: New Feature",
       "bug": ":bug: Bug Fix",
       "doc": ":memo: Documentation",
       "internal": ":house: Internal",
