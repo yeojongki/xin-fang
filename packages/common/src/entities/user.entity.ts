@@ -1,9 +1,10 @@
-import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
 import { Gender } from '@xf/common/src/constants/gender.const';
 import { Base } from './base.entity';
 import { Role } from './role.entity';
 import { Permission } from './permission.entity';
+import { House } from './house.entity';
 
 @Entity('user')
 export class User extends Base {
@@ -28,6 +29,9 @@ export class User extends Base {
 
   @Column({ default: null })
   avatar?: string;
+
+  @OneToMany(() => House, house => house.user)
+  houses!: House[];
 
   @Exclude()
   @ManyToMany(() => Role, role => role.users)
@@ -55,5 +59,5 @@ export class User extends Base {
   }
 
   // not in db
-  permissions?: string[];
+  permissions!: string[];
 }

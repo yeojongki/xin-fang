@@ -17,3 +17,8 @@ INSERT INTO `role_permission` VALUES ('e06ea503-4bb3-4ec3-a58b-d86825ce2fec', '9
 INSERT INTO `role_permission` VALUES ('e1bb48eb-29f0-4b06-97dc-31e06f923256', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('e2ceb8b7-deaf-49e6-8ce2-bde931ae5bc2', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('e5575e16-c92a-4432-917e-e9a51fce47d7', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('c23cfc33-05e7-47e8-8434-f20da372149c', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('106b2de4-7423-48a0-ad3c-f585928d1d25', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('6e611ae7-fd20-44a9-935b-43574b2bbd3e', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('187ce680-4388-4096-8894-1274777bc056', '9adf12e6-079e-4695-aab8-6e19cbe1082e');

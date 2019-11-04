@@ -17,3 +17,8 @@ INSERT INTO `permission` VALUES ('2019-09-24 22:37:44', '2019-09-24 22:52:59', '
 INSERT INTO `permission` VALUES ('2019-10-05 00:52:05', '2019-10-05 00:52:05', 'e1bb48eb-29f0-4b06-97dc-31e06f923256', 'subway.list', 'subway', '地铁列表', '');
 INSERT INTO `permission` VALUES ('2019-09-24 22:54:54', '2019-09-24 22:54:54', 'e2ceb8b7-deaf-49e6-8ce2-bde931ae5bc2', 'role.delete', 'role', '角色删除', '');
 INSERT INTO `permission` VALUES ('2019-09-24 22:56:52', '2019-09-24 22:56:52', 'e5575e16-c92a-4432-917e-e9a51fce47d7', 'permission.item', 'permission', '权限 Item', '');
+INSERT INTO `permission` VALUES ('2019-11-04 22:27:52', '2019-11-04 22:27:52', 'eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', 'house.item', 'house', '房子 Item', '');
+INSERT INTO `permission` VALUES ('2019-11-04 22:27:52', '2019-11-04 22:27:52', 'c23cfc33-05e7-47e8-8434-f20da372149c', 'house.list', 'house', '房子列表', '');
+INSERT INTO `permission` VALUES ('2019-11-04 22:27:52', '2019-11-04 22:27:52', '106b2de4-7423-48a0-ad3c-f585928d1d25', 'house.create', 'house', '房子创建', '');
+INSERT INTO `permission` VALUES ('2019-11-04 22:27:52', '2019-11-04 22:27:52', '6e611ae7-fd20-44a9-935b-43574b2bbd3e', 'house.delete', 'house', '房子删除', '');
+INSERT INTO `permission` VALUES ('2019-11-04 22:27:52', '2019-11-04 22:27:52', '187ce680-4388-4096-8894-1274777bc056', 'house.update', 'house', '房子更新', '');

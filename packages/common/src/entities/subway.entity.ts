@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { DateColumn } from './_date.entity';
 import { City } from './city.entity';
+import { House } from './house.entity';
 
 @Entity('subway')
 export class Subway extends DateColumn {
@@ -15,5 +16,8 @@ export class Subway extends DateColumn {
 
   @ManyToOne(() => City, city => city.subways)
   @JoinColumn({ name: 'city_id' })
-  city?: City;
+  city!: City;
+
+  @OneToMany(() => House, house => house.subway)
+  houses?: House[];
 }
