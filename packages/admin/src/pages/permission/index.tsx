@@ -140,6 +140,11 @@ const PermissionList: FC<IPermissionListProps> = ({
       title: '名称',
     },
     {
+      key: 'module',
+      dataIndex: 'module',
+      title: '模块',
+    },
+    {
       key: 'desc',
       dataIndex: 'desc',
       title: '描述',
