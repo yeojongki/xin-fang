@@ -16,10 +16,10 @@ export class HouseService extends CurdService<House, UpdateHouseInput> {
   }
 
   async findAndCount(query: TListQuery<House>): Promise<[House[], number]> {
-    const { skip, take, name } = query;
+    const { skip, take, title } = query;
     const qb = this.repository.createQueryBuilder('q');
-    if (name) {
-      qb.andWhere(`q.name LIKE '%${name}%'`);
+    if (title) {
+      qb.andWhere(`q.title LIKE '%${title}%'`);
     }
 
     return qb

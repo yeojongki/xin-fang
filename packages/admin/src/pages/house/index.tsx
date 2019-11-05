@@ -1,46 +1,40 @@
-import React, { FC, useState, useRef, useCallback, useEffect } from 'react';
-import { Dispatch } from 'redux';
-import { connect } from 'dva';
-import { ColumnProps } from 'antd/lib/table';
-import { IUser } from '@xf/common/src/interfaces/user.interfaces';
+import React, { useRef, useState, useEffect, useCallback, FC } from 'react';
 import { WrappedFormUtils } from 'antd/es/form/Form';
+import { Switch } from 'antd';
+import { House } from '@xf/common/src/entities';
+import { HouseStatus } from '@xf/common/src/constants/house.const';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
-import { Gender, GenderMap } from '@xf/common/src/constants/gender.const';
-import { Tag } from 'antd';
-import { StateType } from './model';
+import { ColumnProps } from 'antd/lib/table';
+import { Dispatch } from 'redux';
+import { connect } from 'dva';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
+import { StateType } from './model';
 import { getForm, generateField } from '@/utils/form';
-import { BaseForm } from './components/Base';
-import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { IDColumn, DateColumn } from '@/components/TableColumn';
-import { Md5 } from '@/utils';
-import { IRoleStateType } from '@/models/role';
+import ModalForm from '@/components/BaseFormWrap/ModalForm';
+import { Base } from './components/Base';
 import Query from './components/Query';
 
-interface IUsersProps {
+interface IHousesProps {
   dispatch: Dispatch<any>;
   fetching: boolean;
   editing: boolean;
   creating: boolean;
-  users: StateType;
-  roleList: IRoleStateType['list'];
-  roleMap: IRoleStateType['map'];
+  house: StateType;
 }
 
-export const namespace = 'users';
-const pageName = '用户';
-const UsersTable = create<IUser>();
+export const namespace = 'house';
+const pageName = '房子';
+const HouseTable = create<House>();
 
-const Users: FC<IUsersProps> = ({
+const Houses: FC<IHousesProps> = ({
   dispatch,
   fetching,
   editing,
   creating,
-  users: { pagination, list },
-  roleList,
-  roleMap,
+  house: { pagination, list },
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
@@ -51,7 +45,7 @@ const Users: FC<IUsersProps> = ({
   }, []);
 
   const fetchList = useCallback(
-    (payload: Partial<TListQuery<IUser>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
+    (payload: Partial<TListQuery<House>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
       dispatch({
         type: `${namespace}/getList`,
         payload,
@@ -62,7 +56,7 @@ const Users: FC<IUsersProps> = ({
 
   // query
   const handleSearch = useCallback(
-    (query: TListQuery<IUser>) => {
+    (query: TListQuery<House>) => {
       const { total, ...rest } = pagination;
       fetchList({ ...rest, ...query });
     },
@@ -73,12 +67,11 @@ const Users: FC<IUsersProps> = ({
   const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);
   const createFormRef = useRef<any>();
 
-  const submitCreateForm = (values: IUser) => {
-    const input = { ...values, password: Md5(values.password) };
+  const submitCreateForm = (values: House) => {
     dispatch({
       type: `${namespace}/create`,
       payload: {
-        values: input,
+        values,
         callback: () => {
           fetchList();
           setCreateFormVisible(false);
@@ -92,14 +85,14 @@ const Users: FC<IUsersProps> = ({
 
   // edit
   const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<IUser>();
+  const [currentRow, setCurrentRow] = useState<House>();
   const editFormRef = useRef<any>();
 
-  const handleEdit = (row: IUser): void => {
+  const handleEdit = (row: House): void => {
     // set fields
     const form = getForm(editFormRef);
     if (form) {
-      const { avatar, createdAt, updatedAt, gender, ...rest } = row;
+      const { createdAt, updatedAt, ...rest } = row;
       form.setFields(generateField(rest));
     } else {
       // init
@@ -108,11 +101,7 @@ const Users: FC<IUsersProps> = ({
     setEditFormVisible(true);
   };
 
-  const submitEditForm = (values: IUser) => {
-    // 加密 password
-    if (values.password) {
-      values.password = Md5(values.password);
-    }
+  const submitEditForm = (values: House) => {
     dispatch({
       type: `${namespace}/update`,
       payload: {
@@ -126,7 +115,7 @@ const Users: FC<IUsersProps> = ({
   };
 
   // delete
-  const handleDelete = (rows: IUser | TIDs) => {
+  const handleDelete = (rows: House | TIDs) => {
     const ids = Array.isArray(rows) ? rows : [rows.id];
     dispatch({
       type: `${namespace}/delete`,
@@ -141,7 +130,7 @@ const Users: FC<IUsersProps> = ({
     });
   };
 
-  const columns: ColumnProps<IUser>[] = [
+  const columns: ColumnProps<House>[] = [
     {
       key: 'id',
       dataIndex: 'id',
@@ -149,31 +138,40 @@ const Users: FC<IUsersProps> = ({
       render: (id: string) => <IDColumn id={id} />,
     },
     {
-      key: 'username',
-      dataIndex: 'username',
-      title: '用户名',
+      key: 'title',
+      dataIndex: 'title',
+      title: '标题',
+    },
+    // {
+    //   key: 'content',
+    //   dataIndex: 'content',
+    //   title: '详情',
+    // },
+    {
+      key: 'imgs',
+      dataIndex: 'imgs',
+      title: '图片',
     },
     {
-      key: 'roles',
-      dataIndex: 'roles',
-      title: '角色',
-      render: (roles: string[]) => roles.map(role => <Tag key={role}>{roleMap[role]}</Tag>),
+      key: 'status',
+      dataIndex: 'status',
+      title: '状态',
+      render: (status: HouseStatus) => <Switch disabled checked={status === 0} />,
     },
     {
-      key: 'mobile',
-      dataIndex: 'mobile',
-      title: '手机号',
+      key: 'commentCount',
+      dataIndex: 'commentCount',
+      title: '评论数',
     },
     {
-      key: 'email',
-      dataIndex: 'email',
-      title: '邮箱',
+      key: 'likeCount',
+      dataIndex: 'likeCount',
+      title: '点赞数',
     },
     {
-      key: 'gender',
-      dataIndex: 'gender',
-      title: '性别',
-      render: (gender: Gender) => GenderMap[gender],
+      key: 'clickCount',
+      dataIndex: 'clickCount',
+      title: '点击数',
     },
     {
       key: 'createdAt',
@@ -193,13 +191,11 @@ const Users: FC<IUsersProps> = ({
 
   return (
     <>
-      <UsersTable
+      <HouseTable
         onAdd={() => {
           setCreateFormVisible(true);
         }}
-        renderSearchForm={() => (
-          <Query roleList={roleList} onSearch={handleSearch} onReset={fetchList} />
-        )}
+        renderSearchForm={() => <Query onSearch={handleSearch} onReset={fetchList} />}
         columns={columns}
         ref={tableRef}
         rowKey={record => record.id}
@@ -216,7 +212,7 @@ const Users: FC<IUsersProps> = ({
         title={`编辑${pageName}`}
         type="edit"
         ref={editFormRef}
-        renderItems={props => BaseForm({ ...props, roleList })}
+        renderItems={props => Base(props)}
         loading={editing}
         visible={editFormVisible}
         initValue={currentRow}
@@ -227,7 +223,7 @@ const Users: FC<IUsersProps> = ({
         title={`创建${pageName}`}
         type="create"
         ref={createFormRef}
-        renderItems={props => BaseForm({ ...props, roleList })}
+        renderItems={props => Base(props)}
         loading={creating}
         visible={createFormVisible}
         onCancel={() => setCreateFormVisible(false)}
@@ -239,23 +235,19 @@ const Users: FC<IUsersProps> = ({
 
 export default connect(
   ({
-    users,
-    role,
+    house,
     loading,
   }: {
-    users: StateType;
-    role: IRoleStateType;
+    house: StateType;
     loading: {
       effects: {
         [key: string]: string;
       };
     };
   }) => ({
-    users,
-    roleList: role.list,
-    roleMap: role.map,
+    house,
     fetching: loading.effects[`${namespace}/getList`],
     editing: loading.effects[`${namespace}/update`],
     creating: loading.effects[`${namespace}/create`],
   }),
-)(Users);
+)(Houses);
