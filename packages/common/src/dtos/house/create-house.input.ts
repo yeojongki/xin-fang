@@ -8,6 +8,7 @@ export class CreateHouseInput {
   title!: string;
 
   @IsNotEmpty()
+  @MaxLength(500)
   content!: string;
 
   @IsOptional()

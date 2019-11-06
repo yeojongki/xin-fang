@@ -9,5 +9,6 @@ export class UpdateHouseInput {
   title!: number;
 
   @IsOptional()
+  @MaxLength(500)
   content!: string;
 }

@@ -9,3 +9,8 @@ export const HouseStatusMap = {
   [HouseStatus.OFF]: '已下架',
   [HouseStatus.ILLEGAL]: '不合法',
 };
+
+export const houseOptions = Object.keys(HouseStatusMap).map(k => ({
+  value: k,
+  name: HouseStatusMap[k],
+}));

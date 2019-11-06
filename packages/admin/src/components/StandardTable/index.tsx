@@ -21,7 +21,9 @@ export interface IStandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
   showCreateButton?: boolean;
   showOperationColumn?: boolean;
   showOperationEdit?: boolean;
+  operationEditText?: string;
   showOperationDelete?: boolean;
+  operationDeleteText?: string;
   operationWidth?: number;
   showRowSection?: boolean;
   customOperation?: (row: T) => ReactNode;
@@ -52,7 +54,9 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
     showCreateButton = true,
     showOperationColumn = true,
     showOperationEdit = true,
+    operationEditText = '编辑',
     showOperationDelete = true,
+    operationDeleteText = '删除',
     operationWidth = 150,
     showRowSection = true,
     customOperation = null,
@@ -88,7 +92,7 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
         <>
           {showOperationEdit ? (
             <Button type="link" size="small" onClick={() => (onEditRow ? onEditRow(record) : null)}>
-              编辑
+              {operationEditText}
             </Button>
           ) : null}
 
@@ -101,7 +105,7 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
               onConfirm={() => onDeleteRow && onDeleteRow(record)}
             >
               <Button disabled={disabled} type="link" size="small">
-                删除
+                {operationDeleteText}
               </Button>
             </Popconfirm>
           ) : null}

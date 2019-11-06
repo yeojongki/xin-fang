@@ -45,6 +45,12 @@ const Users: FC<IUsersProps> = ({
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
   useEffect(() => {
+    // 没有角色列表时 初始化
+    if (!roleList.length) {
+      dispatch({
+        type: 'role/getList',
+      });
+    }
     dispatch({
       type: `${namespace}/getList`,
     });

@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect, useCallback, FC } from 'react';
 import { WrappedFormUtils } from 'antd/es/form/Form';
-import { Switch } from 'antd';
+import { Tag } from 'antd';
 import { House } from '@xf/common/src/entities';
-import { HouseStatus } from '@xf/common/src/constants/house.const';
+import { HouseStatus, HouseStatusMap } from '@xf/common/src/constants/house.const';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
@@ -12,7 +12,7 @@ import { connect } from 'dva';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { StateType } from './model';
 import { getForm, generateField } from '@/utils/form';
-import { IDColumn, DateColumn } from '@/components/TableColumn';
+import { IDColumn, DateColumn, CenterTextColumn } from '@/components/TableColumn';
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { Base } from './components/Base';
 import Query from './components/Query';
@@ -92,8 +92,22 @@ const Houses: FC<IHousesProps> = ({
     // set fields
     const form = getForm(editFormRef);
     if (form) {
-      const { createdAt, updatedAt, ...rest } = row;
-      form.setFields(generateField(rest));
+      const {
+        imgs,
+        clickCount,
+        commentCount,
+        likeCount,
+        createdAt,
+        updatedAt,
+        status,
+        ...rest
+      } = row;
+      form.setFields(
+        generateField({
+          ...rest,
+          status: `${status}`,
+        }),
+      );
     } else {
       // init
       setCurrentRow(row);
@@ -142,36 +156,29 @@ const Houses: FC<IHousesProps> = ({
       dataIndex: 'title',
       title: '标题',
     },
-    // {
-    //   key: 'content',
-    //   dataIndex: 'content',
-    //   title: '详情',
-    // },
-    {
-      key: 'imgs',
-      dataIndex: 'imgs',
-      title: '图片',
-    },
     {
       key: 'status',
       dataIndex: 'status',
       title: '状态',
-      render: (status: HouseStatus) => <Switch disabled checked={status === 0} />,
+      render: (status: HouseStatus) => <Tag>{HouseStatusMap[status]}</Tag>,
     },
     {
       key: 'commentCount',
       dataIndex: 'commentCount',
       title: '评论数',
+      render: (text: string) => <CenterTextColumn text={text} />,
     },
     {
       key: 'likeCount',
       dataIndex: 'likeCount',
       title: '点赞数',
+      render: (text: string) => <CenterTextColumn text={text} />,
     },
     {
       key: 'clickCount',
       dataIndex: 'clickCount',
       title: '点击数',
+      render: (text: string) => <CenterTextColumn text={text} />,
     },
     {
       key: 'createdAt',
@@ -203,13 +210,13 @@ const Houses: FC<IHousesProps> = ({
         pagination={pagination}
         fetchList={fetchList}
         dataSource={list}
+        operationEditText="详情"
         onDeleteRow={handleDelete}
         onDeleteSelected={handleDelete}
-        // getCheckboxProps={row => ({ disabled: DEFALT_ROLES.includes(row.token) })}
         onEditRow={handleEdit}
       />
       <ModalForm
-        title={`编辑${pageName}`}
+        title={`查看/编辑${pageName}`}
         type="edit"
         ref={editFormRef}
         renderItems={props => Base(props)}

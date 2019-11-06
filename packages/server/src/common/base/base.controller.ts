@@ -23,6 +23,8 @@ export abstract class BaseController<E extends IFindIdResult> {
 
   @Get('list')
   async getList(@Query(ParseListQuery) query: TListQuery<E>): Promise<IPaginationList<E>> {
+    console.log(query);
+
     return await this.service.getList(query);
   }
 
