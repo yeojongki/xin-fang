@@ -44,6 +44,7 @@ export class UpdateUserInput extends AuthBaseInput {
   @IsOptional()
   avatar?: string;
 
+  @IsOptional()
   @IsEnum(Gender)
   gender?: Gender;
 
