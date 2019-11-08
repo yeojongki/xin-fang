@@ -3,6 +3,7 @@ import { Form, Input, Select } from 'antd';
 import { House } from '@xf/common/src/entities';
 import { houseOptions } from '@xf/common/src/constants/house.const';
 import { TRenderItems } from '@/components/BaseFormWrap';
+import { PicturesWall } from '@/components/PicturesWall';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -64,6 +65,10 @@ export const Base = (props: TRenderItems<House>) => {
             ))}
           </Select>,
         )}
+      </FormItem>
+
+      <FormItem label="图片">
+        <PicturesWall />
       </FormItem>
     </>
   );
