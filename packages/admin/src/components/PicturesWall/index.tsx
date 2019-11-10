@@ -1,7 +1,9 @@
 import React from 'react';
-import { Upload, Icon, Modal } from 'antd';
+import { Upload, Icon, Modal, message } from 'antd';
 import { UploadChangeParam } from 'antd/lib/upload';
 import { UploadFile } from 'antd/lib/upload/interface';
+import { IOSSSignature } from '@xf/common/src/interfaces/oss-signature.interface';
+import { getSignature } from '@/utils/oss-upload';
 
 interface IPreviewFile extends UploadFile {
   preview?: string;
@@ -11,6 +13,7 @@ interface IState {
   previewVisible: boolean;
   previewImage: string;
   fileList: UploadFile[];
+  OSSData: IOSSSignature | null;
 }
 
 function getBase64(file: UploadFile['originFileObj']): Promise<any> {
@@ -22,11 +25,68 @@ function getBase64(file: UploadFile['originFileObj']): Promise<any> {
   });
 }
 
-export class PicturesWall extends React.Component<{}, IState> {
-  state = {
+export class PicturesWall extends React.Component<null, IState> {
+  state: IState = {
     previewVisible: false,
     previewImage: '',
     fileList: [],
+    OSSData: null,
+  };
+
+  init = async () => {
+    try {
+      const OSSData = await getSignature();
+
+      this.setState({
+        OSSData,
+      });
+    } catch (error) {
+      message.error(error);
+    }
+  };
+
+  // any type for fix eslint...
+  beforeUpload = async (): Promise<any> => {
+    const { OSSData } = this.state;
+
+    if (OSSData) {
+      const expire = new Date(OSSData.expiration);
+
+      if (+expire < Date.now() || !OSSData) {
+        await this.init();
+      }
+      return true;
+    }
+
+    await this.init();
+    return true;
+  };
+
+  transformFile = file => {
+    const { OSSData } = this.state;
+
+    if (OSSData) {
+      const suffix = file.name.slice(file.name.lastIndexOf('.'));
+      const filename = Date.now() + suffix;
+      file.url = OSSData.dir + filename;
+    }
+    return file;
+  };
+
+  handleChange = ({ fileList }: UploadChangeParam) => this.setState({ fileList });
+
+  getExtraData = file => {
+    const { OSSData } = this.state;
+
+    if (OSSData) {
+      return {
+        key: file.url,
+        OSSAccessKeyId: OSSData.OSSAccessKeyId,
+        policy: OSSData.policy,
+        Signature: OSSData.signature,
+      };
+    }
+    return undefined;
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
@@ -42,10 +102,8 @@ export class PicturesWall extends React.Component<{}, IState> {
     });
   };
 
-  handleChange = ({ fileList }: UploadChangeParam) => this.setState({ fileList });
-
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
+    const { previewVisible, previewImage, fileList, OSSData } = this.state;
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -55,11 +113,14 @@ export class PicturesWall extends React.Component<{}, IState> {
     return (
       <div className="clearfix">
         <Upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          action={OSSData ? OSSData.host : '#'}
           listType="picture-card"
           fileList={fileList}
+          data={this.getExtraData}
+          transformFile={this.transformFile}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
+          beforeUpload={this.beforeUpload}
         >
           {fileList.length >= 9 ? null : uploadButton}
         </Upload>
