@@ -4,6 +4,7 @@ import { UploadChangeParam } from 'antd/lib/upload';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { IOSSSignature } from '@xf/common/src/interfaces/oss-signature.interface';
 import { getSignature } from '@/utils/oss-upload';
+import styles from './style.less';
 
 interface IPreviewFile extends UploadFile {
   preview?: string;
@@ -62,17 +63,6 @@ export class PicturesWall extends React.Component<null, IState> {
     return true;
   };
 
-  transformFile = file => {
-    const { OSSData } = this.state;
-
-    if (OSSData) {
-      const suffix = file.name.slice(file.name.lastIndexOf('.'));
-      const filename = Date.now() + suffix;
-      file.url = OSSData.dir + filename;
-    }
-    return file;
-  };
-
   generateFilename = (file: any): string => {
     const { OSSData } = this.state;
     const suffix = file.name.slice(file.name.lastIndexOf('.'));
@@ -103,12 +93,12 @@ export class PicturesWall extends React.Component<null, IState> {
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async (file: IPreviewFile) => {
-    if (!file.url && !file.preview) {
+    if (!file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
 
     this.setState({
-      previewImage: file.url || file.preview || '',
+      previewImage: file.preview || '',
       previewVisible: true,
     });
   };
@@ -128,7 +118,6 @@ export class PicturesWall extends React.Component<null, IState> {
           listType="picture-card"
           fileList={fileList}
           data={this.getExtraData}
-          transformFile={this.transformFile}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
           beforeUpload={this.beforeUpload}
@@ -136,7 +125,7 @@ export class PicturesWall extends React.Component<null, IState> {
           {fileList.length >= 9 ? null : uploadButton}
         </Upload>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-          <img alt="preview" style={{ width: '100%' }} src={previewImage} />
+          <img alt="preview" className={styles.preview} src={previewImage} />
         </Modal>
       </div>
     );
