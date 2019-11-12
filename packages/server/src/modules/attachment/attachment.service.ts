@@ -5,12 +5,13 @@ import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { IOSSSignature } from '@xf/common/src/interfaces/oss-signature.interface';
 import { ConfigService } from '@/common/config/config.service';
+import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 
 @Injectable()
 export class AttachmentService {
   constructor(private readonly configService: ConfigService) {}
 
-  async getSignature(): Promise<IOSSSignature> {
+  async getSignature(userId: IUser['id']): Promise<IOSSSignature> {
     const {
       OSS_POLICY_EXPIRED,
       ATTACHMENT_LIMIT_MB,
@@ -33,13 +34,18 @@ export class AttachmentService {
       .update(policyBase64)
       .digest('base64');
 
+    const dir = crypto
+      .createHash('md5')
+      .update(userId)
+      .digest('hex');
+
     const result: IOSSSignature = {
       policy: policyBase64,
       OSSAccessKeyId: OSS_ACCESS_KEY_ID,
       signature,
       expiration,
       host: OSS_HOST,
-      dir: '',
+      dir: `${dir}/`,
     };
 
     return result;
