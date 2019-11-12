@@ -73,17 +73,28 @@ export class PicturesWall extends React.Component<null, IState> {
     return file;
   };
 
-  handleChange = ({ fileList }: UploadChangeParam) => this.setState({ fileList });
-
-  getExtraData = file => {
+  generateFilename = (file: any): string => {
     const { OSSData } = this.state;
+    const suffix = file.name.slice(file.name.lastIndexOf('.'));
+    const filename = Date.now() + suffix;
 
     if (OSSData) {
+      return `${OSSData.dir}${filename}`;
+    }
+    return `error/${filename}`;
+  };
+
+  handleChange = ({ fileList }: UploadChangeParam) => this.setState({ fileList });
+
+  getExtraData = (file: any) => {
+    const { OSSData } = this.state;
+    if (OSSData) {
       return {
-        key: file.url,
+        key: this.generateFilename(file),
         OSSAccessKeyId: OSSData.OSSAccessKeyId,
         policy: OSSData.policy,
-        Signature: OSSData.signature,
+        signature: OSSData.signature,
+        success_action_status: 200,
       };
     }
     return undefined;

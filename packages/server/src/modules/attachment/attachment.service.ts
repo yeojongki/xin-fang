@@ -1,4 +1,4 @@
-import { Injectable, Get } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 // import { InjectRepository } from '@nestjs/typeorm';
 // import { Repository } from 'typeorm';
 // import axios from 'axios';
@@ -10,8 +10,7 @@ import { ConfigService } from '@/common/config/config.service';
 export class AttachmentService {
   constructor(private readonly configService: ConfigService) {}
 
-  @Get('/signature')
-  getSignature(): IOSSSignature {
+  async getSignature(): Promise<IOSSSignature> {
     const {
       OSS_POLICY_EXPIRED,
       ATTACHMENT_LIMIT_MB,
@@ -24,7 +23,7 @@ export class AttachmentService {
 
     const policyJSON = {
       expiration,
-      conditions: [['content-length-range', 0, ATTACHMENT_LIMIT_MB]],
+      conditions: [['content-length-range', 0, ATTACHMENT_LIMIT_MB * 1024 * 1024]],
     };
 
     const policyBase64 = Buffer.from(JSON.stringify(policyJSON)).toString('base64');
@@ -34,13 +33,15 @@ export class AttachmentService {
       .update(policyBase64)
       .digest('base64');
 
-    return {
+    const result: IOSSSignature = {
       policy: policyBase64,
       OSSAccessKeyId: OSS_ACCESS_KEY_ID,
       signature,
       expiration,
       host: OSS_HOST,
-      dir: '/',
+      dir: '',
     };
+
+    return result;
   }
 }

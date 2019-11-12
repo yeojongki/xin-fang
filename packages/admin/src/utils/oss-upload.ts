@@ -1,5 +1,11 @@
 import request from '@/utils/request';
+import { IOSSSignature } from '@xf/common/src/interfaces/oss-signature.interface';
 
-export const getSignature = () => request.get('/attachment/signature');
-
-export const uploadFile = ({ file }: { file: File }) => request.post('/attachment', { data: file });
+export const getSignature = async (): Promise<IOSSSignature | null> => {
+  try {
+    const { result } = await request.get('/attachment/signature');
+    return result;
+  } catch (error) {
+    return null;
+  }
+};
