@@ -11,6 +11,13 @@ import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 export class AttachmentService {
   constructor(private readonly configService: ConfigService) {}
 
+  /**
+   * OSS 签名
+   * @param {IUser['id']} userId
+   * @returns {Promise<IOSSSignature>}
+   * @memberof AttachmentService
+   * @see https://help.aliyun.com/document_detail/31927.html?spm=a2c4g.11186623.6.1397.59db23f0t8U6qQ
+   */
   async getSignature(userId: IUser['id']): Promise<IOSSSignature> {
     const {
       OSS_POLICY_EXPIRED,
@@ -20,11 +27,19 @@ export class AttachmentService {
       OSS_HOST,
     } = this.configService;
 
+    const dir = `${crypto
+      .createHash('md5')
+      .update(userId)
+      .digest('hex')}/`;
+
     const expiration = new Date(Date.now() + 1000 * +OSS_POLICY_EXPIRED).toISOString();
 
     const policyJSON = {
       expiration,
-      conditions: [['content-length-range', 0, ATTACHMENT_LIMIT_MB * 1024 * 1024]],
+      conditions: [
+        ['content-length-range', 0, ATTACHMENT_LIMIT_MB * 1024 * 1024],
+        ['start-with', '$key', dir],
+      ],
     };
 
     const policyBase64 = Buffer.from(JSON.stringify(policyJSON)).toString('base64');
@@ -34,18 +49,13 @@ export class AttachmentService {
       .update(policyBase64)
       .digest('base64');
 
-    const dir = crypto
-      .createHash('md5')
-      .update(userId)
-      .digest('hex');
-
     const result: IOSSSignature = {
       policy: policyBase64,
       OSSAccessKeyId: OSS_ACCESS_KEY_ID,
       signature,
       expiration,
       host: OSS_HOST,
-      dir: `${dir}/`,
+      dir,
     };
 
     return result;
