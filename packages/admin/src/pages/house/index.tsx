@@ -116,16 +116,18 @@ const Houses: FC<IHousesProps> = ({
   };
 
   const submitEditForm = (values: House) => {
-    dispatch({
-      type: `${namespace}/update`,
-      payload: {
-        values,
-        callback: () => {
-          fetchList();
-          setEditFormVisible(false);
-        },
-      },
-    });
+    console.log(values);
+    // return;
+    // dispatch({
+    //   type: `${namespace}/update`,
+    //   payload: {
+    //     values,
+    //     callback: () => {
+    //       fetchList();
+    //       setEditFormVisible(false);
+    //     },
+    //   },
+    // });
   };
 
   // delete

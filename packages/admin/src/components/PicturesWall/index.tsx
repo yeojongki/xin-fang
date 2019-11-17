@@ -3,6 +3,7 @@ import { Upload, Icon, Modal, message } from 'antd';
 import { UploadChangeParam } from 'antd/lib/upload';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { IOSSSignature } from '@xf/common/src/interfaces/oss-signature.interface';
+import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
 import { getSignature } from '@/utils/oss-upload';
 import styles from './style.less';
 
@@ -13,9 +14,20 @@ interface IPreviewFile extends UploadFile {
 interface IState {
   previewVisible: boolean;
   previewImage: string;
-  fileList: UploadFile[];
   OSSData: IOSSSignature | null;
 }
+
+interface IProps {
+  fileList?: UploadFile[];
+  onChange?: (fileList: UploadFile[]) => void;
+  /** default 9 */
+  maxLength?: number;
+  previewWidth?: string;
+}
+
+export type IUploadFile = Omit<UploadFile, 'response'> & {
+  response: string | HttpSuccessResponse;
+};
 
 function getBase64(file: UploadFile['originFileObj']): Promise<any> {
   return new Promise((resolve, reject) => {
@@ -26,11 +38,10 @@ function getBase64(file: UploadFile['originFileObj']): Promise<any> {
   });
 }
 
-export class PicturesWall extends React.Component<null, IState> {
+export class PicturesWall extends React.Component<IProps, IState> {
   state: IState = {
     previewVisible: false,
     previewImage: '',
-    fileList: [],
     OSSData: null,
   };
 
@@ -52,7 +63,6 @@ export class PicturesWall extends React.Component<null, IState> {
 
     if (OSSData) {
       const expire = new Date(OSSData.expiration);
-
       if (+expire < Date.now() || !OSSData) {
         await this.init();
       }
@@ -74,7 +84,21 @@ export class PicturesWall extends React.Component<null, IState> {
     return `error/${filename}`;
   };
 
-  handleChange = ({ fileList }: UploadChangeParam) => this.setState({ fileList });
+  handleChange = ({ file, fileList }: UploadChangeParam) => {
+    if (file.status === 'error') {
+      message.error('上传出错，请重试');
+    }
+    if (file.status === 'done') {
+      const { onChange } = this.props;
+      onChange && onChange(fileList);
+    }
+  };
+
+  handleRemove = (file: UploadFile) => {
+    const { fileList = [], onChange } = this.props;
+    const files = fileList.filter(v => v.url !== file.url);
+    onChange && onChange(files);
+  };
 
   getExtraData = (file: any) => {
     const { OSSData } = this.state;
@@ -94,41 +118,54 @@ export class PicturesWall extends React.Component<null, IState> {
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async (file: IPreviewFile) => {
-    if (!file.preview) {
-      file.preview = await getBase64(file.originFileObj);
+    let preview = file.url ? file.url : file.preview;
+    if (!preview) {
+      preview = await getBase64(file.originFileObj);
+      file.preview = file.preview;
     }
 
     this.setState({
-      previewImage: file.preview || '',
+      previewImage: preview || '',
       previewVisible: true,
     });
   };
 
   render() {
-    const { previewVisible, previewImage, fileList, OSSData } = this.state;
-    const uploadButton = (
+    const { previewVisible, previewImage, OSSData } = this.state;
+    const { maxLength = 9, fileList = [], previewWidth = '800px' } = this.props;
+
+    console.log('render', this.props);
+
+    const uploadIcon = (
       <div>
         <Icon type="plus" />
         <div className="ant-upload-text">上传</div>
       </div>
     );
     return (
-      <div className="clearfix">
+      <>
         <Upload
-          action={OSSData ? OSSData.host : '#'}
+          multiple
           listType="picture-card"
+          action={OSSData ? OSSData.host : '#'}
           fileList={fileList}
           data={this.getExtraData}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
+          onRemove={this.handleRemove}
           beforeUpload={this.beforeUpload}
         >
-          {fileList.length >= 9 ? null : uploadButton}
+          {fileList.length >= maxLength ? null : uploadIcon}
         </Upload>
-        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+        <Modal
+          width={previewWidth}
+          visible={previewVisible}
+          footer={null}
+          onCancel={this.handleCancel}
+        >
           <img alt="preview" className={styles.preview} src={previewImage} />
         </Modal>
-      </div>
+      </>
     );
   }
 }

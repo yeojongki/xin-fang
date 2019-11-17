@@ -5,6 +5,7 @@ import { User } from './user.entity';
 import { City } from './city.entity';
 import { Subway } from './subway.entity';
 import { HouseStatus } from '../constants/house.const';
+import { isNotEmpty } from '../utils/is-empty';
 
 @Entity('house')
 export class House extends Base {
@@ -14,14 +15,23 @@ export class House extends Base {
   @Column({ comment: '内容详情' })
   content!: string;
 
-  @Exclude()
-  @Column({ comment: '图片列表', default: '' })
-  imgs!: string;
-
   @Expose({ name: 'imgs' })
-  getImgs(): string[] {
-    return this.imgs.split(',');
+  get imgs(): string[] {
+    return this._imgs ? this._imgs.split(',') : [];
   }
+
+  set imgs(v: string[]) {
+    this._imgs = v.length ? v.filter(isNotEmpty).join(',') : '';
+  }
+
+  @Exclude()
+  @Column({ name: 'imgs', comment: '图片列表', default: '' })
+  _imgs!: string;
+
+  // @Expose({ name: 'imgs' })
+  // getImgs(): string[] {
+  //   return this.imgs.split(',');
+  // }
 
   @Column({ type: 'enum', enum: HouseStatus, default: 0, comment: '状态' })
   status!: number;

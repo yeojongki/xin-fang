@@ -48,21 +48,21 @@ export class AttachmentService {
       .digest('base64');
 
     const callbackBody = `{
-      "filename":\${object},
-      "size":\${size},
-      "width":\${imageInfo.width},
-      "height":\${imageInfo.height}},
-      "format":\${imageInfo.format},
-      "mimeType":\${mimeType}
-    }`.replace(/ *[\r|\n] */gm, '');
+        "filename":\${object},
+        "size":\${size},
+        "width":\${imageInfo.width},
+        "height":\${imageInfo.height},
+        "format":\${imageInfo.format},
+        "mimeType":\${mimeType}
+      }`.replace(/[\s \r \n]/gm, '');
 
-    const callbackJSON = {
+    const callbackJSON = JSON.stringify({
       callbackHost: 'oss-xf.aliyuncs.com',
       callbackUrl: OSS_CALLBACK_URL,
       callbackBody,
       callbackBodyType: 'application/json',
-    };
-    const callback = Buffer.from(JSON.stringify(callbackJSON)).toString('base64');
+    });
+    const callback = Buffer.from(callbackJSON).toString('base64');
 
     const result: IOSSSignature = {
       policy: policyBase64,

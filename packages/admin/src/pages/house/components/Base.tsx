@@ -3,7 +3,7 @@ import { Form, Input, Select } from 'antd';
 import { House } from '@xf/common/src/entities';
 import { houseOptions } from '@xf/common/src/constants/house.const';
 import { TRenderItems } from '@/components/BaseFormWrap';
-import { PicturesWall } from '@/components/PicturesWall';
+import { PicturesWall, IUploadFile } from '@/components/PicturesWall';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -12,6 +12,35 @@ const { Option } = Select;
 export const Base = (props: TRenderItems<House>) => {
   const { initValue, form, type } = props;
   const { getFieldDecorator } = form;
+  // console.log(initValue)
+
+  const getUploadFileUrls = (fileList: IUploadFile[]): IUploadFile[] => {
+    if (Array.isArray(fileList)) {
+      const result: IUploadFile[] = [];
+      fileList.forEach(file => {
+        if (typeof file.response !== 'string') {
+          const { filename } = file.response.result;
+          filename && result.push(file);
+        }
+      });
+      return result;
+    }
+    return [];
+  };
+
+  const prefix = 'http://fang.yeojongki.cn/_upload/';
+
+  const fileList = initValue
+    ? initValue.imgs.map(item => ({
+        response: { result: { filename: item } },
+        status: 'done',
+        url: prefix + item,
+        name: item,
+        uid: item,
+        size: 0,
+        type: 'image',
+      }))
+    : [];
 
   return (
     <>
@@ -68,7 +97,11 @@ export const Base = (props: TRenderItems<House>) => {
       </FormItem>
 
       <FormItem label="图片">
-        <PicturesWall />
+        {getFieldDecorator('imgs', {
+          initialValue: fileList,
+          valuePropName: 'fileList',
+          getValueFromEvent: getUploadFileUrls,
+        })(<PicturesWall />)}
       </FormItem>
     </>
   );
