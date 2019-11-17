@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
-// import { InjectRepository } from '@nestjs/typeorm';
-// import { Repository } from 'typeorm';
-// import axios from 'axios';
 import * as crypto from 'crypto';
-import { IOSSSignature } from '@xf/common/src/interfaces/oss-signature.interface';
-import { ConfigService } from '@/common/config/config.service';
+import { IOSSSignature, IOSSCallback } from '@xf/common/src/interfaces/oss-signature.interface';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
+import { ConfigService } from '@/common/config/config.service';
 
 @Injectable()
 export class AttachmentService {
@@ -25,6 +22,7 @@ export class AttachmentService {
       OSS_ACCESS_KEY_SECRET,
       OSS_ACCESS_KEY_ID,
       OSS_HOST,
+      OSS_CALLBACK_URL,
     } = this.configService;
 
     const dir = `${crypto
@@ -38,7 +36,7 @@ export class AttachmentService {
       expiration,
       conditions: [
         ['content-length-range', 0, ATTACHMENT_LIMIT_MB * 1024 * 1024],
-        ['start-with', '$key', dir],
+        ['starts-with', '$key', dir],
       ],
     };
 
@@ -49,6 +47,23 @@ export class AttachmentService {
       .update(policyBase64)
       .digest('base64');
 
+    const callbackBody = `{
+      "filename":\${object},
+      "size":\${size},
+      "width":\${imageInfo.width},
+      "height":\${imageInfo.height}},
+      "format":\${imageInfo.format},
+      "mimeType":\${mimeType}
+    }`.replace(/ *[\r|\n] */gm, '');
+
+    const callbackJSON = {
+      callbackHost: 'oss-xf.aliyuncs.com',
+      callbackUrl: OSS_CALLBACK_URL,
+      callbackBody,
+      callbackBodyType: 'application/json',
+    };
+    const callback = Buffer.from(JSON.stringify(callbackJSON)).toString('base64');
+
     const result: IOSSSignature = {
       policy: policyBase64,
       OSSAccessKeyId: OSS_ACCESS_KEY_ID,
@@ -56,8 +71,13 @@ export class AttachmentService {
       expiration,
       host: OSS_HOST,
       dir,
+      callback,
     };
 
     return result;
+  }
+
+  handleOSSCallback(callback: IOSSCallback) {
+    return callback;
   }
 }

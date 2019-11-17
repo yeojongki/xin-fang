@@ -20,6 +20,10 @@ export class ConfigService {
     return this.envConfig.OSS_HOST;
   }
 
+  get OSS_CALLBACK_URL(): string {
+    return this.envConfig.OSS_CALLBACK_URL;
+  }
+
   get OSS_ACCESS_KEY_ID(): string {
     return this.envConfig.OSS_ACCESS_KEY_ID;
   }

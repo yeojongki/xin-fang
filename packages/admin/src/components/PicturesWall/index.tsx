@@ -85,6 +85,7 @@ export class PicturesWall extends React.Component<null, IState> {
         policy: OSSData.policy,
         signature: OSSData.signature,
         success_action_status: 200,
+        callback: OSSData.callback,
       };
     }
     return undefined;

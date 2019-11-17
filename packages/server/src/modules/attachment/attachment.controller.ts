@@ -1,5 +1,5 @@
-import { Controller, Get, Request } from '@nestjs/common';
-import { IOSSSignature } from '@xf/common/src/interfaces/oss-signature.interface';
+import { Controller, Get, Request, Post, Body, HttpCode } from '@nestjs/common';
+import { IOSSSignature, IOSSCallback } from '@xf/common/src/interfaces/oss-signature.interface';
 import { AttachmentService } from './attachment.service';
 
 @Controller('attachment')
@@ -10,5 +10,11 @@ export class AttachmentController {
   async getSignature(@Request() req): Promise<IOSSSignature> {
     const ret = await this.attachmentService.getSignature(req.user.id);
     return ret;
+  }
+
+  @HttpCode(200)
+  @Post('/oss/callback')
+  async ossCallback(@Body() request: IOSSCallback) {
+    return this.attachmentService.handleOSSCallback(request);
   }
 }
