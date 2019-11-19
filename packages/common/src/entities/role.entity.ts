@@ -42,12 +42,4 @@ export class Role extends Base {
   getPermissions(): string[] {
     return this.permissions ? this.permissions.map(p => p.id) : [];
   }
-
-  static readonly sheetMap = {
-    cellsMap: {
-      名称: 'name',
-      标识: 'token',
-      描述: 'desc',
-    },
-  };
 }

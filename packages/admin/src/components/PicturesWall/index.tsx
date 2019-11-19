@@ -26,7 +26,7 @@ interface IProps {
 }
 
 export type IUploadFile = Omit<UploadFile, 'response'> & {
-  response: string | HttpSuccessResponse;
+  response?: string | HttpSuccessResponse<{ filename: string }>;
 };
 
 function getBase64(file: UploadFile['originFileObj']): Promise<any> {
@@ -88,10 +88,8 @@ export class PicturesWall extends React.Component<IProps, IState> {
     if (file.status === 'error') {
       message.error('上传出错，请重试');
     }
-    if (file.status === 'done') {
-      const { onChange } = this.props;
-      onChange && onChange(fileList);
-    }
+    const { onChange } = this.props;
+    onChange && onChange(fileList);
   };
 
   handleRemove = (file: UploadFile) => {
@@ -133,8 +131,6 @@ export class PicturesWall extends React.Component<IProps, IState> {
   render() {
     const { previewVisible, previewImage, OSSData } = this.state;
     const { maxLength = 9, fileList = [], previewWidth = '800px' } = this.props;
-
-    console.log('render', this.props);
 
     const uploadIcon = (
       <div>

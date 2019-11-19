@@ -16,6 +16,7 @@ import { IDColumn, DateColumn, CenterTextColumn } from '@/components/TableColumn
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { Base } from './components/Base';
 import Query from './components/Query';
+import { IUploadFile } from '@/components/PicturesWall';
 
 interface IHousesProps {
   dispatch: Dispatch<any>;
@@ -24,6 +25,8 @@ interface IHousesProps {
   creating: boolean;
   house: StateType;
 }
+
+export type TSubmitHouse = Omit<House, 'imgs'> & { imgs: IUploadFile[] };
 
 export const namespace = 'house';
 const pageName = '房子';
@@ -63,15 +66,27 @@ const Houses: FC<IHousesProps> = ({
     [pagination],
   );
 
+  const getUploadImgs = (imgs: IUploadFile[]) =>
+    imgs
+      .map(img => {
+        const { response } = img;
+        if (response && typeof response !== 'string' && response.result.filename) {
+          return response.result.filename;
+        }
+        return null;
+      })
+      .filter(Boolean);
+
   // create
   const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);
   const createFormRef = useRef<any>();
 
-  const submitCreateForm = (values: House) => {
+  const submitCreateForm = (values: TSubmitHouse) => {
+    const imgs = getUploadImgs(values.imgs);
     dispatch({
       type: `${namespace}/create`,
       payload: {
-        values,
+        values: { ...values, imgs },
         callback: () => {
           fetchList();
           setCreateFormVisible(false);
@@ -115,19 +130,18 @@ const Houses: FC<IHousesProps> = ({
     setEditFormVisible(true);
   };
 
-  const submitEditForm = (values: House) => {
-    console.log(values);
-    // return;
-    // dispatch({
-    //   type: `${namespace}/update`,
-    //   payload: {
-    //     values,
-    //     callback: () => {
-    //       fetchList();
-    //       setEditFormVisible(false);
-    //     },
-    //   },
-    // });
+  const submitEditForm = (values: TSubmitHouse) => {
+    const imgs = getUploadImgs(values.imgs);
+    dispatch({
+      type: `${namespace}/update`,
+      payload: {
+        values: { ...values, imgs },
+        callback: () => {
+          fetchList();
+          setEditFormVisible(false);
+        },
+      },
+    });
   };
 
   // delete

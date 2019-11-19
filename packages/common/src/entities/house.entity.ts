@@ -1,5 +1,4 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Exclude, Expose } from 'class-transformer';
 import { Base } from './base.entity';
 import { User } from './user.entity';
 import { City } from './city.entity';
@@ -15,23 +14,15 @@ export class House extends Base {
   @Column({ comment: '内容详情' })
   content!: string;
 
-  @Expose({ name: 'imgs' })
-  get imgs(): string[] {
-    return this._imgs ? this._imgs.split(',') : [];
-  }
-
-  set imgs(v: string[]) {
-    this._imgs = v.length ? v.filter(isNotEmpty).join(',') : '';
-  }
-
-  @Exclude()
-  @Column({ name: 'imgs', comment: '图片列表', default: '' })
-  _imgs!: string;
-
-  // @Expose({ name: 'imgs' })
-  // getImgs(): string[] {
-  //   return this.imgs.split(',');
-  // }
+  @Column({
+    comment: '图片列表',
+    default: '',
+    transformer: {
+      from: v => (v ? v.split(',') : []),
+      to: v => (v.length ? v.filter(isNotEmpty).join(',') : ''),
+    },
+  })
+  imgs!: string;
 
   @Column({ type: 'enum', enum: HouseStatus, default: 0, comment: '状态' })
   status!: number;
