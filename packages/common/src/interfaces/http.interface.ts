@@ -11,6 +11,6 @@ export interface HttpErrorResponse extends HttpBaseResponse {
   name?: string;
 }
 
-export interface HttpSuccessResponse extends HttpBaseResponse {
-  result: any;
+export interface HttpSuccessResponse<T = any> extends HttpBaseResponse {
+  result: T;
 }

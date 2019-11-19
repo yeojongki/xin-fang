@@ -72,6 +72,13 @@ export default [
             ],
           },
           {
+            path: '/house',
+            authority: [ROLES.SUPER_ADMIN],
+            name: '房屋管理',
+            icon: 'home',
+            component: './house',
+          },
+          {
             path: '/city',
             authority: [ROLES.SUPER_ADMIN],
             name: '城市地铁',

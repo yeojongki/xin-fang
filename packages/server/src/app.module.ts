@@ -9,6 +9,8 @@ import { LoginModule } from './modules/login/login.module';
 import { CityModule } from './modules/city/city.module';
 import { SubwayModule } from './modules/subway/subway.module';
 import { PermissionModule } from './modules/permission/permission.module';
+import { HouseModule } from './modules/house/house.module.';
+import { AttachmentModule } from './modules/attachment/attachment.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { PermissionModule } from './modules/permission/permission.module';
     PermissionModule,
     CityModule,
     SubwayModule,
+    HouseModule,
+    AttachmentModule,
   ],
 })
 export class AppModule {}

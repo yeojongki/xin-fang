@@ -7,10 +7,13 @@ export const authWhiteList = [
   `${RequestMethod.POST} /login`,
   // 注册
   `${RequestMethod.POST} /user`,
+  // OSS 回调
+  `${RequestMethod.POST} /attachment/oss/callback`,
 ];
 
 export const permissionWhiteList = {
   '/user/currentUser': true,
+  '/attachment/signature': true,
 };
 
 export const checkPermission = (

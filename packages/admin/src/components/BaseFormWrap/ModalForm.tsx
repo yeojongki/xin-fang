@@ -4,6 +4,7 @@ import { WrappedFormUtils } from 'antd/es/form/Form';
 import BaseFormWrap, { IBaseFormWrapProps } from '.';
 
 export interface IModalFormProps extends Omit<IBaseFormWrapProps, 'form'> {
+  width?: number;
   title: string;
   visible: boolean;
   bodyStyle?: CSSProperties;
@@ -14,6 +15,7 @@ export interface IModalFormProps extends Omit<IBaseFormWrapProps, 'form'> {
 }
 
 const ModalForm = ({
+  width = 620,
   title,
   visible,
   bodyStyle,
@@ -39,6 +41,7 @@ const ModalForm = ({
 
   return (
     <Modal
+      width={width}
       okButtonProps={{ loading, htmlType: 'submit' }}
       visible={visible}
       title={title}

@@ -6,6 +6,7 @@ import {
   ValidateIf,
   Length,
   IsMobilePhone,
+  IsEnum,
 } from 'class-validator';
 import {
   MAX_LENGTH_MOBILE,
@@ -43,7 +44,8 @@ export class UpdateUserInput extends AuthBaseInput {
   @IsOptional()
   avatar?: string;
 
-  // todo custom validation https://github.com/typestack/class-validator#custom-validation-decorators
+  @IsOptional()
+  @IsEnum(Gender)
   gender?: Gender;
 
   roles?: string[];

@@ -131,6 +131,7 @@ const config: IConfig = {
   chainWebpack: webpackPlugin,
   proxy: {
     '/api': 'http://localhost:3000',
+    '/_upload': 'http://fang.yeojongki.cn',
   },
 };
 

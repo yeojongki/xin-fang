@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { DateColumn } from './_date.entity';
 import { Subway } from './subway.entity';
+import { House } from './house.entity';
 
 @Entity('city')
 export class City extends DateColumn {
@@ -24,4 +25,7 @@ export class City extends DateColumn {
 
   @OneToMany(() => Subway, subway => subway.city)
   subways?: Subway[];
+
+  @OneToMany(() => House, house => house.city)
+  houses?: House[];
 }

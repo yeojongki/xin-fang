@@ -1,63 +1,54 @@
-import React, { FC, useState, useRef, useCallback, useEffect } from 'react';
-import { Dispatch } from 'redux';
-import { connect } from 'dva';
-import { ColumnProps } from 'antd/lib/table';
-import { IUser } from '@xf/common/src/interfaces/user.interfaces';
+import React, { useRef, useState, useEffect, useCallback, FC } from 'react';
 import { WrappedFormUtils } from 'antd/es/form/Form';
+import { Tag } from 'antd';
+import { House } from '@xf/common/src/entities';
+import { HouseStatus, HouseStatusMap } from '@xf/common/src/constants/house.const';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
-import { Gender, GenderMap } from '@xf/common/src/constants/gender.const';
-import { Tag } from 'antd';
-import { StateType } from './model';
+import { ColumnProps } from 'antd/lib/table';
+import { Dispatch } from 'redux';
+import { connect } from 'dva';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
+import { StateType } from './model';
 import { getForm, generateField } from '@/utils/form';
-import { BaseForm } from './components/Base';
+import { IDColumn, DateColumn, CenterTextColumn } from '@/components/TableColumn';
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
-import { IDColumn, DateColumn } from '@/components/TableColumn';
-import { Md5 } from '@/utils';
-import { IRoleStateType } from '@/models/role';
+import { Base } from './components/Base';
 import Query from './components/Query';
+import { IUploadFile } from '@/components/PicturesWall';
 
-interface IUsersProps {
+interface IHousesProps {
   dispatch: Dispatch<any>;
   fetching: boolean;
   editing: boolean;
   creating: boolean;
-  users: StateType;
-  roleList: IRoleStateType['list'];
-  roleMap: IRoleStateType['map'];
+  house: StateType;
 }
 
-export const namespace = 'users';
-const pageName = '用户';
-const UsersTable = create<IUser>();
+export type TSubmitHouse = Omit<House, 'imgs'> & { imgs: IUploadFile[] };
 
-const Users: FC<IUsersProps> = ({
+export const namespace = 'house';
+const pageName = '房子';
+const HouseTable = create<House>();
+
+const Houses: FC<IHousesProps> = ({
   dispatch,
   fetching,
   editing,
   creating,
-  users: { pagination, list },
-  roleList,
-  roleMap,
+  house: { pagination, list },
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
   useEffect(() => {
-    // 没有角色列表时 初始化
-    if (!roleList.length) {
-      dispatch({
-        type: 'role/getList',
-      });
-    }
     dispatch({
       type: `${namespace}/getList`,
     });
   }, []);
 
   const fetchList = useCallback(
-    (payload: Partial<TListQuery<IUser>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
+    (payload: Partial<TListQuery<House>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
       dispatch({
         type: `${namespace}/getList`,
         payload,
@@ -68,23 +59,34 @@ const Users: FC<IUsersProps> = ({
 
   // query
   const handleSearch = useCallback(
-    (query: TListQuery<IUser>) => {
+    (query: TListQuery<House>) => {
       const { total, ...rest } = pagination;
       fetchList({ ...rest, ...query });
     },
     [pagination],
   );
 
+  const getUploadImgs = (imgs: IUploadFile[]) =>
+    imgs
+      .map(img => {
+        const { response } = img;
+        if (response && typeof response !== 'string' && response.result.filename) {
+          return response.result.filename;
+        }
+        return null;
+      })
+      .filter(Boolean);
+
   // create
   const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);
   const createFormRef = useRef<any>();
 
-  const submitCreateForm = (values: IUser) => {
-    const input = { ...values, password: Md5(values.password) };
+  const submitCreateForm = (values: TSubmitHouse) => {
+    const imgs = getUploadImgs(values.imgs);
     dispatch({
       type: `${namespace}/create`,
       payload: {
-        values: input,
+        values: { ...values, imgs },
         callback: () => {
           fetchList();
           setCreateFormVisible(false);
@@ -98,15 +100,29 @@ const Users: FC<IUsersProps> = ({
 
   // edit
   const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<IUser>();
+  const [currentRow, setCurrentRow] = useState<House>();
   const editFormRef = useRef<any>();
 
-  const handleEdit = (row: IUser): void => {
+  const handleEdit = (row: House): void => {
     // set fields
     const form = getForm(editFormRef);
     if (form) {
-      const { avatar, createdAt, updatedAt, gender, ...rest } = row;
-      form.setFields(generateField(rest));
+      const {
+        imgs,
+        clickCount,
+        commentCount,
+        likeCount,
+        createdAt,
+        updatedAt,
+        status,
+        ...rest
+      } = row;
+      form.setFields(
+        generateField({
+          ...rest,
+          status: `${status}`,
+        }),
+      );
     } else {
       // init
       setCurrentRow(row);
@@ -114,15 +130,12 @@ const Users: FC<IUsersProps> = ({
     setEditFormVisible(true);
   };
 
-  const submitEditForm = (values: IUser) => {
-    // 加密 password
-    if (values.password) {
-      values.password = Md5(values.password);
-    }
+  const submitEditForm = (values: TSubmitHouse) => {
+    const imgs = getUploadImgs(values.imgs);
     dispatch({
       type: `${namespace}/update`,
       payload: {
-        values,
+        values: { ...values, imgs },
         callback: () => {
           fetchList();
           setEditFormVisible(false);
@@ -132,7 +145,7 @@ const Users: FC<IUsersProps> = ({
   };
 
   // delete
-  const handleDelete = (rows: IUser | TIDs) => {
+  const handleDelete = (rows: House | TIDs) => {
     const ids = Array.isArray(rows) ? rows : [rows.id];
     dispatch({
       type: `${namespace}/delete`,
@@ -147,7 +160,7 @@ const Users: FC<IUsersProps> = ({
     });
   };
 
-  const columns: ColumnProps<IUser>[] = [
+  const columns: ColumnProps<House>[] = [
     {
       key: 'id',
       dataIndex: 'id',
@@ -155,31 +168,33 @@ const Users: FC<IUsersProps> = ({
       render: (id: string) => <IDColumn id={id} />,
     },
     {
-      key: 'username',
-      dataIndex: 'username',
-      title: '用户名',
+      key: 'title',
+      dataIndex: 'title',
+      title: '标题',
     },
     {
-      key: 'roles',
-      dataIndex: 'roles',
-      title: '角色',
-      render: (roles: string[]) => roles.map(role => <Tag key={role}>{roleMap[role]}</Tag>),
+      key: 'status',
+      dataIndex: 'status',
+      title: '状态',
+      render: (status: HouseStatus) => <Tag>{HouseStatusMap[status]}</Tag>,
     },
     {
-      key: 'mobile',
-      dataIndex: 'mobile',
-      title: '手机号',
+      key: 'commentCount',
+      dataIndex: 'commentCount',
+      title: '评论数',
+      render: (text: string) => <CenterTextColumn text={text} />,
     },
     {
-      key: 'email',
-      dataIndex: 'email',
-      title: '邮箱',
+      key: 'likeCount',
+      dataIndex: 'likeCount',
+      title: '点赞数',
+      render: (text: string) => <CenterTextColumn text={text} />,
     },
     {
-      key: 'gender',
-      dataIndex: 'gender',
-      title: '性别',
-      render: (gender: Gender) => GenderMap[gender],
+      key: 'clickCount',
+      dataIndex: 'clickCount',
+      title: '点击数',
+      render: (text: string) => <CenterTextColumn text={text} />,
     },
     {
       key: 'createdAt',
@@ -199,13 +214,11 @@ const Users: FC<IUsersProps> = ({
 
   return (
     <>
-      <UsersTable
+      <HouseTable
         onAdd={() => {
           setCreateFormVisible(true);
         }}
-        renderSearchForm={() => (
-          <Query roleList={roleList} onSearch={handleSearch} onReset={fetchList} />
-        )}
+        renderSearchForm={() => <Query onSearch={handleSearch} onReset={fetchList} />}
         columns={columns}
         ref={tableRef}
         rowKey={record => record.id}
@@ -213,16 +226,16 @@ const Users: FC<IUsersProps> = ({
         pagination={pagination}
         fetchList={fetchList}
         dataSource={list}
+        operationEditText="详情"
         onDeleteRow={handleDelete}
         onDeleteSelected={handleDelete}
-        // getCheckboxProps={row => ({ disabled: DEFALT_ROLES.includes(row.token) })}
         onEditRow={handleEdit}
       />
       <ModalForm
-        title={`编辑${pageName}`}
+        title={`查看/编辑${pageName}`}
         type="edit"
         ref={editFormRef}
-        renderItems={props => BaseForm({ ...props, roleList })}
+        renderItems={props => Base(props)}
         loading={editing}
         visible={editFormVisible}
         initValue={currentRow}
@@ -233,7 +246,7 @@ const Users: FC<IUsersProps> = ({
         title={`创建${pageName}`}
         type="create"
         ref={createFormRef}
-        renderItems={props => BaseForm({ ...props, roleList })}
+        renderItems={props => Base(props)}
         loading={creating}
         visible={createFormVisible}
         onCancel={() => setCreateFormVisible(false)}
@@ -245,23 +258,19 @@ const Users: FC<IUsersProps> = ({
 
 export default connect(
   ({
-    users,
-    role,
+    house,
     loading,
   }: {
-    users: StateType;
-    role: IRoleStateType;
+    house: StateType;
     loading: {
       effects: {
         [key: string]: string;
       };
     };
   }) => ({
-    users,
-    roleList: role.list,
-    roleMap: role.map,
+    house,
     fetching: loading.effects[`${namespace}/getList`],
     editing: loading.effects[`${namespace}/update`],
     creating: loading.effects[`${namespace}/create`],
   }),
-)(Users);
+)(Houses);

@@ -24,6 +24,7 @@ interface IPermissionListProps {
 }
 
 export const namespace = 'permission';
+const pageName = '权限';
 const PermissionTable = create<Permission>();
 
 const PermissionList: FC<IPermissionListProps> = ({
@@ -140,6 +141,11 @@ const PermissionList: FC<IPermissionListProps> = ({
       title: '名称',
     },
     {
+      key: 'module',
+      dataIndex: 'module',
+      title: '模块',
+    },
+    {
       key: 'desc',
       dataIndex: 'desc',
       title: '描述',
@@ -166,7 +172,7 @@ const PermissionList: FC<IPermissionListProps> = ({
         onEditRow={handleEdit}
       />
       <ModalForm
-        title="编辑权限"
+        title={`编辑${pageName}`}
         type="edit"
         ref={editFormRef}
         renderItems={props => Base(props)}
@@ -177,7 +183,7 @@ const PermissionList: FC<IPermissionListProps> = ({
         onSubmit={submitEditForm}
       />
       <ModalForm
-        title="创建权限"
+        title={`创建${pageName}`}
         type="create"
         ref={createFormRef}
         renderItems={props => Base(props)}
