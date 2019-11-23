@@ -44,7 +44,7 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
 
           <FormItem label="状态">
             {getFieldDecorator('status')(
-              <Select style={{ minWidth: '174px' }}>
+              <Select placeholder="请选择状态" style={{ minWidth: '174px' }}>
                 {houseOptions.map(({ value, name }) => (
                   <Option key={value} value={value}>
                     {name}

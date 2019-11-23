@@ -40,6 +40,10 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
             {getFieldDecorator('name')(<Input maxLength={20} placeholder="请输入名称" />)}
           </FormItem>
 
+          <FormItem label="模块名">
+            {getFieldDecorator('module')(<Input maxLength={20} placeholder="请输入模块名" />)}
+          </FormItem>
+
           <span className={styles.submitButtons}>
             <Button type="primary" htmlType="submit">
               查询

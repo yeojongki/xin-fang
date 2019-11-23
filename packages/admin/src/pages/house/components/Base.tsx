@@ -69,7 +69,7 @@ export const Base = (props: TRenderItems<TSubmitHouse>) => {
           rules: [
             {
               required: true,
-              message: '请输入详情！',
+              message: '请输入状态！',
             },
           ],
         })(

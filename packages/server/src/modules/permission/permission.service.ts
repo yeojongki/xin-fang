@@ -16,10 +16,11 @@ export class PermissionService extends CurdService<Permission, UpdatePermissionI
   }
 
   async findAndCount(query: TListQuery<Permission>): Promise<[Permission[], number]> {
-    const { skip, take, token, name } = query;
+    const { skip, take, token, name, ...rest } = query;
     const qb = this.repository.createQueryBuilder('p');
+    qb.where(rest);
     if (token) {
-      qb.where(`p.token LIKE '%${token}%'`);
+      qb.andWhere(`p.token LIKE '%${token}%'`);
     }
     if (name) {
       qb.andWhere(`p.name LIKE '%${name}%'`);

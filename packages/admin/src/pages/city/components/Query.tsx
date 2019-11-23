@@ -41,8 +41,8 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
             {getFieldDecorator('status')(
               <Select style={{ minWidth: '174px' }} placeholder="请选择是否开通">
                 <Option value="">不限</Option>
-                <Option value={0}>未开通</Option>
                 <Option value={1}>已开通</Option>
+                <Option value={0}>未开通</Option>
               </Select>,
             )}
           </FormItem>

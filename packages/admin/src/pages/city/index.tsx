@@ -133,7 +133,7 @@ const City: FC<ICityProps> = ({
   const [detailTitle, setDetailTitle] = useState<string>('');
   const [subways, setSubways] = useState<Subway[]>([]);
   const viewDetail = ({ id, name }: ICity) => {
-    setDetailTitle(`${name}的所有地铁`);
+    setDetailTitle(`「${name}」所有地铁`);
     dispatch({
       type: `${namespace}/getSubwaysByCityId`,
       payload: {

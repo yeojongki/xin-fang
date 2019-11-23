@@ -176,7 +176,9 @@ const Houses: FC<IHousesProps> = ({
       key: 'status',
       dataIndex: 'status',
       title: '状态',
-      render: (status: HouseStatus) => <Tag>{HouseStatusMap[status]}</Tag>,
+      render: (status: HouseStatus) => (
+        <Tag color={status === 0 ? 'blue' : ''}>{HouseStatusMap[status]}</Tag>
+      ),
     },
     {
       key: 'commentCount',
