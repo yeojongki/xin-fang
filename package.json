@@ -15,7 +15,8 @@
     "admin:dev": "cd ./packages/admin && yarn start",
     "admin:build": "cd ./packages/admin && yarn build",
     "deploy:admin": "yarn admin:build && node _deploy/admin.js",
-    "deploy:server": "yarn server:build && node _deploy/server.js"
+    "deploy:server": "yarn server:build && node _deploy/server.js",
+    "deploy:all":"yarn deploy:admin & yarn deploy:server"
   },
   "author": "kk597@sina.com",
   "workspaces": {
