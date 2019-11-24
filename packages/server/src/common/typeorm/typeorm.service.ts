@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { ConnectionOptions } from 'typeorm';
 import * as Entities from '@xf/common/src/entities';
 import { ConfigService } from '../config/config.service';
 

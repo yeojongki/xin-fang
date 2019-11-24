@@ -9,7 +9,7 @@
   },
   "scripts": {
     "seed:dev": "cd ./packages/server && yarn seed:dev",
-    "start:seed": "cd ./packages/server && yarn start:seed",
+    "seed:prod": "cd ./packages/server && yarn seed:prod",
     "server:dev": "cd ./packages/server && yarn start:dev",
     "server:build": "cd ./packages/server && yarn build:main",
     "admin:dev": "cd ./packages/admin && yarn start",
