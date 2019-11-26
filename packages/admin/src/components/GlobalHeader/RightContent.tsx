@@ -1,11 +1,11 @@
-import { Icon, Tooltip } from 'antd';
+// import { Icon, Tooltip } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import { ConnectProps, ConnectState } from '@/models/connect';
 import Avatar from './AvatarDropdown';
-import HeaderSearch from '../HeaderSearch';
+// import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
-import NoticeIconView from './NoticeIconView';
+// import NoticeIconView from './NoticeIconView';
 
 export type SiderTheme = 'light' | 'dark';
 export interface GlobalHeaderRightProps extends ConnectProps {
@@ -23,7 +23,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
 
   return (
     <div className={className}>
-      <HeaderSearch
+      {/* <HeaderSearch
         className={`${styles.action} ${styles.search}`}
         placeholder="站内搜索"
         dataSource={['搜索提示一', '搜索提示二', '搜索提示三']}
@@ -37,14 +37,14 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
       <Tooltip title="使用文档">
         <a
           target="_blank"
-          href="https://pro.ant.design/docs/getting-started"
+          href="#"
           rel="noopener noreferrer"
           className={styles.action}
         >
           <Icon type="question-circle-o" />
         </a>
       </Tooltip>
-      <NoticeIconView />
+      <NoticeIconView /> */}
       <Avatar menu />
     </div>
   );
