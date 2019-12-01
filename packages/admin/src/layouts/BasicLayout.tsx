@@ -101,6 +101,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         }}
         footerRender={footerRender}
         menuDataRender={menuDataRender}
+        // https://github.com/ant-design/ant-design-pro-layout/issues/190#issuecomment-558114164 todo
+        // menuProps={{ openKeys: ['/system'] }}
         rightContentRender={rightProps => <RightContent {...rightProps} />}
         {...props}
         {...settings}
