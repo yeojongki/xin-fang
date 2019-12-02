@@ -41,12 +41,6 @@ const Houses: FC<IHousesProps> = ({
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
-  useEffect(() => {
-    dispatch({
-      type: `${namespace}/getList`,
-    });
-  }, []);
-
   const fetchList = useCallback(
     (payload: Partial<TListQuery<House>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
       dispatch({
@@ -56,6 +50,10 @@ const Houses: FC<IHousesProps> = ({
     },
     [pagination],
   );
+
+  useEffect(() => {
+    fetchList();
+  }, []);
 
   // query
   const handleSearch = useCallback(

@@ -44,18 +44,6 @@ const Users: FC<IUsersProps> = ({
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
-  useEffect(() => {
-    // 没有角色列表时 初始化
-    if (!roleList.length) {
-      dispatch({
-        type: 'role/getList',
-      });
-    }
-    dispatch({
-      type: `${namespace}/getList`,
-    });
-  }, []);
-
   const fetchList = useCallback(
     (payload: Partial<TListQuery<IUser>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
       dispatch({
@@ -65,6 +53,16 @@ const Users: FC<IUsersProps> = ({
     },
     [pagination],
   );
+
+  useEffect(() => {
+    // 没有角色列表时 初始化
+    if (!roleList.length) {
+      dispatch({
+        type: 'role/getList',
+      });
+    }
+    fetchList();
+  }, []);
 
   // query
   const handleSearch = useCallback(
