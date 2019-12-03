@@ -23,7 +23,14 @@ export class PermissionAuthGuard extends AuthGuard('jwt') {
     const path = (request.path as string).replace(`/${this.apiPrefix}`, '');
 
     // check authWhiteList
-    if (authWhiteList.includes(`${method} ${path}`)) return true;
+    // e.g. /email/verify/* -> /email/verify/(.)*
+    if (
+      authWhiteList.some(item =>
+        new RegExp(item.replace(/\//g, '\\/').replace(/\*/g, '(.)*')).test(`${method} ${path}`),
+      )
+    ) {
+      return true;
+    }
 
     // https://github.com/nestjs/passport/blob/master/lib/auth.guard.ts#L36
     const jwtCheck = super.canActivate(context);

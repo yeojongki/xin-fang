@@ -9,6 +9,8 @@ export const authWhiteList = [
   `${RequestMethod.POST} /user`,
   // OSS 回调
   `${RequestMethod.POST} /attachment/oss/callback`,
+  // Email 验证
+  `${RequestMethod.GET} /email/verify/*`,
 ];
 
 export const permissionWhiteList = {
