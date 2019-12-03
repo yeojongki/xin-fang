@@ -1,10 +1,11 @@
 import { IConfig, IPlugin } from 'umi-types';
 import slash from 'slash2';
 import defaultSettings from './defaultSettings'; // https://umijs.org/config/
-import webpackPlugin from './plugin.config';
+// import webpackPlugin from './plugin.config';
 import routes from './routes';
+// import themePluginConfig from './themePluginConfig';
 
-const { pwa, primaryColor } = defaultSettings;
+const { pwa } = defaultSettings;
 
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
@@ -14,17 +15,20 @@ const plugins: IPlugin[] = [
     'umi-plugin-react',
     {
       locale: {
+        enable: false,
         default: 'zh-CN',
+        // default true, when it is true, will use `navigator.language` overwrite default
+        baseNavigator: true,
       },
       antd: true,
       dva: {
         hmr: true,
       },
-      dynamicImport: {
-        loadingComponent: './components/PageLoading/index',
-        webpackChunkName: true,
-        level: 3,
-      },
+      // dynamicImport: {
+      //   loadingComponent: './components/PageLoading/index',
+      //   webpackChunkName: true,
+      //   level: 3,
+      // },
       pwa: pwa
         ? {
             workboxPluginMode: 'InjectManifest',
@@ -51,6 +55,7 @@ const plugins: IPlugin[] = [
       autoAddMenu: true,
     },
   ],
+  // ['umi-plugin-antd-theme', themePluginConfig],
 ];
 
 // 针对 preview.pro.ant.design 的 GA 统计代码
@@ -82,9 +87,7 @@ const config: IConfig = {
   // umi routes: https://umijs.org/zh/guide/router.html
   routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
-  theme: {
-    'primary-color': primaryColor,
-  },
+  theme: {},
   define: {
     ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
       ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
@@ -128,7 +131,7 @@ const config: IConfig = {
   manifest: {
     basePath: '/',
   },
-  chainWebpack: webpackPlugin,
+  // chainWebpack: webpackPlugin,
   proxy: {
     '/api': 'http://localhost:3000',
     '/_upload': 'http://fang.yeojongki.cn',
