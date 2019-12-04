@@ -15,10 +15,10 @@ const plugins: IPlugin[] = [
     'umi-plugin-react',
     {
       locale: {
-        enable: false,
+        // enable: false,
         default: 'zh-CN',
         // default true, when it is true, will use `navigator.language` overwrite default
-        baseNavigator: true,
+        // baseNavigator: true,
       },
       antd: true,
       dva: {

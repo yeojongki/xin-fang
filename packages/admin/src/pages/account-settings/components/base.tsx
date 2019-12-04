@@ -1,17 +1,19 @@
-import { Button, Form, Input, Select, Upload, message } from 'antd';
+import { Button, Form, Input, Upload } from 'antd';
 import React, { Component, Fragment } from 'react';
 import { FormComponentProps } from 'antd/es/form';
-import { connect } from 'dva';
-import GeographicView from './GeographicView';
+// import GeographicView from './GeographicView';
 // import PhoneView from './PhoneView';
 import styles from './BaseView.less';
 import { CurrentUser } from '@/models/user';
 import DefaultAvatar from '@/assets/logo.svg';
 import { OSS_PREFIX } from '@/config';
+import { MOBILE_REG } from '@xf/common/src/constants/validation.const';
+import { Dispatch } from 'redux';
 
 const FormItem = Form.Item;
-const { Option } = Select; // 头像组件 方便以后独立，增加裁剪之类的功能
+// const { Option } = Select;
 
+// 头像组件 方便以后独立，增加裁剪之类的功能
 const AvatarView = ({ avatar }: { avatar: string }) => (
   <Fragment>
     <div className={styles.avatar_title}>头像</div>
@@ -26,53 +28,52 @@ const AvatarView = ({ avatar }: { avatar: string }) => (
   </Fragment>
 );
 
-interface SelectItem {
-  label: string;
-  key: string;
-}
+// interface SelectItem {
+//   label: string;
+//   key: string;
+// }
 
-const validatorGeographic = (
-  _: any,
-  value: {
-    province: SelectItem;
-    city: SelectItem;
-  },
-  callback: (message?: string) => void,
-) => {
-  const { province, city } = value;
+// const validatorGeographic = (
+//   _: any,
+//   value: {
+//     province: SelectItem;
+//     city: SelectItem;
+//   },
+//   callback: (message?: string) => void,
+// ) => {
+//   const { province, city } = value;
 
-  if (!province.key) {
-    callback('Please input your province!');
-  }
+//   if (!province.key) {
+//     callback('Please input your province!');
+//   }
 
-  if (!city.key) {
-    callback('Please input your city!');
-  }
+//   if (!city.key) {
+//     callback('Please input your city!');
+//   }
 
-  callback();
-};
+//   callback();
+// };
 
-const validatorPhone = (rule: any, value: string, callback: (message?: string) => void) => {
-  const values = value.split('-');
+// const validatorPhone = (rule: any, value: string, callback: (message?: string) => void) => {
+//   const values = value.split('-');
 
-  if (!values[0]) {
-    callback('Please input your area code!');
-  }
+//   if (!values[0]) {
+//     callback('Please input your area code!');
+//   }
 
-  if (!values[1]) {
-    callback('Please input your phone number!');
-  }
+//   if (!values[1]) {
+//     callback('Please input your phone number!');
+//   }
 
-  callback();
-};
+//   callback();
+// };
 
 interface BaseViewProps extends FormComponentProps {
   currentUser?: CurrentUser;
+  dispatch: Dispatch<any>;
+  editing: boolean;
 }
 
-@connect(({ user }: { user: { currentUser: CurrentUser } }) => ({
-  currentUser: user.currentUser,
-}))
 class BaseView extends Component<BaseViewProps> {
   view: HTMLDivElement | undefined = undefined;
 
@@ -97,34 +98,38 @@ class BaseView extends Component<BaseViewProps> {
   };
 
   handlerSubmit = (event: React.MouseEvent) => {
+    const { dispatch } = this.props;
     event.preventDefault();
     const { form } = this.props;
     form.validateFields(err => {
       if (!err) {
-        message.success('更新基本信息成功');
+        dispatch({
+          type: 'user/update',
+          payload: {
+            values: form.getFieldsValue(),
+          },
+        });
       }
     });
   };
 
   render() {
     const {
+      editing,
       currentUser = {},
       form: { getFieldDecorator },
     } = this.props;
     return (
       <div className={styles.baseView} ref={this.getViewDom}>
         <div className={styles.left}>
-          <Form layout="vertical" hideRequiredMark>
-            <FormItem label="邮箱">
-              {getFieldDecorator('email', {
-                initialValue: currentUser.email,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入您的邮箱!',
-                  },
-                ],
-              })(<Input />)}
+          <Form layout="vertical">
+            <FormItem
+              label="id"
+              style={{ height: 0, overflow: 'hidden', padding: 0, marginBottom: 0 }}
+            >
+              {getFieldDecorator('id', {
+                initialValue: currentUser.id,
+              })(<Input hidden />)}
             </FormItem>
             <FormItem label="昵称">
               {getFieldDecorator('username', {
@@ -137,18 +142,23 @@ class BaseView extends Component<BaseViewProps> {
                 ],
               })(<Input />)}
             </FormItem>
+            <FormItem label="邮箱">
+              {getFieldDecorator('email', {
+                initialValue: currentUser.email,
+                rules: [
+                  {
+                    type: 'email',
+                    message: '邮箱格式不正确',
+                  },
+                ],
+              })(<Input />)}
+            </FormItem>
             <FormItem label="个人简介">
               {getFieldDecorator('selfDesc', {
                 initialValue: currentUser.selfDesc,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入个人简介!',
-                  },
-                ],
               })(<Input.TextArea placeholder="个人简介" rows={4} />)}
             </FormItem>
-            <FormItem label="国家/地区">
+            {/* <FormItem label="国家/地区">
               {getFieldDecorator('country', {
                 rules: [
                   {
@@ -165,8 +175,8 @@ class BaseView extends Component<BaseViewProps> {
                   <Option value="China">中国</Option>
                 </Select>,
               )}
-            </FormItem>
-            <FormItem label="所在省市">
+            </FormItem> */}
+            {/* <FormItem label="所在省市">
               {getFieldDecorator('geographic', {
                 rules: [
                   {
@@ -179,32 +189,30 @@ class BaseView extends Component<BaseViewProps> {
                 ],
               })(<GeographicView />)}
             </FormItem>
-            <FormItem label="街道地址">
-              {getFieldDecorator('address', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入您的街道地址!',
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
+            <FormItem label="街道地址">{getFieldDecorator('address', {})(<Input />)}</FormItem> */}
             <FormItem label="联系电话">
               {getFieldDecorator('mobile', {
                 initialValue: currentUser.mobile,
                 rules: [
                   {
-                    required: true,
-                    message: '请输入您的联系电话!',
-                  },
-                  {
-                    validator: validatorPhone,
+                    validator: (_, value, callback: Function) => {
+                      if (value === '' || value === null || value === undefined) {
+                        callback();
+                        return;
+                      }
+                      const result = MOBILE_REG.test(value);
+                      if (!result) {
+                        callback('手机号格式不正确');
+                        return;
+                      }
+                      callback();
+                    },
                   },
                 ],
               })(<Input />)}
               {/* })(<PhoneView />)} */}
             </FormItem>
-            <Button type="primary" onClick={this.handlerSubmit}>
+            <Button type="primary" loading={editing} onClick={this.handlerSubmit}>
               更新基本信息
             </Button>
           </Form>

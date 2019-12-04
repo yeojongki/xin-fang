@@ -1,7 +1,7 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { GeographicItemType } from './data.d';
-import { queryCity, queryProvince, query as queryUsers } from './service';
+// import { queryCity, queryProvince, query as queryUsers } from './service';
 import { CurrentUser } from '@/models/user';
 
 export interface ModalState {
@@ -20,14 +20,13 @@ export interface ModelType {
   namespace: string;
   state: ModalState;
   effects: {
-    fetch: Effect;
-    fetchProvince: Effect;
-    fetchCity: Effect;
+    // fetchProvince: Effect;
+    // fetchCity: Effect;
   };
   reducers: {
     changeNotifyCount: Reducer<ModalState>;
-    setProvince: Reducer<ModalState>;
-    setCity: Reducer<ModalState>;
+    // setProvince: Reducer<ModalState>;
+    // setCity: Reducer<ModalState>;
     changeLoading: Reducer<ModalState>;
   };
 }
@@ -37,37 +36,30 @@ const Model: ModelType = {
 
   state: {
     currentUser: {},
-    province: [],
-    city: [],
+    // province: [],
+    // city: [],
     isLoading: false,
   },
 
   effects: {
-    *fetch(_, { call, put }) {
-      const response = yield call(queryUsers);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-    },
-    *fetchProvince(_, { call, put }) {
-      yield put({
-        type: 'changeLoading',
-        payload: true,
-      });
-      const response = yield call(queryProvince);
-      yield put({
-        type: 'setProvince',
-        payload: response,
-      });
-    },
-    *fetchCity({ payload }, { call, put }) {
-      const response = yield call(queryCity, payload);
-      yield put({
-        type: 'setCity',
-        payload: response,
-      });
-    },
+    // *fetchProvince(_, { call, put }) {
+    //   yield put({
+    //     type: 'changeLoading',
+    //     payload: true,
+    //   });
+    //   const response = yield call(queryProvince);
+    //   yield put({
+    //     type: 'setProvince',
+    //     payload: response,
+    //   });
+    // },
+    // *fetchCity({ payload }, { call, put }) {
+    //   const response = yield call(queryCity, payload);
+    //   yield put({
+    //     type: 'setCity',
+    //     payload: response,
+    //   });
+    // },
   },
 
   reducers: {
@@ -81,18 +73,18 @@ const Model: ModelType = {
         },
       };
     },
-    setProvince(state, action) {
-      return {
-        ...state,
-        province: action.payload,
-      };
-    },
-    setCity(state, action) {
-      return {
-        ...state,
-        city: action.payload,
-      };
-    },
+    // setProvince(state, action) {
+    //   return {
+    //     ...state,
+    //     province: action.payload,
+    //   };
+    // },
+    // setCity(state, action) {
+    //   return {
+    //     ...state,
+    //     city: action.payload,
+    //   };
+    // },
     changeLoading(state, action) {
       return {
         ...state,

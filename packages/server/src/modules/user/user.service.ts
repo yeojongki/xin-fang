@@ -161,10 +161,10 @@ export class UserService extends CurdService<User, UpdateUserInput> {
   async update(dto: UpdateUserInput): Promise<User> {
     const { id } = dto;
     const toUpdate = await this.findOneAndThrowError({ id });
-    if (dto.roles) {
-      toUpdate.roles = await this.getRolesByToken(dto.roles);
-      delete dto.roles;
-    }
+    toUpdate.roles = await this.getRolesByToken(
+      dto.roles ? dto.roles : ((toUpdate.roles as any) as string[]),
+    );
+    delete dto.roles;
     return await this.repository.save(Object.assign(toUpdate, dto));
   }
 }

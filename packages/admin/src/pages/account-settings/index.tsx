@@ -4,9 +4,9 @@ import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
 import { connect } from 'dva';
 import BaseView from './components/base';
-import BindingView from './components/binding';
+// import BindingView from './components/binding';
 // import NotificationView from './components/notification';
-import SecurityView from './components/security';
+// import SecurityView from './components/security';
 import styles from './style.less';
 import { CurrentUser } from '@/models/user';
 
@@ -14,6 +14,7 @@ const { Item } = Menu;
 interface AccountSettingsProps {
   dispatch: Dispatch<any>;
   currentUser: CurrentUser;
+  editing: boolean;
 }
 type AccountSettingsStateKeys = 'base' | 'security' | 'binding' | 'notification';
 interface AccountSettingsState {
@@ -24,9 +25,22 @@ interface AccountSettingsState {
   selectKey: AccountSettingsStateKeys;
 }
 
-@connect(({ user }: { user: { currentUser: CurrentUser } }) => ({
-  currentUser: user.currentUser,
-}))
+@connect(
+  ({
+    user,
+    loading,
+  }: {
+    user: { currentUser: CurrentUser };
+    loading: {
+      effects: {
+        [key: string]: string;
+      };
+    };
+  }) => ({
+    currentUser: user.currentUser,
+    editing: loading.effects['user/update'],
+  }),
+)
 class AccountSettings extends Component<AccountSettingsProps, AccountSettingsState> {
   main: HTMLDivElement | undefined = undefined;
 
@@ -34,8 +48,8 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
     super(props);
     const menuMap = {
       base: '基本设置',
-      security: '安全设置',
-      binding: '账号绑定',
+      // security: '安全设置',
+      // binding: '账号绑定',
       // notification: '新消息通知',
     };
     this.state = {
@@ -99,16 +113,17 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
 
   renderChildren = () => {
     const { selectKey } = this.state;
+    const { currentUser, dispatch, editing } = this.props;
 
     switch (selectKey) {
       case 'base':
-        return <BaseView />;
+        return <BaseView currentUser={currentUser} dispatch={dispatch} editing={editing} />;
 
-      case 'security':
-        return <SecurityView />;
+      // case 'security':
+      //   return <SecurityView />;
 
-      case 'binding':
-        return <BindingView />;
+      // case 'binding':
+      //   return <BindingView />;
 
       // case 'notification':
       //   return <NotificationView />;

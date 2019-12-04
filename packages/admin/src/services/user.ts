@@ -1,8 +1,6 @@
 import request from '@/utils/request';
 
-export async function query(): Promise<any> {
-  return request('/api/users');
-}
+export const update = (data: any): Promise<void> => request('/user', { data, method: 'PUT' });
 
 export async function queryCurrent(): Promise<any> {
   return request('/user/currentUser');

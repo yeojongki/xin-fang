@@ -70,28 +70,27 @@
     umi-utils "^1.5.1"
     yargs-parser "^15.0.0"
 
-"@ant-design/pro-layout@4.5.9":
-  version "4.5.9"
-  resolved "https://registry.npm.taobao.org/@ant-design/pro-layout/download/@ant-design/pro-layout-4.5.9.tgz#20f2e5a0ee8c711190b6f2c8d3ec87d9bf560d74"
-  integrity sha1-IPLloO6McRGQtvLI0+yH2b9WDXQ=
+"@ant-design/pro-layout@4.6.0":
+  version "4.6.0"
+  resolved "https://registry.npm.taobao.org/@ant-design/pro-layout/download/@ant-design/pro-layout-4.6.0.tgz#37f97bed43b317f2ee670c07faabf4b367da0c6a"
+  integrity sha1-N/l77UOzF/LuZwwH+qv0s2faDGo=
   dependencies:
-    antd "^3.19.0"
+    antd "^3.23.6"
     classnames "^2.2.6"
-    history "^4.9.0"
+    history "^4.10.1"
     lodash "^4.17.10"
-    lodash-decorators "^6.0.0"
-    memoize-one "^5.0.4"
-    moment "^2.22.2"
+    memoize-one "^5.1.1"
     omit.js "^1.0.0"
-    path-to-regexp "^3.0.0"
-    qs "^6.7.0"
-    react "^16.8.5"
+    path-to-regexp "^3.1.0"
+    qs "^6.9.0"
+    react "^16.10.2"
     react-container-query "^0.11.0"
     react-copy-to-clipboard "^5.0.1"
     react-document-title "^2.0.3"
-    react-dom "^16.7.0"
-    react-media-hook2 "^1.0.2"
-    react-router-dom "4.3.1"
+    react-dom "^16.10.2"
+    react-media-hook2 "^1.1.2"
+    react-router-dom "5.1.2"
+    warning "^4.0.3"
 
 "@ant-design/pro-layout@^4.7.3":
   version "4.9.1"
@@ -3619,7 +3618,7 @@ antd@3.x:
     shallowequal "^1.1.0"
     warning "~4.0.3"
 
-antd@^3.19.0, antd@^3.2.6, antd@^3.23.6, antd@^3.25.2:
+antd@^3.2.6, antd@^3.23.6, antd@^3.25.2:
   version "3.26.0"
   resolved "https://registry.npm.taobao.org/antd/download/antd-3.26.0.tgz#0a6a43fdd8577e61708932b7bc34ba0234d0f138"
   integrity sha1-CmpD/dhXfmFwiTK3vDS6AjTQ8Tg=
@@ -11783,13 +11782,6 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
-lodash-decorators@^6.0.0:
-  version "6.0.1"
-  resolved "https://registry.npm.taobao.org/lodash-decorators/download/lodash-decorators-6.0.1.tgz#f5347811ee7792eba4719042354541578142273d"
-  integrity sha1-9TR4Ee53kuukcZBCNUVBV4FCJz0=
-  dependencies:
-    tslib "^1.9.2"
-
 lodash-es@^4.17.5, lodash-es@^4.2.1:
   version "4.17.15"
   resolved "https://registry.npm.taobao.org/lodash-es/download/lodash-es-4.17.15.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash-es%2Fdownload%2Flodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
@@ -12331,7 +12323,7 @@ mem@^5.0.0:
     mimic-fn "^2.1.0"
     p-is-promise "^2.1.0"
 
-memoize-one@^5.0.4, memoize-one@^5.1.1:
+memoize-one@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npm.taobao.org/memoize-one/download/memoize-one-5.1.1.tgz#047b6e3199b508eaec03504de71229b8eb1d75c0"
   integrity sha1-BHtuMZm1COrsA1BN5xIpuOsddcA=
@@ -12690,7 +12682,7 @@ module-alias@^2.2.1:
   resolved "https://registry.npm.taobao.org/module-alias/download/module-alias-2.2.1.tgz#553aea9dc7f99cd45fd75e34a574960dc46550da"
   integrity sha1-VTrqncf5nNRf1140pXSWDcRlUNo=
 
-moment@2.x, moment@^2.22.1, moment@^2.22.2, moment@^2.24.0:
+moment@2.x, moment@^2.22.1, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.npm.taobao.org/moment/download/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha1-DQVdU/UFKqZTyfbraLtdEr9cK1s=
@@ -13928,6 +13920,11 @@ path-to-regexp@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npm.taobao.org/path-to-regexp/download/path-to-regexp-3.0.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpath-to-regexp%2Fdownload%2Fpath-to-regexp-3.0.0.tgz#c981a218f3df543fa28696be2f88e0c58d2e012a"
   integrity sha1-yYGiGPPfVD+ihpa+L4jgxY0uASo=
+
+path-to-regexp@^3.1.0:
+  version "3.2.0"
+  resolved "https://registry.npm.taobao.org/path-to-regexp/download/path-to-regexp-3.2.0.tgz#fa7877ecbc495c601907562222453c43cc204a5f"
+  integrity sha1-+nh37LxJXGAZB1YiIkU8Q8wgSl8=
 
 path-type@^1.0.0:
   version "1.1.0"
@@ -15793,7 +15790,7 @@ react-document-title@^2.0.3:
     prop-types "^15.5.6"
     react-side-effect "^1.0.2"
 
-react-dom@^16.7.0:
+react-dom@^16.10.2:
   version "16.12.0"
   resolved "https://registry.npm.taobao.org/react-dom/download/react-dom-16.12.0.tgz#0da4b714b8d13c2038c9396b54a92baea633fe11"
   integrity sha1-DaS3FLjRPCA4yTlrVKkrrqYz/hE=
@@ -15876,7 +15873,7 @@ react-loadable@5.5.0:
   dependencies:
     prop-types "^15.5.0"
 
-react-media-hook2@^1.0.2:
+react-media-hook2@^1.1.2:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/react-media-hook2/download/react-media-hook2-1.1.2.tgz?cache=0&sync_timestamp=1560947733000&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-media-hook2%2Fdownload%2Freact-media-hook2-1.1.2.tgz#e6b57f2210ce4c84e2d821fb7ed67631e7b7c14c"
   integrity sha1-5rV/IhDOTITi2CH7ftZ2Mee3wUw=
@@ -16036,7 +16033,7 @@ react-tween-state@^0.1.5:
     raf "^3.1.0"
     tween-functions "^1.0.1"
 
-react@^16.8.5:
+react@^16.10.2:
   version "16.12.0"
   resolved "https://registry.npm.taobao.org/react/download/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
   integrity sha1-DAqcahQkKeNhSDTVp3jhiqeKC4M=
@@ -18857,7 +18854,7 @@ tsconfig@^7.0.0:
     strip-bom "^3.0.0"
     strip-json-comments "^2.0.0"
 
-tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.2:
+tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.10.0"
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha1-w8GflZc/sKYpc/sJ2Q2WHuQ+XIo=
