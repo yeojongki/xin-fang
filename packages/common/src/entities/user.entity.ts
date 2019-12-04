@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Transform } from 'class-transformer';
 import { Gender } from '@xf/common/src/constants/gender.const';
 import { Base } from './base.entity';
 import { Role } from './role.entity';
@@ -27,8 +27,12 @@ export class User extends Base {
   })
   gender?: number;
 
+  @Transform(v => v || 'logo.png')
   @Column({ default: null })
   avatar?: string;
+
+  @Column({ name: 'self_desc', default: null, comment: '自我介绍' })
+  selfDesc?: string;
 
   @OneToMany(() => House, house => house.user)
   houses!: House[];

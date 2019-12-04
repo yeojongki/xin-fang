@@ -86,6 +86,19 @@ export default [
             component: './city',
           },
           {
+            path: '/account',
+            name: '个人页',
+            icon: 'user',
+            routes: [
+              {
+                path: '/account/settings',
+                icon: 'setting',
+                name: '个人设置',
+                component: './account-settings',
+              },
+            ],
+          },
+          {
             path: '/exception',
             routes: [
               { path: '/exception/401', component: './exception/401' },

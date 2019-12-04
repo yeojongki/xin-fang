@@ -6,10 +6,13 @@ import { reloadAuthorized } from '@/utils/Authorized';
 
 export interface CurrentUser {
   avatar?: string;
+  email?: string;
   username?: string;
   title?: string;
   group?: string;
   signature?: string;
+  mobile?: string;
+  selfDesc?: string;
   tags?: {
     key: string;
     label: string;

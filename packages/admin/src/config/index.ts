@@ -8,3 +8,5 @@ export enum ModuleNameMap {
   'city' = '城市',
   'subway' = '地铁',
 }
+
+export const OSS_PREFIX = 'http://fang.yeojongki.cn/_upload/';
