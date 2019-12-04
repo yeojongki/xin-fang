@@ -70,7 +70,30 @@
     umi-utils "^1.5.1"
     yargs-parser "^15.0.0"
 
-"@ant-design/pro-layout@^4.7.3", "@ant-design/pro-layout@^4.9.1":
+"@ant-design/pro-layout@4.5.9":
+  version "4.5.9"
+  resolved "https://registry.npm.taobao.org/@ant-design/pro-layout/download/@ant-design/pro-layout-4.5.9.tgz#20f2e5a0ee8c711190b6f2c8d3ec87d9bf560d74"
+  integrity sha1-IPLloO6McRGQtvLI0+yH2b9WDXQ=
+  dependencies:
+    antd "^3.19.0"
+    classnames "^2.2.6"
+    history "^4.9.0"
+    lodash "^4.17.10"
+    lodash-decorators "^6.0.0"
+    memoize-one "^5.0.4"
+    moment "^2.22.2"
+    omit.js "^1.0.0"
+    path-to-regexp "^3.0.0"
+    qs "^6.7.0"
+    react "^16.8.5"
+    react-container-query "^0.11.0"
+    react-copy-to-clipboard "^5.0.1"
+    react-document-title "^2.0.3"
+    react-dom "^16.7.0"
+    react-media-hook2 "^1.0.2"
+    react-router-dom "4.3.1"
+
+"@ant-design/pro-layout@^4.7.3":
   version "4.9.1"
   resolved "https://registry.npm.taobao.org/@ant-design/pro-layout/download/@ant-design/pro-layout-4.9.1.tgz?cache=0&sync_timestamp=1575199321099&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ant-design%2Fpro-layout%2Fdownload%2F%40ant-design%2Fpro-layout-4.9.1.tgz#f7950d4baa914eb94d62f825e8a023dbf5e5bd55"
   integrity sha1-95UNS6qRTrlNYvgl6KAj2/XlvVU=
@@ -3596,7 +3619,7 @@ antd@3.x:
     shallowequal "^1.1.0"
     warning "~4.0.3"
 
-antd@^3.2.6, antd@^3.23.6, antd@^3.25.2:
+antd@^3.19.0, antd@^3.2.6, antd@^3.23.6, antd@^3.25.2:
   version "3.26.0"
   resolved "https://registry.npm.taobao.org/antd/download/antd-3.26.0.tgz#0a6a43fdd8577e61708932b7bc34ba0234d0f138"
   integrity sha1-CmpD/dhXfmFwiTK3vDS6AjTQ8Tg=
@@ -4309,6 +4332,11 @@ base@^0.11.1:
     isobject "^3.0.1"
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
+
+batch-processor@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/batch-processor/download/batch-processor-1.0.0.tgz#75c95c32b748e0850d10c2b168f6bdbe9891ace8"
+  integrity sha1-dclcMrdI4IUNEMKxaPa9vpiRrOg=
 
 batch@0.6.1:
   version "0.6.1"
@@ -5555,6 +5583,11 @@ constants-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/constants-browserify/download/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
   integrity sha1-wguW2MYXdIqvHBYCF2DNJ/y4y3U=
+
+container-query-toolkit@0.1.3:
+  version "0.1.3"
+  resolved "https://registry.npm.taobao.org/container-query-toolkit/download/container-query-toolkit-0.1.3.tgz#79ece9fe491d9187b7051247067f1faac6ce00b0"
+  integrity sha1-eezp/kkdkYe3BRJHBn8fqsbOALA=
 
 contains-path@^0.1.0:
   version "0.1.0"
@@ -7057,6 +7090,13 @@ elegant-spinner@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/elegant-spinner/download/elegant-spinner-1.0.1.tgz#db043521c95d7e303fd8f345bedc3349cfb0729e"
   integrity sha1-2wQ1IcldfjA/2PNFvtwzSc+wcp4=
+
+element-resize-detector@1.1.13:
+  version "1.1.13"
+  resolved "https://registry.npm.taobao.org/element-resize-detector/download/element-resize-detector-1.1.13.tgz#f61907e98a91b1ad215f92790bc15113df68444d"
+  integrity sha1-9hkH6YqRsa0hX5J5C8FRE99oRE0=
+  dependencies:
+    batch-processor "^1.0.0"
 
 elliptic@^6.0.0:
   version "6.5.0"
@@ -11743,6 +11783,13 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+lodash-decorators@^6.0.0:
+  version "6.0.1"
+  resolved "https://registry.npm.taobao.org/lodash-decorators/download/lodash-decorators-6.0.1.tgz#f5347811ee7792eba4719042354541578142273d"
+  integrity sha1-9TR4Ee53kuukcZBCNUVBV4FCJz0=
+  dependencies:
+    tslib "^1.9.2"
+
 lodash-es@^4.17.5, lodash-es@^4.2.1:
   version "4.17.15"
   resolved "https://registry.npm.taobao.org/lodash-es/download/lodash-es-4.17.15.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash-es%2Fdownload%2Flodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
@@ -12284,7 +12331,7 @@ mem@^5.0.0:
     mimic-fn "^2.1.0"
     p-is-promise "^2.1.0"
 
-memoize-one@^5.1.1:
+memoize-one@^5.0.4, memoize-one@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npm.taobao.org/memoize-one/download/memoize-one-5.1.1.tgz#047b6e3199b508eaec03504de71229b8eb1d75c0"
   integrity sha1-BHtuMZm1COrsA1BN5xIpuOsddcA=
@@ -12643,7 +12690,7 @@ module-alias@^2.2.1:
   resolved "https://registry.npm.taobao.org/module-alias/download/module-alias-2.2.1.tgz#553aea9dc7f99cd45fd75e34a574960dc46550da"
   integrity sha1-VTrqncf5nNRf1140pXSWDcRlUNo=
 
-moment@2.x, moment@^2.22.1, moment@^2.24.0:
+moment@2.x, moment@^2.22.1, moment@^2.22.2, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.npm.taobao.org/moment/download/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha1-DQVdU/UFKqZTyfbraLtdEr9cK1s=
@@ -15691,6 +15738,14 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.7, rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-container-query@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.npm.taobao.org/react-container-query/download/react-container-query-0.11.0.tgz#b07ac2794612499dd8f2d1759b72e9c415e53567"
+  integrity sha1-sHrCeUYSSZ3Y8tF1m3LpxBXlNWc=
+  dependencies:
+    container-query-toolkit "0.1.3"
+    resize-observer-lite "0.2.3"
+
 react-copy-to-clipboard@^5.0.1:
   version "5.0.1"
   resolved "https://registry.npm.taobao.org/react-copy-to-clipboard/download/react-copy-to-clipboard-5.0.1.tgz#8eae107bb400be73132ed3b6a7b4fb156090208e"
@@ -15737,6 +15792,16 @@ react-document-title@^2.0.3:
   dependencies:
     prop-types "^15.5.6"
     react-side-effect "^1.0.2"
+
+react-dom@^16.7.0:
+  version "16.12.0"
+  resolved "https://registry.npm.taobao.org/react-dom/download/react-dom-16.12.0.tgz#0da4b714b8d13c2038c9396b54a92baea633fe11"
+  integrity sha1-DaS3FLjRPCA4yTlrVKkrrqYz/hE=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.18.0"
 
 react-dom@^16.8.6:
   version "16.9.0"
@@ -15810,6 +15875,11 @@ react-loadable@5.5.0:
   integrity sha1-WCJRZ509qGwyquLI5onFnxGW2MQ=
   dependencies:
     prop-types "^15.5.0"
+
+react-media-hook2@^1.0.2:
+  version "1.1.2"
+  resolved "https://registry.npm.taobao.org/react-media-hook2/download/react-media-hook2-1.1.2.tgz?cache=0&sync_timestamp=1560947733000&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-media-hook2%2Fdownload%2Freact-media-hook2-1.1.2.tgz#e6b57f2210ce4c84e2d821fb7ed67631e7b7c14c"
+  integrity sha1-5rV/IhDOTITi2CH7ftZ2Mee3wUw=
 
 react-native-swipeout@^2.2.2:
   version "2.3.6"
@@ -15965,6 +16035,15 @@ react-tween-state@^0.1.5:
   dependencies:
     raf "^3.1.0"
     tween-functions "^1.0.1"
+
+react@^16.8.5:
+  version "16.12.0"
+  resolved "https://registry.npm.taobao.org/react/download/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
+  integrity sha1-DAqcahQkKeNhSDTVp3jhiqeKC4M=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
 
 react@^16.8.6:
   version "16.9.0"
@@ -16559,6 +16638,13 @@ reserved-words@^0.1.2:
   resolved "https://registry.npm.taobao.org/reserved-words/download/reserved-words-0.1.2.tgz#00a0940f98cd501aeaaac316411d9adc52b31ab1"
   integrity sha1-AKCUD5jNUBrqqsMWQR2a3FKzGrE=
 
+resize-observer-lite@0.2.3:
+  version "0.2.3"
+  resolved "https://registry.npm.taobao.org/resize-observer-lite/download/resize-observer-lite-0.2.3.tgz#b557f378e2ce9b9aab1dc71a91047bd7ed1d8915"
+  integrity sha1-tVfzeOLOm5qrHccakQR71+0diRU=
+  dependencies:
+    element-resize-detector "1.1.13"
+
 resize-observer-polyfill@^1.5.0, resize-observer-polyfill@^1.5.1:
   version "1.5.1"
   resolved "https://registry.npm.taobao.org/resize-observer-polyfill/download/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
@@ -17008,6 +17094,14 @@ scheduler@^0.15.0:
   version "0.15.0"
   resolved "https://registry.npm.taobao.org/scheduler/download/scheduler-0.15.0.tgz#6bfcf80ff850b280fed4aeecc6513bc0b4f17f8e"
   integrity sha1-a/z4D/hQsoD+1K7sxlE7wLTxf44=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+
+scheduler@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.npm.taobao.org/scheduler/download/scheduler-0.18.0.tgz?cache=0&sync_timestamp=1574323692883&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fscheduler%2Fdownload%2Fscheduler-0.18.0.tgz#5901ad6659bc1d8f3fdaf36eb7a67b0d6746b1c4"
+  integrity sha1-WQGtZlm8HY8/2vNut6Z7DWdGscQ=
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -18763,7 +18857,7 @@ tsconfig@^7.0.0:
     strip-bom "^3.0.0"
     strip-json-comments "^2.0.0"
 
-tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.2:
   version "1.10.0"
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha1-w8GflZc/sKYpc/sJ2Q2WHuQ+XIo=
