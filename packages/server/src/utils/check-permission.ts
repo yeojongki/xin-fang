@@ -23,7 +23,7 @@ export const checkPermission = (
   permissions: Permission['token'][] | false,
 ) => {
   if (permissionWhiteList[path]) return true;
-  if (permissions === false) return false;
+  if (!permissions) return false;
 
   // GET list => 获取列表权限
   if (method === RequestMethod.GET && methodPath === 'list') {

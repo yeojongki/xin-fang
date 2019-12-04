@@ -7,6 +7,7 @@ import {
   Length,
   IsMobilePhone,
   IsEnum,
+  Allow,
 } from 'class-validator';
 import {
   MAX_LENGTH_MOBILE,
@@ -45,8 +46,12 @@ export class UpdateUserInput extends AuthBaseInput {
   avatar?: string;
 
   @IsOptional()
+  selfDesc?: string;
+
+  @IsOptional()
   @IsEnum(Gender)
   gender?: Gender;
 
+  @Allow()
   roles?: string[];
 }

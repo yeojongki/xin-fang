@@ -1,5 +1,5 @@
 import { AuthGuard } from '@nestjs/passport';
-import { UnauthorizedException, ExecutionContext } from '@nestjs/common';
+import { UnauthorizedException, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { PATH_METADATA, METHOD_METADATA } from '@nestjs/common/constants';
@@ -51,7 +51,7 @@ export class PermissionAuthGuard extends AuthGuard('jwt') {
         );
 
         if (!isPassPermission) {
-          throw new UnauthorizedException({
+          throw new ForbiddenException({
             message: '用户权限不足',
             error: path,
             errno: errorCode.PERMISSION_ERROR,
