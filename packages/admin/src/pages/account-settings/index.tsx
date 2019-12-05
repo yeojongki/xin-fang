@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
-import { GridContent } from '@ant-design/pro-layout';
+import { GridContent, PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
 import { connect } from 'dva';
 import BaseView from './components/base';
@@ -143,30 +143,32 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
 
     const { mode, selectKey } = this.state;
     return (
-      <GridContent>
-        <div
-          className={styles.main}
-          ref={ref => {
-            if (ref) {
-              this.main = ref;
-            }
-          }}
-        >
-          <div className={styles.leftMenu}>
-            <Menu
-              mode={mode}
-              selectedKeys={[selectKey]}
-              onClick={({ key }) => this.selectKey(key as AccountSettingsStateKeys)}
-            >
-              {this.getMenu()}
-            </Menu>
+      <PageHeaderWrapper title={false}>
+        <GridContent>
+          <div
+            className={styles.main}
+            ref={ref => {
+              if (ref) {
+                this.main = ref;
+              }
+            }}
+          >
+            <div className={styles.leftMenu}>
+              <Menu
+                mode={mode}
+                selectedKeys={[selectKey]}
+                onClick={({ key }) => this.selectKey(key as AccountSettingsStateKeys)}
+              >
+                {this.getMenu()}
+              </Menu>
+            </div>
+            <div className={styles.right}>
+              <div className={styles.title}>{this.getRightTitle()}</div>
+              {this.renderChildren()}
+            </div>
           </div>
-          <div className={styles.right}>
-            <div className={styles.title}>{this.getRightTitle()}</div>
-            {this.renderChildren()}
-          </div>
-        </div>
-      </GridContent>
+        </GridContent>
+      </PageHeaderWrapper>
     );
   }
 }

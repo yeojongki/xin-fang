@@ -2,6 +2,7 @@ import React, { FC, useState, useRef, useCallback, useEffect } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
@@ -196,7 +197,7 @@ const Users: FC<IUsersProps> = ({
   ];
 
   return (
-    <>
+    <PageHeaderWrapper title={false}>
       <UsersTable
         onAdd={() => {
           setCreateFormVisible(true);
@@ -237,7 +238,7 @@ const Users: FC<IUsersProps> = ({
         onCancel={() => setCreateFormVisible(false)}
         onSubmit={submitCreateForm}
       />
-    </>
+    </PageHeaderWrapper>
   );
 };
 

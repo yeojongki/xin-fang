@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback, FC } from 'react';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { Tag } from 'antd';
 import { House } from '@xf/common/src/entities';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { HouseStatus, HouseStatusMap } from '@xf/common/src/constants/house.const';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
@@ -219,7 +220,7 @@ const Houses: FC<IHousesProps> = ({
   ];
 
   return (
-    <>
+    <PageHeaderWrapper title={false}>
       <HouseTable
         onAdd={() => {
           setCreateFormVisible(true);
@@ -258,7 +259,7 @@ const Houses: FC<IHousesProps> = ({
         onCancel={() => setCreateFormVisible(false)}
         onSubmit={submitCreateForm}
       />
-    </>
+    </PageHeaderWrapper>
   );
 };
 

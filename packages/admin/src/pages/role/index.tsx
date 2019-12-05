@@ -4,6 +4,7 @@ import DEFALT_ROLES from '@xf/common/src/constants/roles.const';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { Permission } from '@xf/common/src/entities';
@@ -158,7 +159,7 @@ const RoleList: React.FC<IRoleListProps> = ({
   ];
 
   return (
-    <>
+    <PageHeaderWrapper title={false}>
       <RoleTable
         onAdd={() => {
           setCreateFormVisible(true);
@@ -198,7 +199,7 @@ const RoleList: React.FC<IRoleListProps> = ({
         onCancel={() => setCreateFormVisible(false)}
         onSubmit={submitCreateForm}
       />
-    </>
+    </PageHeaderWrapper>
   );
 };
 

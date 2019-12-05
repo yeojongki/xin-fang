@@ -2,6 +2,7 @@ import React, { FC, useState, useRef, useCallback } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Permission } from '@xf/common/src/entities';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
@@ -153,7 +154,7 @@ const PermissionList: FC<IPermissionListProps> = ({
   ];
 
   return (
-    <>
+    <PageHeaderWrapper title={false}>
       <PermissionTable
         onAdd={() => {
           setCreateFormVisible(true);
@@ -192,7 +193,7 @@ const PermissionList: FC<IPermissionListProps> = ({
         onCancel={() => setCreateFormVisible(false)}
         onSubmit={submitCreateForm}
       />
-    </>
+    </PageHeaderWrapper>
   );
 };
 
