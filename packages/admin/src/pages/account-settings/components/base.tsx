@@ -1,32 +1,18 @@
-import { Button, Form, Input, Upload } from 'antd';
-import React, { Component, Fragment } from 'react';
+import { Button, Form, Input } from 'antd';
+import React, { Component } from 'react';
 import { FormComponentProps } from 'antd/es/form';
+import { MOBILE_REG } from '@xf/common/src/constants/validation.const';
+import { Dispatch } from 'redux';
 // import GeographicView from './GeographicView';
 // import PhoneView from './PhoneView';
 import styles from './BaseView.less';
 import { CurrentUser } from '@/models/user';
-import DefaultAvatar from '@/assets/logo.svg';
+import { IUploadFile, PicturesWall } from '@/components/PicturesWall';
 import { OSS_PREFIX } from '@/config';
-import { MOBILE_REG } from '@xf/common/src/constants/validation.const';
-import { Dispatch } from 'redux';
+import { getUploadImgs, getFileList } from '@/components/PicturesWall/utils';
 
 const FormItem = Form.Item;
 // const { Option } = Select;
-
-// 头像组件 方便以后独立，增加裁剪之类的功能
-const AvatarView = ({ avatar }: { avatar: string }) => (
-  <Fragment>
-    <div className={styles.avatar_title}>头像</div>
-    <div className={styles.avatar}>
-      <img src={avatar} alt="avatar" />
-    </div>
-    <Upload fileList={[]}>
-      <div className={styles.button_view}>
-        <Button icon="upload">更换头像</Button>
-      </div>
-    </Upload>
-  </Fragment>
-);
 
 // interface SelectItem {
 //   label: string;
@@ -98,19 +84,46 @@ class BaseView extends Component<BaseViewProps> {
   };
 
   handlerSubmit = (event: React.MouseEvent) => {
-    const { dispatch } = this.props;
     event.preventDefault();
+    const { dispatch } = this.props;
     const { form } = this.props;
     form.validateFields(err => {
       if (!err) {
+        const values = form.getFieldsValue();
+        const avatar = getUploadImgs(values.avatar)[0];
         dispatch({
           type: 'user/update',
           payload: {
-            values: form.getFieldsValue(),
+            values: { ...values, avatar },
+            callback: () => {
+              dispatch({
+                type: 'user/fetchCurrent',
+              });
+            },
           },
         });
       }
     });
+  };
+
+  getUploadFileUrls = (fileList: IUploadFile[]): IUploadFile[] => fileList;
+
+  getFileList = (e: string | undefined | IUploadFile[]) => {
+    const { currentUser = {} } = this.props;
+    if (e && typeof e === 'string') {
+      return [
+        {
+          response: { result: { filename: currentUser.avatar } },
+          status: 'done',
+          url: OSS_PREFIX + currentUser.avatar,
+          name: currentUser.avatar,
+          uid: currentUser.avatar,
+          size: 0,
+          type: 'image',
+        },
+      ];
+    }
+    return [];
   };
 
   render() {
@@ -119,10 +132,11 @@ class BaseView extends Component<BaseViewProps> {
       currentUser = {},
       form: { getFieldDecorator },
     } = this.props;
+
     return (
-      <div className={styles.baseView} ref={this.getViewDom}>
-        <div className={styles.left}>
-          <Form layout="vertical">
+      <Form layout="vertical">
+        <div className={styles.baseView} ref={this.getViewDom}>
+          <div className={styles.left}>
             <FormItem
               label="id"
               style={{ height: 0, overflow: 'hidden', padding: 0, marginBottom: 0 }}
@@ -148,7 +162,7 @@ class BaseView extends Component<BaseViewProps> {
                 rules: [
                   {
                     type: 'email',
-                    message: '邮箱格式不正确',
+                    message: '邮箱格式不正确!',
                   },
                 ],
               })(<Input />)}
@@ -202,7 +216,7 @@ class BaseView extends Component<BaseViewProps> {
                       }
                       const result = MOBILE_REG.test(value);
                       if (!result) {
-                        callback('手机号格式不正确');
+                        callback('手机号格式不正确!');
                         return;
                       }
                       callback();
@@ -215,14 +229,19 @@ class BaseView extends Component<BaseViewProps> {
             <Button type="primary" loading={editing} onClick={this.handlerSubmit}>
               更新基本信息
             </Button>
-          </Form>
+          </div>
+          <div className={styles.right}>
+            <FormItem label="头像">
+              {getFieldDecorator('avatar', {
+                rules: [{ required: true, message: '头像不能为空!' }],
+                initialValue: getFileList(currentUser.avatar),
+                valuePropName: 'fileList',
+                getValueFromEvent: this.getUploadFileUrls,
+              })(<PicturesWall dir="avatar" previewWidth="500px" maxLength={1} />)}
+            </FormItem>
+          </div>
         </div>
-        <div className={styles.right}>
-          <AvatarView
-            avatar={currentUser.avatar ? OSS_PREFIX + currentUser.avatar : DefaultAvatar}
-          />
-        </div>
-      </div>
+      </Form>
     );
   }
 }

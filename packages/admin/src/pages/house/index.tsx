@@ -18,6 +18,7 @@ import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { Base } from './components/Base';
 import Query from './components/Query';
 import { IUploadFile } from '@/components/PicturesWall';
+import { getUploadImgs } from '@/components/PicturesWall/utils';
 
 interface IHousesProps {
   dispatch: Dispatch<any>;
@@ -64,17 +65,6 @@ const Houses: FC<IHousesProps> = ({
     },
     [pagination],
   );
-
-  const getUploadImgs = (imgs: IUploadFile[]) =>
-    imgs
-      .map(img => {
-        const { response } = img;
-        if (response && typeof response !== 'string' && response.result.filename) {
-          return response.result.filename;
-        }
-        return null;
-      })
-      .filter(Boolean);
 
   // create
   const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);

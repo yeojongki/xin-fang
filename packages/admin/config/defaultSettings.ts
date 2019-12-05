@@ -49,10 +49,10 @@ const defaultSettings: DefaultSettings = {
   contentWidth: 'Fluid',
   fixedHeader: false,
   autoHideHeader: false,
-  fixSiderbar: false,
+  fixSiderbar: true,
   colorWeak: false,
   menu: {
-    locale: true,
+    locale: false,
   },
   title: '馨房后台管理',
   pwa: false,

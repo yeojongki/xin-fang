@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, MaxLength, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsOptional, MaxLength, IsEnum, IsArray } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { HouseStatus } from '../../constants/house.const';
 
@@ -13,6 +13,10 @@ export class UpdateHouseInput {
   @IsOptional()
   @MaxLength(500)
   content?: string;
+
+  @IsOptional()
+  @IsArray()
+  imgs?: string[];
 
   @IsOptional()
   @Transform(v => parseInt(v, 10))

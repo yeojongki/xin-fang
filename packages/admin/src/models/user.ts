@@ -1,10 +1,10 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 import { message as Message } from 'antd';
+import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
 import * as Api from '@/services/user';
 import { setStorageRoles } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
-import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
 
 export interface CurrentUser {
   id?: string;
@@ -59,7 +59,7 @@ const UserModel: UserModelType = {
       const { callback, values } = payload;
       const { message }: HttpSuccessResponse = yield call(Api.update, values);
       Message.success(message);
-      callback();
+      callback && callback();
     },
   },
 

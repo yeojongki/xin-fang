@@ -53,12 +53,6 @@ export const Base = (props: TRenderItems<TSubmitHouse>) => {
       <FormItem label="详情" hasFeedback>
         {getFieldDecorator('content', {
           initialValue: initValue ? initValue.content : '',
-          rules: [
-            {
-              required: true,
-              message: '请输入详情！',
-            },
-          ],
         })(<TextArea rows={7} maxLength={500} placeholder="请输入详情" />)}
       </FormItem>
 
@@ -87,7 +81,7 @@ export const Base = (props: TRenderItems<TSubmitHouse>) => {
           initialValue: fileList,
           valuePropName: 'fileList',
           getValueFromEvent: getUploadFileUrls,
-        })(<PicturesWall />)}
+        })(<PicturesWall dir="house" />)}
       </FormItem>
     </>
   );
