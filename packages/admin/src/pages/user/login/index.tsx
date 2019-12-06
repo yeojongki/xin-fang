@@ -5,6 +5,7 @@ import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import Link from 'umi/link';
 import { connect } from 'dva';
+import { MOBILE_REG } from '@xf/common/src/constants/validation.const';
 import { StateType } from './model';
 import LoginComponents from './components/Login';
 import styles from './style.less';
@@ -168,7 +169,7 @@ class Login extends Component<LoginProps, LoginState> {
                   message: '请输入手机号！',
                 },
                 {
-                  pattern: /^1\d{10}$/,
+                  pattern: MOBILE_REG,
                   message: '手机号格式错误！',
                 },
               ]}

@@ -120,7 +120,7 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
         return <BaseView currentUser={currentUser} dispatch={dispatch} editing={editing} />;
 
       case 'security':
-        return <SecurityView currentUser={currentUser} dispatch={dispatch} />;
+        return <SecurityView currentUser={currentUser} dispatch={dispatch} editing={editing} />;
 
       // case 'binding':
       //   return <BindingView />;

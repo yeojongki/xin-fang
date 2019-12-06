@@ -1,7 +1,6 @@
 import { Button, Form, Input, Radio } from 'antd';
 import React, { Component } from 'react';
 import { FormComponentProps } from 'antd/es/form';
-// import { MOBILE_REG } from '@xf/common/src/constants/validation.const';
 import { Dispatch } from 'redux';
 import { Gender } from '@xf/common/src/constants/gender.const';
 // import GeographicView from './GeographicView';
