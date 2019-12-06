@@ -1,8 +1,9 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Radio } from 'antd';
 import React, { Component } from 'react';
 import { FormComponentProps } from 'antd/es/form';
-import { MOBILE_REG } from '@xf/common/src/constants/validation.const';
+// import { MOBILE_REG } from '@xf/common/src/constants/validation.const';
 import { Dispatch } from 'redux';
+import { Gender } from '@xf/common/src/constants/gender.const';
 // import GeographicView from './GeographicView';
 // import PhoneView from './PhoneView';
 import styles from './BaseView.less';
@@ -90,7 +91,8 @@ class BaseView extends Component<BaseViewProps> {
     form.validateFields(err => {
       if (!err) {
         const values = form.getFieldsValue();
-        const avatar = getUploadImgs(values.avatar)[0];
+        const avatar =
+          typeof values.avatar === 'string' ? values.avatar : getUploadImgs(values.avatar)[0];
         dispatch({
           type: 'user/update',
           payload: {
@@ -156,7 +158,23 @@ class BaseView extends Component<BaseViewProps> {
                 ],
               })(<Input />)}
             </FormItem>
-            <FormItem label="邮箱">
+            <FormItem label="性别">
+              {getFieldDecorator('gender', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择您的性别!',
+                  },
+                ],
+              })(
+                <Radio.Group>
+                  <Radio value={Gender.MALE}>男</Radio>
+                  <Radio value={Gender.FEMALE}>女</Radio>
+                </Radio.Group>,
+              )}
+            </FormItem>
+
+            {/* <FormItem label="邮箱">
               {getFieldDecorator('email', {
                 initialValue: currentUser.email,
                 rules: [
@@ -166,7 +184,7 @@ class BaseView extends Component<BaseViewProps> {
                   },
                 ],
               })(<Input />)}
-            </FormItem>
+            </FormItem> */}
             <FormItem label="个人简介">
               {getFieldDecorator('selfDesc', {
                 initialValue: currentUser.selfDesc,
@@ -204,7 +222,7 @@ class BaseView extends Component<BaseViewProps> {
               })(<GeographicView />)}
             </FormItem>
             <FormItem label="街道地址">{getFieldDecorator('address', {})(<Input />)}</FormItem> */}
-            <FormItem label="联系电话">
+            {/* <FormItem label="联系电话">
               {getFieldDecorator('mobile', {
                 initialValue: currentUser.mobile,
                 rules: [
@@ -224,8 +242,7 @@ class BaseView extends Component<BaseViewProps> {
                   },
                 ],
               })(<Input />)}
-              {/* })(<PhoneView />)} */}
-            </FormItem>
+            </FormItem> */}
             <Button type="primary" loading={editing} onClick={this.handlerSubmit}>
               更新基本信息
             </Button>

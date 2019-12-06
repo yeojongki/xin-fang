@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import BaseView from './components/base';
 // import BindingView from './components/binding';
 // import NotificationView from './components/notification';
-// import SecurityView from './components/security';
+import SecurityView from './components/security';
 import styles from './style.less';
 import { CurrentUser } from '@/models/user';
 
@@ -48,7 +48,7 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
     super(props);
     const menuMap = {
       base: '基本设置',
-      // security: '安全设置',
+      security: '安全设置',
       // binding: '账号绑定',
       // notification: '新消息通知',
     };
@@ -119,8 +119,8 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
       case 'base':
         return <BaseView currentUser={currentUser} dispatch={dispatch} editing={editing} />;
 
-      // case 'security':
-      //   return <SecurityView />;
+      case 'security':
+        return <SecurityView currentUser={currentUser} dispatch={dispatch} />;
 
       // case 'binding':
       //   return <BindingView />;

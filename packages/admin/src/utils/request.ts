@@ -37,7 +37,7 @@ const errorHandler = (error: {
 
   if (isCapturedByInterceptor) {
     isCapturedByInterceptor = false;
-    return false;
+    return response;
   }
 
   // 网络异常
@@ -107,9 +107,9 @@ request.interceptors.response.use(async response => {
     if (status === 404) {
       router.push('/exception/404');
     }
-    if (status === 500) {
-      router.push('/exception/500');
-    }
+    // if (status === 500) {
+    //   router.push('/exception/500');
+    // }
     return Promise.reject(new Error(data.message || 'Error'));
   }
 

@@ -14,3 +14,5 @@ export interface HttpErrorResponse extends HttpBaseResponse {
 export interface HttpSuccessResponse<T = any> extends HttpBaseResponse {
   result: T;
 }
+
+export type HttpResonse<T = any> = HttpErrorResponse | HttpSuccessResponse<T>;

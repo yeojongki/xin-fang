@@ -14939,7 +14939,7 @@ qs@^6.5.1, qs@^6.7.0:
   resolved "https://registry.npm.taobao.org/qs/download/qs-6.8.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fqs%2Fdownload%2Fqs-6.8.0.tgz#87b763f0d37ca54200334cd57bb2ef8f68a1d081"
   integrity sha1-h7dj8NN8pUIAM0zVe7Lvj2ih0IE=
 
-qs@^6.9.0:
+qs@^6.9.0, qs@^6.9.1:
   version "6.9.1"
   resolved "https://registry.npm.taobao.org/qs/download/qs-6.9.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fqs%2Fdownload%2Fqs-6.9.1.tgz#20082c65cb78223635ab1a9eaca8875a29bf8ec9"
   integrity sha1-IAgsZct4IjY1qxqerKiHWim/jsk=
@@ -14965,15 +14965,6 @@ query-string@^5.0.1:
     decode-uri-component "^0.2.0"
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
-
-query-string@^6.0.0:
-  version "6.8.2"
-  resolved "https://registry.npm.taobao.org/query-string/download/query-string-6.8.2.tgz#36cb7e452ae11a4b5e9efee83375e0954407b2f6"
-  integrity sha1-Nst+RSrhGktenv7oM3XglUQHsvY=
-  dependencies:
-    decode-uri-component "^0.2.0"
-    split-on-first "^1.0.0"
-    strict-uri-encode "^2.0.0"
 
 querystring-es3@^0.2.0:
   version "0.2.1"
@@ -17556,11 +17547,6 @@ speed-measure-webpack-plugin@1.3.1:
   dependencies:
     chalk "^2.0.1"
 
-split-on-first@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.npm.taobao.org/split-on-first/download/split-on-first-1.1.0.tgz#f610afeee3b12bce1d0c30425e76398b78249a5f"
-  integrity sha1-9hCv7uOxK84dDDBCXnY5i3gkml8=
-
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
   resolved "https://registry.npm.taobao.org/split-string/download/split-string-3.1.0.tgz#7cb09dda3a86585705c64b39a6466038682e8fe2"
@@ -17762,11 +17748,6 @@ strict-uri-encode@^1.0.0:
   version "1.1.0"
   resolved "https://registry.npm.taobao.org/strict-uri-encode/download/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
   integrity sha1-J5siXfHVgrH1TmWt3UNS4Y+qBxM=
-
-strict-uri-encode@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npm.taobao.org/strict-uri-encode/download/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"
-  integrity sha1-ucczDHBChi9rFC3CdLvMWGbONUY=
 
 string-argv@^0.1.1:
   version "0.1.2"
@@ -19244,13 +19225,13 @@ umi-plugin-routes@1.4.8:
   resolved "https://registry.npm.taobao.org/umi-plugin-routes/download/umi-plugin-routes-1.4.8.tgz#04cacb3cd8b90859f175ba5d0114830ec60365a4"
   integrity sha1-BMrLPNi5CFnxdbpdARSDDsYDZaQ=
 
-umi-request@^1.0.8:
-  version "1.2.3"
-  resolved "https://registry.npm.taobao.org/umi-request/download/umi-request-1.2.3.tgz#04e54891ad3e4d5a6ea3a5621a161e2127b3ebe6"
-  integrity sha1-BOVIka0+TVpuo6ViGhYeISez6+Y=
+umi-request@^1.2.12:
+  version "1.2.12"
+  resolved "https://registry.npm.taobao.org/umi-request/download/umi-request-1.2.12.tgz?cache=0&sync_timestamp=1575526804600&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fumi-request%2Fdownload%2Fumi-request-1.2.12.tgz#ab69289947201358194cea406a3ba345a83ecefe"
+  integrity sha1-q2komUcgE1gZTOpAajujRag+zv4=
   dependencies:
-    query-string "^6.0.0"
-    whatwg-fetch "^2.0.0"
+    isomorphic-fetch "^2.2.1"
+    qs "^6.9.1"
 
 umi-test@1.6.6:
   version "1.6.6"
@@ -20139,11 +20120,6 @@ whatwg-fetch@3.0.0, whatwg-fetch@>=0.10.0:
   version "3.0.0"
   resolved "https://registry.npm.taobao.org/whatwg-fetch/download/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
   integrity sha1-/IBORYzEYACbGiuWa8iBfSV4rvs=
-
-whatwg-fetch@^2.0.0:
-  version "2.0.4"
-  resolved "https://registry.npm.taobao.org/whatwg-fetch/download/whatwg-fetch-2.0.4.tgz#dde6a5df315f9d39991aa17621853d720b85566f"
-  integrity sha1-3eal3zFfnTmZGqF2IYU9cguFVm8=
 
 whatwg-mimetype@^2.1.0, whatwg-mimetype@^2.2.0, whatwg-mimetype@^2.3.0:
   version "2.3.0"

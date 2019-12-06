@@ -15,10 +15,10 @@ export class User extends Base {
   @Column({ type: 'char', length: 32 })
   password!: string;
 
-  @Column({ default: null })
+  @Column({ default: null, unique: true })
   email?: string;
 
-  @Column({ default: null })
+  @Column({ default: null, unique: true })
   mobile?: string;
 
   @Column('enum', {

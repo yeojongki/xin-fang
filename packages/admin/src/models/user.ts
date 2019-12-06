@@ -2,6 +2,7 @@ import { Effect } from 'dva';
 import { Reducer } from 'redux';
 import { message as Message } from 'antd';
 import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
+import { Gender } from '@xf/common/src/constants/gender.const';
 import * as Api from '@/services/user';
 import { setStorageRoles } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
@@ -10,6 +11,7 @@ export interface CurrentUser {
   id?: string;
   avatar?: string;
   email?: string;
+  gender?: Gender;
   username?: string;
   title?: string;
   group?: string;
