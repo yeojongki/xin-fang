@@ -1,11 +1,12 @@
 import React, { Fragment, FC, useState, useRef } from 'react';
-import { List, Input } from 'antd';
+import { List, Input, Button } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
 import { Dispatch } from 'redux';
 import { MOBILE_REG } from '@xf/common/src/constants/validation.const';
 import { CurrentUser } from '@/models/user';
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { TRenderItems } from '@/components/BaseFormWrap';
+import { useInterval } from '@/hooks';
 
 type Unpacked<T> = T extends (infer U)[] ? U : T;
 // const passwordStrength = {
@@ -30,6 +31,32 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
   // for edit email
   const [editEmailVisible, setEditEmailVisible] = useState<boolean>(false);
   const editEmailRef = useRef<any>();
+
+  // for send countdown
+  const COUNTDOWN_TIME = 60;
+  const [isCountdown, setIsCountdown] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState<number>(COUNTDOWN_TIME);
+
+  useInterval(
+    () => {
+      setCountdown(countdown - 1);
+      if (countdown <= 1) {
+        setIsCountdown(false);
+      }
+    },
+    isCountdown ? 1000 : null,
+  );
+
+  const sendEmailVerifyCode = () => {
+    dispatch({
+      type: 'user/sendEmailVerifyCode',
+      payload: {
+        callback: () => {
+          setIsCountdown(true);
+        },
+      },
+    });
+  };
   const renderBindEmail = (props: TRenderItems<{ id: string; email: string }>) => {
     const { initValue, form } = props;
     const { getFieldDecorator } = form;
@@ -52,11 +79,21 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
             ],
           })(<Input />)}
         </FormItem>
+        <FormItem>
+          <Button type="primary" disabled={isCountdown} onClick={() => sendEmailVerifyCode()}>
+            {isCountdown ? `剩余${countdown}s` : '发送验证码'}
+          </Button>
+        </FormItem>
+        <FormItem label="验证码">
+          {getFieldDecorator('verifyCode', {
+            rules: [{ required: true, message: '请输入验证码!' }],
+          })(<Input />)}
+        </FormItem>
       </>
     );
   };
 
-  // for edit email
+  // for edit mobile
   const [editMobileVisible, setEditMobileVisible] = useState<boolean>(false);
   const editMobileRef = useRef<any>();
   const renderBindMobile = (props: TRenderItems<{ id: string; mobile: string }>) => {
@@ -139,7 +176,8 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
         )}
       />
       <ModalForm
-        width={400}
+        layout="inline"
+        width={500}
         title="绑定邮箱"
         type="edit"
         renderItems={renderBindEmail}

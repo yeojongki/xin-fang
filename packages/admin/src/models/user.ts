@@ -35,6 +35,7 @@ export interface UserModelType {
   effects: {
     fetchCurrent: Effect;
     update: Effect;
+    sendEmailVerifyCode: Effect;
   };
   reducers: {
     saveCurrentUser: Reducer<UserModelState>;
@@ -60,6 +61,12 @@ const UserModel: UserModelType = {
     *update({ payload }, { call }) {
       const { callback, values } = payload;
       const { message }: HttpSuccessResponse = yield call(Api.update, values);
+      Message.success(message);
+      callback && callback();
+    },
+    *sendEmailVerifyCode({ payload }, { call }) {
+      const { callback } = payload;
+      const { message }: HttpSuccessResponse = yield call(Api.getVerifyCode);
       Message.success(message);
       callback && callback();
     },

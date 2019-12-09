@@ -16,6 +16,7 @@ export const authWhiteList = [
 export const permissionWhiteList = {
   '/user/currentUser': true,
   '/attachment/signature': true,
+  '/email/genarateVerifyCode': true,
 };
 
 export const checkPermission = (

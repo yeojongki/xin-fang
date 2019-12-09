@@ -6,6 +6,10 @@ export async function queryCurrent(): Promise<any> {
   return request('/user/currentUser');
 }
 
+export function getVerifyCode(): Promise<any> {
+  return request('/email/genarateVerifyCode', { method: 'POST' });
+}
+
 export async function queryNotices(): Promise<any> {
   return Promise.resolve({
     errno: 0,
