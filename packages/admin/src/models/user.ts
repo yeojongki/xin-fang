@@ -65,8 +65,8 @@ const UserModel: UserModelType = {
       callback && callback();
     },
     *sendEmailVerifyCode({ payload }, { call }) {
-      const { callback } = payload;
-      const { message }: HttpSuccessResponse = yield call(Api.getVerifyCode);
+      const { callback, email } = payload;
+      const { message }: HttpSuccessResponse = yield call(Api.getVerifyCode, email);
       Message.success(message);
       callback && callback();
     },

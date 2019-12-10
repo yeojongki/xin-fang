@@ -18,8 +18,14 @@ export class User extends Base {
   @Column({ default: null, unique: true })
   email?: string;
 
+  @Column({ default: 0 })
+  emailVerified?: number;
+
   @Column({ default: null, unique: true })
   mobile?: string;
+
+  @Column({ default: 0 })
+  mobileVerified?: number;
 
   @Column('enum', {
     enum: Gender,

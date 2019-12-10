@@ -10,6 +10,7 @@ import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
 import { isNotEmpty } from '@xf/common/src/utils/is-empty';
+import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { errorCode } from '@/constants/error-code';
 import { CurdService } from '@/common/curd/curd.service';
 
@@ -166,5 +167,9 @@ export class UserService extends CurdService<User, UpdateUserInput> {
     );
     delete dto.roles;
     return await this.repository.save(Object.assign(toUpdate, dto));
+  }
+
+  async save(user: IUser): Promise<User> {
+    return await this.repository.save(user);
   }
 }
