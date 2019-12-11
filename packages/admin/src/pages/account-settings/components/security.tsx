@@ -47,9 +47,9 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
     isCountdown ? 1000 : null,
   );
 
-  const sendEmailVerifyCode = (emailAddr: string) => {
+  const getEmailVerifyCode = (emailAddr: string) => {
     dispatch({
-      type: 'user/sendEmailVerifyCode',
+      type: 'user/getEmailVerifyCode',
       payload: {
         email: emailAddr,
         callback: () => {
@@ -84,7 +84,7 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
           <Button
             type="primary"
             disabled={isCountdown}
-            onClick={() => sendEmailVerifyCode(form.getFieldValue('email'))}
+            onClick={() => getEmailVerifyCode(form.getFieldValue('email'))}
           >
             {isCountdown ? `剩余${countdown}s` : '发送验证码'}
           </Button>

@@ -7,13 +7,14 @@ import { Message } from '@/decorators/http.decorator';
 export class EmailController {
   constructor(private readonly service: EmailService) {}
 
+  @Message('验证成功')
   @Get('/verify/:id/:email')
   async verify(@Param('id') id: string, @Param('email') email: string) {
     return await this.service.verify(id, email);
   }
 
   @Message('发送成功, 快打开邮件验证吧~')
-  @Post('/genarateVerifyCode')
+  @Post('/generate')
   genarateVerifyCode(@Req() req: RequestWithAuth, @Body('email') email: string) {
     const { id, username } = req.user;
     return this.service.genarateVerifyCode(id, username, email);

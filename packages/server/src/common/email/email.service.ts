@@ -16,7 +16,7 @@ export class EmailService {
   async verify(id, encodeEmail: string) {
     const email = decode(encodeEmail);
     const user = await this.userService.findById(id);
-    if (user && user.email === email) {
+    if (user && user.email === email && user.emailVerified === 0) {
       user.emailVerified = 1;
       return await this.userService.save(user);
     }
@@ -24,15 +24,13 @@ export class EmailService {
   }
 
   genarateVerifyCode(id: string, username: string, email: string) {
-    const url = `${this.configService.APP_DOMAIN}${this.configService.API_PREFIX}/${id}/${encode(
-      email,
-    )}`;
-    const line1 = `<div>Hi~<span style="font-weight:bold">${username}</span>, 欢迎注册馨房</div>`;
-    const line2 = `<div><a href="${url}">您只需点击此处即可激活您的邮箱</a></div><br>`;
+    const url = `${this.configService.APP_DOMAIN}user/verify-email?id=${id}&email=${encode(email)}`;
+    const line1 = `<div><span style="font-weight:bold">Hi~${username}</span></div>`;
+    const line2 = `<div>欢迎注册馨房, <a href="${url}">您只需点击此处即可激活您的邮箱</a></div><br>`;
     const line3 = `<div>${url}</div><br>`;
     const line4 = '<div>如无法点击，请将上方链接拷贝到浏览器地址栏</div>';
     const line5 = '<div>如果你有任何疑问，可以回复这封邮件向我们提问</div><br>';
-    const line6 = '<div>馨房团队</div>';
+    const line6 = '<div>「馨房」团队</div>';
     // const line6 = `<div><a href="${this.configService.APP_DOMAIN}">馨房</a></div>`;
     return this.singleSendEmail({
       FromAlias: '馨房',
@@ -86,8 +84,8 @@ export class EmailService {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         url: 'https://dm.aliyuncs.com',
-        data: data.join('&'),
         method: 'POST',
+        data: data.join('&'),
       })
         .then(res => resolve(res.data))
         .catch(reject);

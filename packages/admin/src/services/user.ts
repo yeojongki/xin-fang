@@ -6,8 +6,12 @@ export async function queryCurrent(): Promise<any> {
   return request('/user/currentUser');
 }
 
-export function getVerifyCode(email: string): Promise<any> {
-  return request('/email/genarateVerifyCode', { method: 'POST', data: { email } });
+export function getEmailVerifyCode(email: string): Promise<any> {
+  return request('/email/generate', { method: 'POST', data: { email } });
+}
+
+export function verifyEmail(id: string, email: string): Promise<any> {
+  return request(`/email/verify/${id}/${email}`);
 }
 
 export async function queryNotices(): Promise<any> {

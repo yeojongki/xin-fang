@@ -12,6 +12,7 @@ import { CurrentUser } from '@/models/user';
 
 const { Item } = Menu;
 interface AccountSettingsProps {
+  location: { query: { tab?: AccountSettingsStateKeys } };
   dispatch: Dispatch<any>;
   currentUser: CurrentUser;
   editing: boolean;
@@ -66,6 +67,13 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
     });
     window.addEventListener('resize', this.resize);
     this.resize();
+  }
+
+  componentWillReceiveProps(props: AccountSettingsProps) {
+    const { tab } = props.location.query;
+    if (tab && this.state.menuMap[tab]) {
+      this.setState({ selectKey: tab });
+    }
   }
 
   componentWillUnmount() {

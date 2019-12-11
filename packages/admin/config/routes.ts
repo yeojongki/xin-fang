@@ -25,6 +25,11 @@ export default [
         path: '/user/register-result',
         component: './user/register-result',
       },
+      {
+        name: '验证邮箱',
+        path: '/user/verify-email',
+        component: './user/verify-email',
+      },
     ],
   },
   {
