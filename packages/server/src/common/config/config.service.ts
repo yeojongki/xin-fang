@@ -64,7 +64,7 @@ export class ConfigService {
     return this.envConfig.EMAIL_ACCESS_KEY_SECRET;
   }
 
-  get EMAIL_DEV_ADDR(): string {
-    return this.envConfig.EMAIL_DEV_ADDR;
+  get EMAIL_DEV_TO_ADDR(): string {
+    return this.envConfig.EMAIL_DEV_TO_ADDR;
   }
 }

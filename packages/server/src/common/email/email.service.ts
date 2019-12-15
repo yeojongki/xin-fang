@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import Axios from 'axios';
 import * as crypto from 'crypto';
 import { ISendEmailOptions } from '@xf/common/src/interfaces/email.interface';
+import { isProd } from '@xf/common/src/utils';
 import { decode, encode } from '@/utils/encode-decode';
 import { ConfigService } from '../config/config.service';
 import { UserService } from '@/modules/user/user.service';
@@ -24,9 +25,13 @@ export class EmailService {
   }
 
   genarateVerifyCode(id: string, username: string, email: string) {
-    const url = `${this.configService.APP_DOMAIN}user/verify-email?id=${id}&email=${encode(email)}`;
-    const line1 = `<div><span style="font-weight:bold">Hi~${username}</span></div>`;
-    const line2 = `<div>欢迎注册馨房, <a href="${url}">您只需点击此处即可激活您的邮箱</a></div><br>`;
+    const url = `${
+      isProd ? this.configService.APP_DOMAIN : 'http://localhost:8000/'
+    }user/verify-email?id=${id}&email=${encode(email)}`;
+    /* eslint-disable-next-line no-useless-escape */
+    const line1 = `<div><span style=\"font-weight:bold\">Hi~${username}</span></div>`;
+    /* eslint-disable-next-line no-useless-escape */
+    const line2 = `<div>欢迎注册馨房, <a href=\"${url}\">您只需点击此处即可激活您的邮箱</a></div><br>`;
     const line3 = `<div>${url}</div><br>`;
     const line4 = '<div>如无法点击，请将上方链接拷贝到浏览器地址栏</div>';
     const line5 = '<div>如果你有任何疑问，可以回复这封邮件向我们提问</div><br>';
@@ -36,7 +41,7 @@ export class EmailService {
       FromAlias: '馨房',
       Subject: '馨房 - 激活邮箱',
       HtmlBody: `<html>${line1}${line2}${line3}${line4}${line5}${line6}</html>`,
-      ToAddress: process.env.NODE_ENV === 'production' ? email : this.configService.EMAIL_DEV_ADDR,
+      ToAddress: isProd ? email : this.configService.EMAIL_DEV_TO_ADDR,
     });
   }
 
@@ -63,6 +68,7 @@ export class EmailService {
       };
 
       const params = { ...defaultOptions, ...options };
+
       const paramsArray = Object.keys(params)
         .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
         .sort();
@@ -76,7 +82,7 @@ export class EmailService {
 
       const data = [`Signature=${signature}`];
       Object.keys(params).forEach(key => {
-        data.push(`${key}=${params[key]}`);
+        data.push(`${key}=${encodeURIComponent(params[key])}`);
       });
 
       Axios({
