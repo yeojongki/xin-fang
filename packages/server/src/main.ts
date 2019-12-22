@@ -34,6 +34,6 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new ErrorExceptionFilter());
   app.useGlobalInterceptors(new HttpResInterceptor(reflector));
-  await app.listen(configService.get('APP_PORT'));
+  await app.listen(configService.get('SERVER_PORT'));
 }
 bootstrap();

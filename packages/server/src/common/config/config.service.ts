@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
-
+import { RedisModuleOptions } from 'nestjs-redis';
+import { Injectable } from '@nestjs/common';
+@Injectable()
 export class ConfigService {
   private readonly envConfig: { [key: string]: string };
 
@@ -66,5 +68,43 @@ export class ConfigService {
 
   get EMAIL_DEV_TO_ADDR(): string {
     return this.envConfig.EMAIL_DEV_TO_ADDR;
+  }
+
+  get EMAIL_SEND_INTERVAL(): number {
+    return +this.envConfig.EMAIL_SEND_INTERVAL;
+  }
+
+  get EMAIL_CODE_VALID_TIME(): number {
+    return +this.envConfig.EMAIL_CODE_VALID_TIME;
+  }
+
+  get REDIS_KEY_PREFIX(): string {
+    return this.envConfig.REDIS_KEY_PREFIX;
+  }
+
+  get REDIS_OPTIONS(): RedisModuleOptions {
+    return {
+      name: this.REDIS_NAME,
+      connectionName: this.REDIS_NAME,
+      port: this.REDIS_PORT,
+      host: this.REDIS_HOST,
+      password: this.REDIS_PASSWORD,
+    };
+  }
+
+  get REDIS_NAME(): string {
+    return this.envConfig.REDIS_NAME;
+  }
+
+  get REDIS_PASSWORD(): string {
+    return this.envConfig.REDIS_PASSWORD;
+  }
+
+  get REDIS_HOST(): string {
+    return this.envConfig.REDIS_HOST;
+  }
+
+  get REDIS_PORT(): number {
+    return +this.envConfig.REDIS_PORT;
   }
 }

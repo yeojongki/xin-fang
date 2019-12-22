@@ -20,7 +20,7 @@ const VerifyEmail: FC<
     const { id, email } = query;
     if (id && email && dispatch) {
       dispatch({
-        type: 'user/sendEmailVerifyCode',
+        type: 'user/verifyEmailByLink',
         payload: {
           id,
           email,
@@ -61,7 +61,7 @@ const VerifyEmail: FC<
         replace
       >
         <Button size="large" type="primary">
-          {user.username ? '重新发送' : '登录后发送'}
+          {user.username ? '重新发送' : '登录后重新发送'}
         </Button>
       </Link>
     ),

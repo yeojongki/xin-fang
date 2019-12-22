@@ -35,8 +35,9 @@ export interface UserModelType {
   effects: {
     fetchCurrent: Effect;
     update: Effect;
-    getEmailVerifyCode: Effect;
-    verifyEmail: Effect;
+    sendVerifyEmail: Effect;
+    verifyEmailByLink: Effect;
+    verifyEmailByCode: Effect;
   };
   reducers: {
     saveCurrentUser: Reducer<UserModelState>;
@@ -65,16 +66,26 @@ const UserModel: UserModelType = {
       Message.success(message);
       callback && callback();
     },
-    *getEmailVerifyCode({ payload }, { call }) {
+    *sendVerifyEmail({ payload }, { call }) {
       const { callback, email } = payload;
-      const { message }: HttpSuccessResponse = yield call(Api.getEmailVerifyCode, email);
+      const { message }: HttpSuccessResponse = yield call(Api.sendVerifyEmail, email);
       Message.success(message);
       callback && callback();
     },
-    *verifyEmail({ payload }, { call }) {
+    *verifyEmailByLink({ payload }, { call }) {
       const { success, id, email, fail } = payload;
       try {
-        const { message }: HttpSuccessResponse = yield call(Api.verifyEmail, id, email);
+        const { message }: HttpSuccessResponse = yield call(Api.verifyEmailByLink, id, email);
+        Message.success(message);
+        success && success();
+      } catch (error) {
+        fail && fail(error);
+      }
+    },
+    *verifyEmailByCode({ payload }, { call }) {
+      const { success, fail, values } = payload;
+      try {
+        const { message }: HttpSuccessResponse = yield call(Api.verifyEmailByCode, values);
         Message.success(message);
         success && success();
       } catch (error) {

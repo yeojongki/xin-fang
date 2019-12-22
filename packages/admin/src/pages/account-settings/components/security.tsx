@@ -2,6 +2,7 @@ import React, { Fragment, FC, useState, useRef } from 'react';
 import { List, Input, Button } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
 import { Dispatch } from 'redux';
+import { connect } from 'dva';
 import { MOBILE_REG } from '@xf/common/src/constants/validation.const';
 import { CurrentUser } from '@/models/user';
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
@@ -19,9 +20,17 @@ interface IProps {
   dispatch: Dispatch<any>;
   currentUser: CurrentUser;
   editing: boolean;
+  sendingEmail: boolean;
+  verifyingEmailByCode: boolean;
 }
 
-const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
+const SecurityView: FC<IProps> = ({
+  currentUser = {},
+  editing,
+  dispatch,
+  sendingEmail,
+  verifyingEmailByCode,
+}) => {
   const { email, mobile } = currentUser;
   const encodeEmail = email ? `已绑定邮箱：${email.replace(/^(\w{0,4})/, '****')}` : '';
   const encodeMobile = mobile
@@ -31,6 +40,20 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
   // for edit email
   const [editEmailVisible, setEditEmailVisible] = useState<boolean>(false);
   const editEmailRef = useRef<any>();
+  const submitEditEmailForm = (values: any) => {
+    dispatch({
+      type: 'user/verifyEmailByCode',
+      payload: {
+        values,
+        success: () => {
+          dispatch({
+            type: 'user/fetchCurrent',
+          });
+          setEditEmailVisible(false);
+        },
+      },
+    });
+  };
 
   // for send countdown
   const COUNTDOWN_TIME = 60;
@@ -47,9 +70,9 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
     isCountdown ? 1000 : null,
   );
 
-  const getEmailVerifyCode = (emailAddr: string) => {
+  const sendVerifyEmail = (emailAddr: string) => {
     dispatch({
-      type: 'user/getEmailVerifyCode',
+      type: 'user/sendVerifyEmail',
       payload: {
         email: emailAddr,
         callback: () => {
@@ -84,13 +107,14 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
           <Button
             type="primary"
             disabled={isCountdown}
-            onClick={() => getEmailVerifyCode(form.getFieldValue('email'))}
+            loading={sendingEmail}
+            onClick={() => sendVerifyEmail(form.getFieldValue('email'))}
           >
             {isCountdown ? `剩余${countdown}s` : '发送验证码'}
           </Button>
         </FormItem>
         <FormItem label="验证码">
-          {getFieldDecorator('verifyCode', {
+          {getFieldDecorator('code', {
             rules: [{ required: true, message: '请输入验证码!' }],
           })(<Input />)}
         </FormItem>
@@ -127,7 +151,7 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
     );
   };
 
-  const submitEditForm = (values: any, setVisibleFn: (visible: boolean) => void) => {
+  const submitEditMobileForm = (values: any) => {
     dispatch({
       type: 'user/update',
       payload: {
@@ -136,7 +160,7 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
           dispatch({
             type: 'user/fetchCurrent',
           });
-          setVisibleFn(false);
+          setEditMobileVisible(false);
         },
       },
     });
@@ -186,12 +210,12 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
         title="绑定邮箱"
         type="edit"
         renderItems={renderBindEmail}
-        loading={editing}
+        loading={verifyingEmailByCode}
         ref={editEmailRef}
         initValue={currentUser}
         visible={editEmailVisible}
         onCancel={() => setEditEmailVisible(false)}
-        onSubmit={values => submitEditForm(values, setEditEmailVisible)}
+        onSubmit={values => submitEditEmailForm(values)}
       />
       <ModalForm
         width={400}
@@ -203,10 +227,22 @@ const SecurityView: FC<IProps> = ({ currentUser, editing, dispatch }) => {
         initValue={currentUser}
         visible={editMobileVisible}
         onCancel={() => setEditMobileVisible(false)}
-        onSubmit={values => submitEditForm(values, setEditMobileVisible)}
+        onSubmit={values => submitEditMobileForm(values)}
       />
     </Fragment>
   );
 };
 
-export default SecurityView;
+export default connect(
+  ({
+    user,
+    loading,
+  }: {
+    user: { currentUser: CurrentUser };
+    loading: { effects: { [key: string]: string } };
+  }) => ({
+    currentUser: user.currentUser,
+    sendingEmail: loading.effects['user/sendVerifyEmail'],
+    verifyingEmailByCode: loading.effects['user/verifyEmailByCode'],
+  }),
+)(SecurityView);

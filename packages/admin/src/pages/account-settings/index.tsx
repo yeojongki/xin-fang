@@ -15,7 +15,6 @@ interface AccountSettingsProps {
   location: { query: { tab?: AccountSettingsStateKeys } };
   dispatch: Dispatch<any>;
   currentUser: CurrentUser;
-  editing: boolean;
 }
 type AccountSettingsStateKeys = 'base' | 'security' | 'binding' | 'notification';
 interface AccountSettingsState {
@@ -26,22 +25,9 @@ interface AccountSettingsState {
   selectKey: AccountSettingsStateKeys;
 }
 
-@connect(
-  ({
-    user,
-    loading,
-  }: {
-    user: { currentUser: CurrentUser };
-    loading: {
-      effects: {
-        [key: string]: string;
-      };
-    };
-  }) => ({
-    currentUser: user.currentUser,
-    editing: loading.effects['user/update'],
-  }),
-)
+@connect(({ user }: { user: { currentUser: CurrentUser } }) => ({
+  currentUser: user.currentUser,
+}))
 class AccountSettings extends Component<AccountSettingsProps, AccountSettingsState> {
   main: HTMLDivElement | undefined = undefined;
 
@@ -121,14 +107,13 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
 
   renderChildren = () => {
     const { selectKey } = this.state;
-    const { currentUser, dispatch, editing } = this.props;
 
     switch (selectKey) {
       case 'base':
-        return <BaseView currentUser={currentUser} dispatch={dispatch} editing={editing} />;
+        return <BaseView />;
 
       case 'security':
-        return <SecurityView currentUser={currentUser} dispatch={dispatch} editing={editing} />;
+        return <SecurityView />;
 
       // case 'binding':
       //   return <BindingView />;

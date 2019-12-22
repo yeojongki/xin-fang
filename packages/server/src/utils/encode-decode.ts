@@ -4,9 +4,9 @@ import * as crypto from 'crypto';
 // key：根据选择的算法有关，比如 aes128、aes192、aes256，长度分别是128、192、256位（16、24、32字节）
 // iv：都是128位（16字节）
 
-const defaultKey = crypto.randomBytes(256 / 8);
+const defaultKey = crypto.randomBytes(192 / 8);
 const defaultIv = crypto.randomBytes(128 / 8);
-const defaultAlgorithm = 'aes256';
+const defaultAlgorithm = 'aes192';
 // const defaultAlgorithm = 'aes-192-cbc';
 
 export function encode(

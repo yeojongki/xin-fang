@@ -143,7 +143,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @returns {Promise<Role[]>}
    * @memberof UserService
    */
-  async getRolesByToken(tokenArr: string[] | undefined | null): Promise<Role[]> {
+  async getRolesByToken(tokenArr?: string[] | null): Promise<Role[]> {
     const toFind = tokenArr && tokenArr.length ? tokenArr : [DEFAULT_ROLE];
     // query for role
     const where = toFind.map(token => ({ token }));
@@ -169,7 +169,10 @@ export class UserService extends CurdService<User, UpdateUserInput> {
     return await this.repository.save(Object.assign(toUpdate, dto));
   }
 
-  async save(user: IUser): Promise<User> {
+  async save(user: IUser, roles?: Role[]): Promise<User> {
+    if (!roles) {
+      user.roles = await this.getRolesByToken((user.roles as any) as string[]);
+    }
     return await this.repository.save(user);
   }
 }

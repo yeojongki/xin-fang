@@ -46,4 +46,29 @@ export enum errorCode {
    * 查找数据库 数据不存在
    */
   FIND_NOT_FOUND = -1041,
+
+  /**
+   * 请求太快 (e.g.发送邮件验证)
+   */
+  REQURES_TOO_FAST = -1051,
+
+  /**
+   * 验证邮箱不合法 (不存在/过期)
+   */
+  EMAIL_INVALID = -1062,
+
+  /**
+   * 验证邮箱不合法 (不存在/过期)
+   */
+  EMAIL_USER_INVALID = -1063,
+
+  /**
+   * 邮箱验证码不合法 (不存在/过期)
+   */
+  EMAIL_CODE_INVALID = -1064,
+
+  /**
+   * 两次邮箱相同
+   */
+  EMAIL_IS_SAME = -1065,
 }

@@ -17,6 +17,7 @@ import {
   MOBILE_REG,
 } from '@xf/common/src/constants/validation.const';
 import { Gender } from '@xf/common/src/constants/gender.const';
+import { EnumBoolean } from '@xf/common/src/constants/common.const';
 import { AuthBaseInput } from '../auth/auth-base.input';
 
 export class UpdateUserInput extends AuthBaseInput {
@@ -43,6 +44,10 @@ export class UpdateUserInput extends AuthBaseInput {
   @ValidateIf(o => o.email)
   @IsEmail()
   email?: string;
+
+  @IsOptional()
+  @IsEnum(EnumBoolean)
+  emailVerified?: number;
 
   @IsOptional()
   avatar?: string;

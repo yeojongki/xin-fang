@@ -2,6 +2,7 @@ import { Button, Form, Input, Radio } from 'antd';
 import React, { Component } from 'react';
 import { FormComponentProps } from 'antd/es/form';
 import { Dispatch } from 'redux';
+import { connect } from 'dva';
 import { Gender } from '@xf/common/src/constants/gender.const';
 // import GeographicView from './GeographicView';
 // import PhoneView from './PhoneView';
@@ -262,4 +263,15 @@ class BaseView extends Component<BaseViewProps> {
   }
 }
 
-export default Form.create<BaseViewProps>()(BaseView);
+export default connect(
+  ({
+    user,
+    loading,
+  }: {
+    user: { currentUser: CurrentUser };
+    loading: { effects: { [key: string]: string } };
+  }) => ({
+    currentUser: user.currentUser,
+    editing: loading.effects['user/update'],
+  }),
+)(Form.create<BaseViewProps>()(BaseView));
