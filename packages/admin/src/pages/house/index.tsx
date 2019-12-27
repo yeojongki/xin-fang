@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback, FC } from 'react';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { Tag } from 'antd';
 import { House } from '@xf/common/src/entities';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { HouseStatus, HouseStatusMap } from '@xf/common/src/constants/house.const';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
@@ -17,6 +18,7 @@ import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { Base } from './components/Base';
 import Query from './components/Query';
 import { IUploadFile } from '@/components/PicturesWall';
+import { getUploadImgs } from '@/components/PicturesWall/utils';
 
 interface IHousesProps {
   dispatch: Dispatch<any>;
@@ -63,17 +65,6 @@ const Houses: FC<IHousesProps> = ({
     },
     [pagination],
   );
-
-  const getUploadImgs = (imgs: IUploadFile[]) =>
-    imgs
-      .map(img => {
-        const { response } = img;
-        if (response && typeof response !== 'string' && response.result.filename) {
-          return response.result.filename;
-        }
-        return null;
-      })
-      .filter(Boolean);
 
   // create
   const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);
@@ -219,7 +210,7 @@ const Houses: FC<IHousesProps> = ({
   ];
 
   return (
-    <>
+    <PageHeaderWrapper title={false}>
       <HouseTable
         onAdd={() => {
           setCreateFormVisible(true);
@@ -258,7 +249,7 @@ const Houses: FC<IHousesProps> = ({
         onCancel={() => setCreateFormVisible(false)}
         onSubmit={submitCreateForm}
       />
-    </>
+    </PageHeaderWrapper>
   );
 };
 

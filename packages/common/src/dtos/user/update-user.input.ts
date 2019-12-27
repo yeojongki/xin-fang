@@ -5,16 +5,19 @@ import {
   IsEmail,
   ValidateIf,
   Length,
-  IsMobilePhone,
   IsEnum,
+  Allow,
+  Matches,
 } from 'class-validator';
 import {
   MAX_LENGTH_MOBILE,
   MAX_LENGTH_EMAIL,
   MAX_LENGTH_USERNAME,
   ENCODED_PASSWORD_LENGTH,
+  MOBILE_REG,
 } from '@xf/common/src/constants/validation.const';
 import { Gender } from '@xf/common/src/constants/gender.const';
+import { EnumBoolean } from '@xf/common/src/constants/common.const';
 import { AuthBaseInput } from '../auth/auth-base.input';
 
 export class UpdateUserInput extends AuthBaseInput {
@@ -32,7 +35,8 @@ export class UpdateUserInput extends AuthBaseInput {
   @IsOptional()
   @MaxLength(MAX_LENGTH_MOBILE)
   @ValidateIf(o => o.mobile)
-  @IsMobilePhone('zh-CN')
+  // @IsMobilePhone('zh-CN')
+  @Matches(MOBILE_REG)
   mobile?: string;
 
   @IsOptional()
@@ -42,11 +46,19 @@ export class UpdateUserInput extends AuthBaseInput {
   email?: string;
 
   @IsOptional()
+  @IsEnum(EnumBoolean)
+  emailVerified?: number;
+
+  @IsOptional()
   avatar?: string;
+
+  @IsOptional()
+  selfDesc?: string;
 
   @IsOptional()
   @IsEnum(Gender)
   gender?: Gender;
 
+  @Allow()
   roles?: string[];
 }

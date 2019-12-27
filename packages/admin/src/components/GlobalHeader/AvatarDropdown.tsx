@@ -8,6 +8,7 @@ import { CurrentUser } from '@/models/user';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 import DefaultAvatar from '@/assets/logo.svg';
+import { OSS_PREFIX } from '@/config';
 
 export interface GlobalHeaderRightProps extends ConnectProps {
   currentUser?: CurrentUser;
@@ -39,7 +40,12 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
     if (!menu) {
       return (
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
+          <Avatar
+            size="small"
+            className={styles.avatar}
+            src={currentUser.avatar ? OSS_PREFIX + currentUser.avatar : DefaultAvatar}
+            alt="avatar"
+          />
           <span className={styles.name}>{currentUser.username}</span>
         </span>
       );
@@ -47,10 +53,10 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
 
     const menuHeaderDropdown = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-        <Menu.Item key="center">
+        {/* <Menu.Item key="center">
           <Icon type="user" />
           个人中心
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="settings">
           <Icon type="setting" />
           个人设置
@@ -68,7 +74,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
           <Avatar
             size="small"
             className={styles.avatar}
-            src={currentUser.avatar || DefaultAvatar}
+            src={currentUser.avatar ? OSS_PREFIX + currentUser.avatar : DefaultAvatar}
             alt="avatar"
           />
           <span className={styles.name}>{currentUser.username}</span>

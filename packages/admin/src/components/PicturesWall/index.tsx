@@ -6,6 +6,7 @@ import { IOSSSignature } from '@xf/common/src/interfaces/oss-signature.interface
 import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
 import { getSignature } from '@/utils/oss-upload';
 import styles from './style.less';
+import { getFileList } from './utils';
 
 interface IPreviewFile extends UploadFile {
   preview?: string;
@@ -18,6 +19,8 @@ interface IState {
 }
 
 interface IProps {
+  /** 类别 dir 不能以 `/` 结尾 */
+  dir?: string;
   fileList?: UploadFile[];
   onChange?: (fileList: UploadFile[]) => void;
   /** default 9 */
@@ -75,11 +78,13 @@ export class PicturesWall extends React.Component<IProps, IState> {
 
   generateFilename = (file: any): string => {
     const { OSSData } = this.state;
+    const { dir = '' } = this.props;
     const suffix = file.name.slice(file.name.lastIndexOf('.'));
     const filename = Date.now() + suffix;
 
     if (OSSData) {
-      return `${OSSData.dir}${filename}`;
+      // OSSData.dir 为此人的文件夹, props.dir 为类别的 dir 如 house avatar
+      return `${OSSData.dir}${dir}/${filename}`;
     }
     return `error/${filename}`;
   };
@@ -94,7 +99,7 @@ export class PicturesWall extends React.Component<IProps, IState> {
 
   handleRemove = (file: UploadFile) => {
     const { fileList = [], onChange } = this.props;
-    const files = fileList.filter(v => v.url !== file.url);
+    const files = getFileList(fileList).filter(v => v.url !== file.url);
     onChange && onChange(files);
   };
 
@@ -130,7 +135,10 @@ export class PicturesWall extends React.Component<IProps, IState> {
 
   render() {
     const { previewVisible, previewImage, OSSData } = this.state;
-    const { maxLength = 9, fileList = [], previewWidth = '800px' } = this.props;
+    const { maxLength = 9, previewWidth = '800px' } = this.props;
+    let { fileList = [] } = this.props;
+    // transform fileList if is string
+    fileList = getFileList(fileList);
 
     const uploadIcon = (
       <div>
@@ -141,6 +149,7 @@ export class PicturesWall extends React.Component<IProps, IState> {
     return (
       <>
         <Upload
+          accept="image/png, image/jpg, image/jpeg, image/gif"
           multiple
           listType="picture-card"
           action={OSSData ? OSSData.host : '#'}

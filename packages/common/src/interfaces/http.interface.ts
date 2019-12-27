@@ -1,3 +1,6 @@
+import { Request } from 'express';
+import { IUser } from './user.interfaces';
+
 export interface HttpBaseResponse {
   errno: number;
   message: string;
@@ -14,3 +17,7 @@ export interface HttpErrorResponse extends HttpBaseResponse {
 export interface HttpSuccessResponse<T = any> extends HttpBaseResponse {
   result: T;
 }
+
+export type HttpResonse<T = any> = HttpErrorResponse | HttpSuccessResponse<T>;
+
+export type RequestWithAuth = Request & { user: IUser };

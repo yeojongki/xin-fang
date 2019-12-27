@@ -1,11 +1,21 @@
 import request from '@/utils/request';
 
-export async function query(): Promise<any> {
-  return request('/api/users');
-}
+export const update = (data: any): Promise<void> => request('/user', { data, method: 'PUT' });
 
 export async function queryCurrent(): Promise<any> {
   return request('/user/currentUser');
+}
+
+export function sendVerifyEmail(email: string): Promise<any> {
+  return request('/email/sendVerifyEmail', { method: 'POST', data: { email } });
+}
+
+export function verifyEmailByLink(id: string, email: string): Promise<any> {
+  return request(`/email/verifyByLink?id=${id}&email=${email}`);
+}
+
+export function verifyEmailByCode(data: any): Promise<any> {
+  return request('/email/verifyByCode', { data, method: 'POST' });
 }
 
 export async function queryNotices(): Promise<any> {

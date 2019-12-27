@@ -2,13 +2,14 @@ import React, { FC, useState, useRef, useCallback, useEffect } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { WrappedFormUtils } from 'antd/es/form/Form';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { Gender, GenderMap } from '@xf/common/src/constants/gender.const';
-import { Tag } from 'antd';
+import { Tag, Icon } from 'antd';
 import { StateType } from './model';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { getForm, generateField } from '@/utils/form';
@@ -177,7 +178,18 @@ const Users: FC<IUsersProps> = ({
       key: 'gender',
       dataIndex: 'gender',
       title: '性别',
-      render: (gender: Gender) => GenderMap[gender],
+      width: 60,
+      render: (gender: Gender) => {
+        if (gender === Gender.UNKNOWN) return GenderMap[gender];
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Icon
+              type={gender === Gender.MALE ? 'man' : 'woman'}
+              style={{ color: gender === Gender.MALE ? '#1890ff' : '#eb2f96' }}
+            />
+          </div>
+        );
+      },
     },
     {
       key: 'createdAt',
@@ -196,7 +208,7 @@ const Users: FC<IUsersProps> = ({
   ];
 
   return (
-    <>
+    <PageHeaderWrapper title={false}>
       <UsersTable
         onAdd={() => {
           setCreateFormVisible(true);
@@ -237,7 +249,7 @@ const Users: FC<IUsersProps> = ({
         onCancel={() => setCreateFormVisible(false)}
         onSubmit={submitCreateForm}
       />
-    </>
+    </PageHeaderWrapper>
   );
 };
 

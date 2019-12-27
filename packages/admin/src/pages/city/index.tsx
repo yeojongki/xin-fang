@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { Switch, Modal, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { ICity } from '@xf/common/src/interfaces/city.interface';
 import { Subway } from '@xf/common/src/entities';
@@ -153,7 +154,7 @@ const City: FC<ICityProps> = ({
   );
 
   return (
-    <>
+    <PageHeaderWrapper title={false}>
       <CityTable
         renderSearchForm={renderSearchForm}
         columns={columns}
@@ -175,7 +176,7 @@ const City: FC<ICityProps> = ({
       >
         <Detail subways={subways} />
       </Modal>
-    </>
+    </PageHeaderWrapper>
   );
 };
 

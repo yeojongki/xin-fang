@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RedisModule } from 'nestjs-redis';
 import { TypeormService } from './common/typeorm/typeorm.service';
 import { ConfigModule } from './common/config/config.module';
 import { UserModule } from './modules/user/user.module';
@@ -11,6 +12,8 @@ import { SubwayModule } from './modules/subway/subway.module';
 import { PermissionModule } from './modules/permission/permission.module';
 import { HouseModule } from './modules/house/house.module.';
 import { AttachmentModule } from './modules/attachment/attachment.module';
+import { EmailModule } from './common/email/email.module';
+import { ConfigService } from './common/config/config.service';
 
 @Module({
   imports: [
@@ -27,6 +30,11 @@ import { AttachmentModule } from './modules/attachment/attachment.module';
     SubwayModule,
     HouseModule,
     AttachmentModule,
+    EmailModule,
+    RedisModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => configService.REDIS_OPTIONS,
+    }),
   ],
 })
 export class AppModule {}

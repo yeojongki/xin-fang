@@ -4,6 +4,7 @@ import { houseOptions } from '@xf/common/src/constants/house.const';
 import { TRenderItems } from '@/components/BaseFormWrap';
 import { PicturesWall, IUploadFile } from '@/components/PicturesWall';
 import { TSubmitHouse } from '..';
+import { OSS_PREFIX } from '@/config';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -15,13 +16,11 @@ export const Base = (props: TRenderItems<TSubmitHouse>) => {
 
   const getUploadFileUrls = (fileList: IUploadFile[]): IUploadFile[] => fileList;
 
-  const prefix = 'http://fang.yeojongki.cn/_upload/';
-
   const fileList = initValue
     ? initValue.imgs.map(item => ({
         response: { result: { filename: item } },
         status: 'done',
-        url: prefix + item,
+        url: OSS_PREFIX + item,
         name: item,
         uid: item,
         size: 0,
@@ -54,12 +53,6 @@ export const Base = (props: TRenderItems<TSubmitHouse>) => {
       <FormItem label="详情" hasFeedback>
         {getFieldDecorator('content', {
           initialValue: initValue ? initValue.content : '',
-          rules: [
-            {
-              required: true,
-              message: '请输入详情！',
-            },
-          ],
         })(<TextArea rows={7} maxLength={500} placeholder="请输入详情" />)}
       </FormItem>
 
@@ -88,7 +81,7 @@ export const Base = (props: TRenderItems<TSubmitHouse>) => {
           initialValue: fileList,
           valuePropName: 'fileList',
           getValueFromEvent: getUploadFileUrls,
-        })(<PicturesWall />)}
+        })(<PicturesWall dir="house" />)}
       </FormItem>
     </>
   );

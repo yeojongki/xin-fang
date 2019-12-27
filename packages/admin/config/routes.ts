@@ -25,6 +25,11 @@ export default [
         path: '/user/register-result',
         component: './user/register-result',
       },
+      {
+        name: '验证邮箱',
+        path: '/user/verify-email',
+        component: './user/verify-email',
+      },
     ],
   },
   {
@@ -84,6 +89,19 @@ export default [
             name: '城市地铁',
             icon: 'hdd',
             component: './city',
+          },
+          {
+            path: '/account',
+            name: '个人页',
+            icon: 'user',
+            routes: [
+              {
+                path: '/account/settings',
+                icon: 'setting',
+                name: '个人设置',
+                component: './account-settings',
+              },
+            ],
           },
           {
             path: '/exception',

@@ -10,6 +10,7 @@ import { CreateUserInput } from '@xf/common/src/dtos/user/create-user.input';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
 import { isNotEmpty } from '@xf/common/src/utils/is-empty';
+import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { errorCode } from '@/constants/error-code';
 import { CurdService } from '@/common/curd/curd.service';
 
@@ -142,7 +143,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @returns {Promise<Role[]>}
    * @memberof UserService
    */
-  async getRolesByToken(tokenArr: string[] | undefined | null): Promise<Role[]> {
+  async getRolesByToken(tokenArr?: string[] | null): Promise<Role[]> {
     const toFind = tokenArr && tokenArr.length ? tokenArr : [DEFAULT_ROLE];
     // query for role
     const where = toFind.map(token => ({ token }));
@@ -161,10 +162,17 @@ export class UserService extends CurdService<User, UpdateUserInput> {
   async update(dto: UpdateUserInput): Promise<User> {
     const { id } = dto;
     const toUpdate = await this.findOneAndThrowError({ id });
-    if (dto.roles) {
-      toUpdate.roles = await this.getRolesByToken(dto.roles);
-      delete dto.roles;
-    }
+    toUpdate.roles = await this.getRolesByToken(
+      dto.roles ? dto.roles : ((toUpdate.roles as any) as string[]),
+    );
+    delete dto.roles;
     return await this.repository.save(Object.assign(toUpdate, dto));
+  }
+
+  async save(user: IUser, roles?: Role[]): Promise<User> {
+    if (!roles) {
+      user.roles = await this.getRolesByToken((user.roles as any) as string[]);
+    }
+    return await this.repository.save(user);
   }
 }
