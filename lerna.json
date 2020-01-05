@@ -17,6 +17,7 @@
     "labels": {
       "feat": ":rocket: New Feature",
       "enhancement": ":rocket: New Feature",
+      "refactor": ":wrench: Refactor",
       "bug": ":bug: Bug Fix",
       "doc": ":memo: Documentation",
       "internal": ":house: Internal",

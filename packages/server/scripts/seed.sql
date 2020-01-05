@@ -1,3 +1,235 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : local
+ Source Server Type    : MySQL
+ Source Server Version : 80014
+ Source Host           : localhost:3306
+ Source Schema         : xf-test
+
+ Target Server Type    : MySQL
+ Target Server Version : 80014
+ File Encoding         : 65001
+
+ Date: 01/01/2020 18:14:34
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for city
+-- ----------------------------
+DROP TABLE IF EXISTS `city`;
+CREATE TABLE `city`  (
+  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '中文名称',
+  `pinyin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '拼音名称',
+  `code` int(11) NOT NULL COMMENT '城市code',
+  `pre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '拼音前缀',
+  `status` int(11) NOT NULL DEFAULT 0 COMMENT '是否开通 0 未开通 1 已开通',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of city
+-- ----------------------------
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 15:06:15', 1, '北京市', 'beijing', 131, 'bj', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-11-23 23:45:47', 2, '上海市', 'shanghai', 289, 'shh', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-05 02:18:01', 3, '广州市', 'guangzhou', 257, 'gzh', 1);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 4, '深圳市', 'shenzhen', 340, 'szh', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 5, '重庆市', 'chongqing', 132, 'chq', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 6, '天津市', 'tianjin', 332, 'tj', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 7, '石家庄市', 'shijiazhuang', 150, 'shjzh', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 8, '南京市', 'nanjing', 315, 'nj', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 9, '成都市', 'chengdu', 75, 'chd', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 10, '沈阳市', 'shenyang', 58, 'shy', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 11, '杭州市', 'hangzhou', 179, 'hzh', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 12, '武汉市', 'wuhan', 218, 'wh', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 13, '长沙市', 'changsha', 158, 'cs', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 14, '苏州市', 'suzhou', 224, 'suz', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 15, '大连市', 'dalian', 167, 'dl', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 16, '长春市', 'changchun', 53, 'chc', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 17, '西安市', 'xian', 233, 'xian', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 18, '昆明市', 'kunming', 104, 'km', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 19, '佛山市', 'foshan', 138, 'fsh', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 20, '哈尔滨市', 'haerbin', 48, 'hrb', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 21, '郑州市', 'zhengzhou', 268, 'zhzh', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 22, '宁波市', 'ningbo', 180, 'nbo', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 23, '无锡市', 'wuxi', 317, 'wuxi', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 24, '青岛市', 'qingdao', 236, 'qd', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 25, '南昌市', 'nanchang', 163, 'nanchang', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 26, '福州市', 'fuzhou', 300, 'fuzhou', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 27, '东莞市', 'dongguan', 119, 'dongguan', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 28, '南宁市', 'nanning', 261, 'nanning', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 29, '合肥市', 'hefei', 127, 'hefei', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 30, '厦门市', 'xiamen', 194, 'xiamen', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 31, '香港特别行政区', 'hongkong', 2912, 'hk', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 32, '台北市', 'taibei', 9002, 'shh', 0);
+INSERT INTO `city` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 33, '高雄市', 'gaoxiong', 9019, 'cs', 0);
+
+-- ----------------------------
+-- Table structure for house
+-- ----------------------------
+DROP TABLE IF EXISTS `house`;
+CREATE TABLE `house`  (
+  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '标题',
+  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '内容详情',
+  `imgs` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '图片列表1',
+  `status` enum('0','1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '状态',
+  `comment_count` int(11) NOT NULL DEFAULT 0 COMMENT '评论数',
+  `click_count` int(11) NOT NULL DEFAULT 0 COMMENT '点击数',
+  `like_count` int(11) NOT NULL DEFAULT 0 COMMENT '点赞数',
+  `userId` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `cityId` int(11) NULL DEFAULT NULL,
+  `subwayId` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `FK_66ced5049503a82d736c336b4cf`(`userId`) USING BTREE,
+  INDEX `FK_4fac8b0770dac18ba475634cdc6`(`cityId`) USING BTREE,
+  INDEX `FK_b194bb1a2efe39cf7470e099c28`(`subwayId`) USING BTREE,
+  CONSTRAINT `FK_4fac8b0770dac18ba475634cdc6` FOREIGN KEY (`cityId`) REFERENCES `city` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_66ced5049503a82d736c336b4cf` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_b194bb1a2efe39cf7470e099c28` FOREIGN KEY (`subwayId`) REFERENCES `subway` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of house
+-- ----------------------------
+INSERT INTO `house` VALUES ('2019-11-06 21:17:22', '2019-12-05 17:33:45', '89d892f8-6a9a-467d-b7b0-23e5c47d04e2', '1234', 'asdasd', '0b674fe76102a4e0488ce3e2e3bc605e/1573983857390.png,0b674fe76102a4e0488ce3e2e3bc605e/1574182466101.png,0b674fe76102a4e0488ce3e2e3bc605e/house/1575537076788.gif', '0', 0, 0, 0, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for permission
+-- ----------------------------
+DROP TABLE IF EXISTS `permission`;
+CREATE TABLE `permission`  (
+  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '标识',
+  `module` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '所属模块, 例如用户模块 user',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称',
+  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `IDX_ac6b88c23265b975e0c75c2bc6`(`token`) USING BTREE,
+  UNIQUE INDEX `IDX_240853a0c3353c25fb12434ad3`(`name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of permission
+-- ----------------------------
+INSERT INTO `permission` VALUES ('2019-11-04 22:22:12', '2019-11-04 22:22:12', '106b2de4-7423-48a0-ad3c-f585928d1d25', 'house.create', 'house', '房子创建', '');
+INSERT INTO `permission` VALUES ('2019-11-04 22:22:32', '2019-11-04 22:22:32', '187ce680-4388-4096-8894-1274777bc056', 'house.update', 'house', '房子更新', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:55:43', '2019-09-24 22:56:28', '1c5008c8-5dcc-41de-9f69-60873424f216', 'permission.create', 'permission', '权限创建', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:36:51', '2019-09-24 22:36:51', '2b8f8412-acad-447a-9b5a-a5ccb2001990', 'user.delete', 'user', '用户删除', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:57:37', '2019-09-24 22:57:37', '33418f6e-0c17-48ab-9e7e-415716bf63d2', 'permission.update', 'permission', '权限更新', '');
+INSERT INTO `permission` VALUES ('2019-10-04 11:03:11', '2019-10-04 11:03:11', '4add5c1b-972e-41d7-99d5-2060868acb24', 'city.list', 'city', '城市列表', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:53:51', '2019-09-24 22:53:51', '561311a8-e37f-415d-8a62-4e06a9a3a0bc', 'role.create', 'role', '角色创建', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:56:40', '2019-09-24 22:56:40', '6c5652bd-073e-4faf-99a9-26eeadeb9f2b', 'permission.delete', 'permission', '权限删除', '');
+INSERT INTO `permission` VALUES ('2019-11-04 22:22:50', '2019-11-04 22:22:50', '6e611ae7-fd20-44a9-935b-43574b2bbd3e', 'house.delete', 'house', '房子删除', '');
+INSERT INTO `permission` VALUES ('2019-10-04 17:42:39', '2019-10-04 17:42:39', '70413f64-7aae-45a1-8742-4b07da967404', 'city.item', 'city', '城市 Item', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:38:11', '2019-09-24 22:38:11', '7cf99844-e99b-409f-aef9-924aa3a06a3b', 'user.update', 'user', '用户更新', '');
+INSERT INTO `permission` VALUES ('2019-10-04 11:03:35', '2019-10-04 11:03:35', '8610715e-830a-4181-be8f-7f4b6f751559', 'city.update', 'city', '城市更新', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:49:26', '2019-09-24 22:53:17', 'a41d8e7c-2707-48d8-8dbd-50d6b2f66bed', 'role.item', 'role', '角色 Item', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:55:13', '2019-09-24 22:55:13', 'b2df8029-b41b-4fb1-9948-30714dac0892', 'permission.list', 'permission', '权限列表', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:38:25', '2019-09-24 22:38:25', 'b894f1fa-ed74-4368-8666-18b971809efb', 'user.create', 'user', '用户创建', '');
+INSERT INTO `permission` VALUES ('2019-11-04 22:23:39', '2019-11-04 22:23:39', 'c23cfc33-05e7-47e8-8434-f20da372149c', 'house.list', 'house', '房子列表', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:53:42', '2019-09-24 22:53:42', 'ca8ab26d-0637-42d0-b61b-3f671ef958f3', 'role.update', 'role', '角色更新', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:28:28', '2019-09-24 22:37:04', 'cdf2372c-31ec-42f1-b552-fb58e9f124fb', 'user.list', 'user', '用户列表', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:53:31', '2019-09-24 22:53:31', 'd6c57cba-04bb-4e50-8893-120e4276698b', 'role.list', 'role', '角色列表', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:37:44', '2019-09-24 22:52:59', 'e06ea503-4bb3-4ec3-a58b-d86825ce2fec', 'user.item', 'user', '用户 Item', '');
+INSERT INTO `permission` VALUES ('2019-10-05 00:52:05', '2019-10-05 00:52:05', 'e1bb48eb-29f0-4b06-97dc-31e06f923256', 'subway.list', 'subway', '地铁列表', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:54:54', '2019-09-24 22:54:54', 'e2ceb8b7-deaf-49e6-8ce2-bde931ae5bc2', 'role.delete', 'role', '角色删除', '');
+INSERT INTO `permission` VALUES ('2019-09-24 22:56:52', '2019-09-24 22:56:52', 'e5575e16-c92a-4432-917e-e9a51fce47d7', 'permission.item', 'permission', '权限 Item', '');
+INSERT INTO `permission` VALUES ('2019-11-04 22:23:23', '2019-11-04 22:23:23', 'eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', 'house.item', 'house', '房子 Item', '');
+
+-- ----------------------------
+-- Table structure for role
+-- ----------------------------
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role`  (
+  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称',
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '标识',
+  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `IDX_2cfa395daced6c810c8c4aaf1b`(`token`) USING BTREE,
+  UNIQUE INDEX `IDX_ae4578dcaed5adff96595e6166`(`name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of role
+-- ----------------------------
+INSERT INTO `role` VALUES ('2019-09-04 23:17:42', '2019-09-04 23:17:42', '10dc1736-69b4-4193-b59e-51d8360ffe17', '测试角色', 'test', '我是测试角色');
+INSERT INTO `role` VALUES ('2019-08-16 22:15:51', '2019-08-16 22:15:51', '1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '普通用户', 'user', NULL);
+INSERT INTO `role` VALUES ('2019-08-16 01:11:55', '2019-08-16 01:11:55', '9adf12e6-079e-4695-aab8-6e19cbe1082e', '超级管理员', 'superAdmin', NULL);
+
+-- ----------------------------
+-- Table structure for role_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `role_permission`;
+CREATE TABLE `role_permission`  (
+  `permission_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`permission_id`, `role_id`) USING BTREE,
+  INDEX `IDX_e3a3ba47b7ca00fd23be4ebd6c`(`permission_id`) USING BTREE,
+  INDEX `IDX_3d0a7155eafd75ddba5a701336`(`role_id`) USING BTREE,
+  CONSTRAINT `FK_3d0a7155eafd75ddba5a7013368` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `FK_e3a3ba47b7ca00fd23be4ebd6cf` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of role_permission
+-- ----------------------------
+INSERT INTO `role_permission` VALUES ('106b2de4-7423-48a0-ad3c-f585928d1d25', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('187ce680-4388-4096-8894-1274777bc056', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('1c5008c8-5dcc-41de-9f69-60873424f216', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('2b8f8412-acad-447a-9b5a-a5ccb2001990', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('33418f6e-0c17-48ab-9e7e-415716bf63d2', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('4add5c1b-972e-41d7-99d5-2060868acb24', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('561311a8-e37f-415d-8a62-4e06a9a3a0bc', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('6c5652bd-073e-4faf-99a9-26eeadeb9f2b', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('6e611ae7-fd20-44a9-935b-43574b2bbd3e', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('70413f64-7aae-45a1-8742-4b07da967404', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('7cf99844-e99b-409f-aef9-924aa3a06a3b', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('8610715e-830a-4181-be8f-7f4b6f751559', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('a41d8e7c-2707-48d8-8dbd-50d6b2f66bed', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('b2df8029-b41b-4fb1-9948-30714dac0892', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('b894f1fa-ed74-4368-8666-18b971809efb', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('c23cfc33-05e7-47e8-8434-f20da372149c', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('ca8ab26d-0637-42d0-b61b-3f671ef958f3', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('cdf2372c-31ec-42f1-b552-fb58e9f124fb', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('d6c57cba-04bb-4e50-8893-120e4276698b', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('e06ea503-4bb3-4ec3-a58b-d86825ce2fec', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('e1bb48eb-29f0-4b06-97dc-31e06f923256', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('e2ceb8b7-deaf-49e6-8ce2-bde931ae5bc2', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('e5575e16-c92a-4432-917e-e9a51fce47d7', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+
+-- ----------------------------
+-- Table structure for subway
+-- ----------------------------
+DROP TABLE IF EXISTS `subway`;
+CREATE TABLE `subway`  (
+  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '城市名称',
+  `city_id` int(11) NOT NULL COMMENT '城市名称',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `FK_e85914334f53a2824b96f4b42b9`(`city_id`) USING BTREE,
+  CONSTRAINT `FK_e85914334f53a2824b96f4b42b9` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 385 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of subway
+-- ----------------------------
 INSERT INTO `subway` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 1, '地铁16号线(西苑-北安河)', 1);
 INSERT INTO `subway` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 2, '地铁s1线(石厂-金安桥)', 1);
 INSERT INTO `subway` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 3, '地铁燕房线(阎村东-燕山)', 1);
@@ -383,3 +615,58 @@ INSERT INTO `subway` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 382, 
 INSERT INTO `subway` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 383, '橘线(大寮-西子湾)', 33);
 INSERT INTO `subway` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 384, '橘线(西子湾-大寮)', 33);
 INSERT INTO `subway` VALUES ('2019-10-04 11:34:15', '2019-10-04 11:34:15', 385, '红线(小港-南冈山)', 33);
+
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user`  (
+  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `mobile` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `gender` enum('0','1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `self_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '自我介绍',
+  `emailVerified` int(11) NOT NULL DEFAULT 0,
+  `mobileVerified` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `IDX_78a916df40e02a9deb1c4b75ed`(`username`) USING BTREE,
+  UNIQUE INDEX `IDX_e12875dfb3b1d92d7d7c5377e2`(`email`) USING BTREE,
+  UNIQUE INDEX `IDX_29fd51e9cf9241d022c5a4e02e`(`mobile`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('2019-08-25 14:50:35', '2019-11-06 23:10:26', '33d11ca6-8050-4d3e-9dcb-74bec03b36ff', 'guest', 'e10adc3949ba59abbe56e057f20f883e', '', '13222222222', '0', NULL, NULL, 0, 0);
+INSERT INTO `user` VALUES ('2019-08-17 11:58:53', '2019-12-22 17:54:26', '491446a5-5df3-4ae1-b44a-7a0fcce98453', 'superAdmin', 'e10adc3949ba59abbe56e057f20f883e', 'kk597@sina.com', '14788888888', '1', '0b674fe76102a4e0488ce3e2e3bc605e/avatar/1575541437354.png', '我是个人简介aadcwz', 1, 0);
+INSERT INTO `user` VALUES ('2019-08-25 14:50:46', '2019-12-05 19:09:15', 'ace64f4d-c83b-4de2-96fd-09fd778f9296', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin@admin.com', NULL, '0', 'logo.png', NULL, 0, 0);
+INSERT INTO `user` VALUES ('2019-08-24 21:58:28', '2019-08-24 21:58:28', 'cc21d2f5-f4fb-48c1-92ad-ee1230ccb2c6', 'yeojongki', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, '1', NULL, NULL, 0, 0);
+
+-- ----------------------------
+-- Table structure for user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role`  (
+  `role_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`role_id`, `user_id`) USING BTREE,
+  INDEX `IDX_32a6fc2fcb019d8e3a8ace0f55`(`role_id`) USING BTREE,
+  INDEX `IDX_d0e5815877f7395a198a4cb0a4`(`user_id`) USING BTREE,
+  CONSTRAINT `FK_32a6fc2fcb019d8e3a8ace0f55f` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `FK_d0e5815877f7395a198a4cb0a46` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_role
+-- ----------------------------
+INSERT INTO `user_role` VALUES ('10dc1736-69b4-4193-b59e-51d8360ffe17', '33d11ca6-8050-4d3e-9dcb-74bec03b36ff');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'ace64f4d-c83b-4de2-96fd-09fd778f9296');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'cc21d2f5-f4fb-48c1-92ad-ee1230ccb2c6');
+INSERT INTO `user_role` VALUES ('9adf12e6-079e-4695-aab8-6e19cbe1082e', '491446a5-5df3-4ae1-b44a-7a0fcce98453');
+
+SET FOREIGN_KEY_CHECKS = 1;
