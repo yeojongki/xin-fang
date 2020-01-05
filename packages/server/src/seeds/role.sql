@@ -1,3 +1,0 @@
-INSERT INTO `role` VALUES ('2019-09-04 23:17:42', '2019-09-04 23:17:42', '10dc1736-69b4-4193-b59e-51d8360ffe17', '测试角色', 'test', '我是测试角色');
-INSERT INTO `role` VALUES ('2019-08-16 22:15:51', '2019-08-16 22:15:51', '1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '普通用户', 'user', NULL);
-INSERT INTO `role` VALUES ('2019-08-16 01:11:55', '2019-08-16 01:11:55', '9adf12e6-079e-4695-aab8-6e19cbe1082e', '超级管理员', 'superAdmin', NULL);
