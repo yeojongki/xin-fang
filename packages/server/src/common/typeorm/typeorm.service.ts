@@ -11,12 +11,12 @@ export class TypeormService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     const options: TypeOrmModuleOptions = {
       type: 'mysql',
-      host: this.configService.get('DB_HOST'),
-      port: Number(this.configService.get('DB_PORT')),
-      charset: this.configService.get('DB_CHARSET'),
-      username: this.configService.get('DB_USERNAME'),
-      password: this.configService.get('DB_PASSWORD'),
-      database: this.configService.get('DB_NAME'),
+      host: this.configService.DB_HOST,
+      port: this.configService.DB_PORT,
+      charset: this.configService.DB_CHARSET,
+      username: this.configService.DB_USERNAME,
+      password: this.configService.DB_PASSWORD,
+      database: this.configService.DB_NAME,
       synchronize: true,
       // logging: ['query'],
       entities: Object.values(Entities),

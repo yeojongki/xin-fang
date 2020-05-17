@@ -92,6 +92,30 @@ export class ConfigService {
     };
   }
 
+  get DB_HOST() {
+    return this.envConfig.DB_HOST;
+  }
+
+  get DB_PORT() {
+    return Number(this.envConfig.DB_PORT);
+  }
+
+  get DB_CHARSET() {
+    return this.envConfig.DB_CHARSET;
+  }
+
+  get DB_USERNAME() {
+    return this.envConfig.DB_USERNAME;
+  }
+
+  get DB_PASSWORD() {
+    return this.envConfig.DB_PASSWORD;
+  }
+
+  get DB_NAME() {
+    return this.envConfig.DB_NAME;
+  }
+
   get REDIS_NAME(): string {
     return this.envConfig.REDIS_NAME;
   }
