@@ -1,12 +1,7 @@
 // https://www.npmjs.com/package/node-ssh
 const node_ssh = require('node-ssh');
 const path = require('path');
-
-const username = 'root';
-const host = '39.108.211.141';
-// const server = `${username}@${host}`;
-const remoteBaseDest = '/etc/nginx/www/xin-fang/deploy/';
-const privateKeyDir = 'C:\\Users\\Administrator\\.ssh\\id_rsa';
+const { username, host, remoteBaseDest, privateKeyDir } = require('./config');
 
 /**
  * @param deployDir 部署文件夹目录 也是 package 的名字 如 admin

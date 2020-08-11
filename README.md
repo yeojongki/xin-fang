@@ -1,7 +1,7 @@
 ## Installation
 
 ```bash
-$ yarn global add lerna umi
+$ yarn global add lerna umi ncc
 $ yarn install # 等价于 lerna bootstrap --npm-client yarn --use-workspaces
 ```
 
