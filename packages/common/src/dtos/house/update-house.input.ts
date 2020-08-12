@@ -22,4 +22,8 @@ export class UpdateHouseInput {
   @Transform(v => parseInt(v, 10))
   @IsEnum(HouseStatus)
   status?: HouseStatus;
+
+  @IsOptional()
+  @Transform(v => parseInt(v, 10))
+  cityId?: number;
 }

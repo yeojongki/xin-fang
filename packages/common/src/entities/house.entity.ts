@@ -18,7 +18,7 @@ export class House extends Base {
     comment: '图片列表',
     default: '',
     transformer: {
-      from: v => (v ? v.split(',') : []),
+      from: v => (v && v.length ? v.split(',') : []),
       to: v => (v.length ? v.filter(isNotEmpty).join(',') : ''),
     },
   })

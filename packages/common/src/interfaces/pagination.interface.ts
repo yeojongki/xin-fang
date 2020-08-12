@@ -1,5 +1,5 @@
 export interface IPagination {
-  total: number;
+  total?: number;
   current: number;
   pageSize: number;
 }
