@@ -5,20 +5,24 @@ import { House } from '@xf/common/src/entities';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { HouseStatus, HouseStatusMap } from '@xf/common/src/constants/house.const';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
+import { IUser } from '@xf/common/src/interfaces/user.interfaces';
+import { ICity } from '@xf/common/src/interfaces/city.interface';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
+import { ISubway } from '@xf/common/src/interfaces/subway.interface';
+import { DEFAULT_CITY_ID } from '@xf/common/src/constants/city.const';
 import { ColumnProps } from 'antd/lib/table';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
-import { StateType } from './model';
-import { getForm, generateField } from '@/utils/form';
 import { IDColumn, DateColumn, CenterTextColumn } from '@/components/TableColumn';
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
-import { Base } from './components/Base';
-import Query from './components/Query';
 import { IUploadFile } from '@/components/PicturesWall';
 import { getUploadImgs } from '@/components/PicturesWall/utils';
+import { CityStateType, namespace as cityNS } from '@/models/city';
+import { Base } from './components/Base';
+import Query from './components/Query';
+import { StateType } from './model';
 
 interface IHousesProps {
   dispatch: Dispatch<any>;
@@ -26,9 +30,16 @@ interface IHousesProps {
   editing: boolean;
   creating: boolean;
   house: StateType;
+  city: CityStateType;
 }
 
-export type TSubmitHouse = Omit<House, 'imgs'> & { imgs: IUploadFile[] };
+export type TSubmitHouse = Omit<House, 'imgs'> & {
+  imgs: IUploadFile[];
+  city: number;
+  cityId: number;
+  subway: number;
+  subwayId: number;
+};
 
 export const namespace = 'house';
 const pageName = '房子';
@@ -40,6 +51,7 @@ const Houses: FC<IHousesProps> = ({
   editing,
   creating,
   house: { pagination, list },
+  city,
 }) => {
   const tableRef = useRef<IResetSelectedFn | null>(null);
 
@@ -53,8 +65,25 @@ const Houses: FC<IHousesProps> = ({
     [pagination],
   );
 
+  const fetchCityList = useCallback(
+    (payload: Partial<TListQuery<ICity>> = { pageSize: DEFAULT_PAGE_SIZE, current: 1 }) => {
+      dispatch({
+        type: `${cityNS}/getList`,
+        payload,
+      });
+    },
+    [pagination],
+  );
+
   useEffect(() => {
     fetchList();
+  }, []);
+
+  // cityList
+  useEffect(() => {
+    if (!city.list.length) {
+      fetchCityList({ pageSize: 99999, current: 1, skip: 1 });
+    }
   }, []);
 
   // query
@@ -71,6 +100,10 @@ const Houses: FC<IHousesProps> = ({
   const createFormRef = useRef<any>();
 
   const submitCreateForm = (values: TSubmitHouse) => {
+    values.cityId = values.city;
+    delete values.city;
+    values.subwayId = values.subway;
+    delete values.subway;
     const imgs = getUploadImgs(values.imgs);
     dispatch({
       type: `${namespace}/create`,
@@ -93,29 +126,7 @@ const Houses: FC<IHousesProps> = ({
   const editFormRef = useRef<any>();
 
   const handleEdit = (row: House): void => {
-    // set fields
-    const form = getForm(editFormRef);
-    if (form) {
-      const {
-        imgs,
-        clickCount,
-        commentCount,
-        likeCount,
-        createdAt,
-        updatedAt,
-        status,
-        ...rest
-      } = row;
-      form.setFields(
-        generateField({
-          ...rest,
-          status: `${status}`,
-        }),
-      );
-    } else {
-      // init
-      setCurrentRow(row);
-    }
+    setCurrentRow(row);
     setEditFormVisible(true);
   };
 
@@ -149,6 +160,35 @@ const Houses: FC<IHousesProps> = ({
     });
   };
 
+  // subwayList
+  const [subwayList, setSubwayList] = useState<ISubway[]>([]);
+
+  const getSubways = (id: number) => {
+    dispatch({
+      type: `${cityNS}/getSubwaysByCityId`,
+      payload: {
+        id,
+        callback: (subways: ISubway[]) => {
+          setSubwayList(subways);
+        },
+      },
+    });
+  };
+
+  useEffect(() => {
+    getSubways(DEFAULT_CITY_ID);
+  }, []);
+
+  const onCityChange = async (id: number) => {
+    getSubways(id);
+    if (editFormVisible) {
+      (editFormRef.current as WrappedFormUtils<any>).setFieldsValue({ subway: undefined });
+    }
+    if (createFormVisible) {
+      (createFormRef.current as WrappedFormUtils<any>).setFieldsValue({ subway: undefined });
+    }
+  };
+
   const columns: ColumnProps<House>[] = [
     {
       key: 'id',
@@ -168,6 +208,24 @@ const Houses: FC<IHousesProps> = ({
       render: (status: HouseStatus) => (
         <Tag color={status === 0 ? 'blue' : ''}>{HouseStatusMap[status]}</Tag>
       ),
+    },
+    {
+      key: 'user',
+      dataIndex: 'user',
+      title: '发布者',
+      render: (user: IUser) => <div>{user.username}</div>,
+    },
+    {
+      key: 'city',
+      dataIndex: 'city',
+      title: '城市',
+      render: (c: ICity) => <div>{c.name}</div>,
+    },
+    {
+      key: 'subway',
+      dataIndex: 'subway',
+      title: '地铁站',
+      render: (subway: ISubway) => <div>{subway.name}</div>,
     },
     {
       key: 'commentCount',
@@ -198,14 +256,14 @@ const Houses: FC<IHousesProps> = ({
       dataIndex: 'createdAt',
       title: '创建时间',
       width: 150,
-      render: date => <DateColumn date={date} />,
+      render: (date) => <DateColumn date={date} />,
     },
     {
       key: 'updatedAt',
       dataIndex: 'updatedAt',
       title: '更新时间',
       width: 150,
-      render: date => <DateColumn date={date} />,
+      render: (date) => <DateColumn date={date} />,
     },
   ];
 
@@ -215,10 +273,18 @@ const Houses: FC<IHousesProps> = ({
         onAdd={() => {
           setCreateFormVisible(true);
         }}
-        renderSearchForm={() => <Query onSearch={handleSearch} onReset={fetchList} />}
+        renderSearchForm={() => (
+          <Query
+            cityList={city.list}
+            subwayList={subwayList}
+            onSearch={handleSearch}
+            onReset={fetchList}
+            onCityChange={onCityChange}
+          />
+        )}
         columns={columns}
         ref={tableRef}
-        rowKey={record => record.id}
+        rowKey={(record) => record.id}
         loading={fetching}
         pagination={pagination}
         fetchList={fetchList}
@@ -232,7 +298,14 @@ const Houses: FC<IHousesProps> = ({
         title={`查看/编辑${pageName}`}
         type="edit"
         ref={editFormRef}
-        renderItems={props => Base(props)}
+        renderItems={(props) =>
+          Base({
+            ...props,
+            cityList: city.list,
+            subwayList,
+            onCityChange,
+          })
+        }
         loading={editing}
         visible={editFormVisible}
         initValue={currentRow}
@@ -243,7 +316,14 @@ const Houses: FC<IHousesProps> = ({
         title={`创建${pageName}`}
         type="create"
         ref={createFormRef}
-        renderItems={props => Base(props)}
+        renderItems={(props) =>
+          Base({
+            ...props,
+            cityList: city.list,
+            subwayList,
+            onCityChange,
+          })
+        }
         loading={creating}
         visible={createFormVisible}
         onCancel={() => setCreateFormVisible(false)}
@@ -255,9 +335,11 @@ const Houses: FC<IHousesProps> = ({
 
 export default connect(
   ({
+    city,
     house,
     loading,
   }: {
+    city: CityStateType;
     house: StateType;
     loading: {
       effects: {
@@ -265,6 +347,7 @@ export default connect(
       };
     };
   }) => ({
+    city,
     house,
     fetching: loading.effects[`${namespace}/getList`],
     editing: loading.effects[`${namespace}/update`],

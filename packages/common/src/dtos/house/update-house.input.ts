@@ -19,11 +19,15 @@ export class UpdateHouseInput {
   imgs?: string[];
 
   @IsOptional()
-  @Transform(v => parseInt(v, 10))
+  @Transform((v) => parseInt(v, 10))
   @IsEnum(HouseStatus)
   status?: HouseStatus;
 
   @IsOptional()
-  @Transform(v => parseInt(v, 10))
+  @Transform((v) => parseInt(v, 10))
   cityId?: number;
+
+  @IsOptional()
+  @Transform((v) => parseInt(v, 10))
+  subwayId?: number;
 }

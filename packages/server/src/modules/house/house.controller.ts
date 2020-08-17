@@ -1,29 +1,21 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Query,
-  Post,
-  Body,
-  Put,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Post, Body, Put, Req } from '@nestjs/common';
 import { House } from '@xf/common/src/entities';
 import { UpdateHouseInput } from '@xf/common/src/dtos/house/update-house.input';
 import { CreateHouseInput } from '@xf/common/src/dtos/house/create-house.input';
 import { CurdController } from '@/common/curd/curd.controller';
+import { IAuthRequest } from '@/guard/permission-auth.guard';
 import { HouseService } from './house.service';
 
 @Controller('house')
 export class HouseController extends CurdController<House, UpdateHouseInput> {
-  constructor(protected readonly houseService: HouseService) {
-    super(houseService);
+  constructor(protected readonly service: HouseService) {
+    super(service);
   }
 
   @Post()
-  async create(@Body() dto: CreateHouseInput): Promise<void> {
-    await this.service.create(dto);
+  async create(@Body() dto: CreateHouseInput, @Req() req: IAuthRequest): Promise<void> {
+    const { user } = req;
+    await this.service.create(dto, user);
   }
 
   @Put()

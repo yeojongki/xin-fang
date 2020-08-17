@@ -51,7 +51,11 @@ export abstract class BaseService<T> implements IServiceName {
    */
   @TransformClassToPlain()
   async getList(query: TListQuery<T>, relations: string[] = []): Promise<IPaginationList<T>> {
-    const { skip, take } = query;
+    let { skip, take } = query;
+    if (!skip) skip = query.current;
+    if (!take) take = query.pageSize;
+    delete query.pageSize;
+    delete query.current;
     const [list, count] = await this.findAndCount(query, relations);
     return {
       list,

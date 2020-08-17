@@ -4,23 +4,24 @@ import { message as Message } from 'antd';
 import { City } from '@xf/common/src/entities/city.entity';
 import { IPaginationList } from '@xf/common/src/interfaces/pagination.interface';
 import { HttpSuccessResponse } from '@xf/common/src/interfaces/http.interface';
-import * as Api from './service';
-import { namespace } from '.';
+import * as Api from '@/services/city';
 
-export type StateType = IPaginationList<City>;
+export const namespace = 'city';
+
+export type CityStateType = IPaginationList<City>;
 
 export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;
 
 export interface ModelType {
   namespace: string;
-  state: StateType;
+  state: CityStateType;
   effects: {
     getList: Effect;
     update: Effect;
     getSubwaysByCityId: Effect;
   };
   reducers: {
-    getListHandle: Reducer<StateType>;
+    getListHandle: Reducer<CityStateType>;
   };
 }
 

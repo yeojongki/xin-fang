@@ -1,8 +1,7 @@
-import { Delete, UseGuards, Param, Body } from '@nestjs/common';
+import { Delete, Param, Body } from '@nestjs/common';
 import { IID, TID, TIDs } from '@xf/common/src/interfaces/id.interface';
-import { CurdService } from './curd.service';
 import { Message } from '@/decorators/http.decorator';
-import { Roles } from '@/decorators/roles.decorator';
+import { CurdService } from './curd.service';
 import { BaseController, IFindIdResult } from '../base/base.controller';
 
 /**
@@ -18,7 +17,7 @@ export abstract class CurdController<E extends IFindIdResult, U extends IID> ext
     super(service);
   }
 
-  abstract async create(dto: any): Promise<any>;
+  abstract async create(dto: any, ...args: any): Promise<any>;
 
   abstract async update(dto: U): Promise<any>;
 

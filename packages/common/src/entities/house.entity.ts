@@ -11,15 +11,15 @@ export class House extends Base {
   @Column({ comment: '标题' })
   title!: string;
 
-  @Column({ comment: '内容详情' })
+  @Column({ default: '', comment: '内容详情' })
   content!: string;
 
   @Column({
     comment: '图片列表',
     default: '',
     transformer: {
-      from: v => (v && v.length ? v.split(',') : []),
-      to: v => (v.length ? v.filter(isNotEmpty).join(',') : ''),
+      from: (v) => (typeof v.split === 'function' ? v.split(',') : []),
+      to: (v) => (v.length ? v.filter(isNotEmpty).join(',') : ''),
     },
   })
   imgs!: string;
@@ -39,14 +39,15 @@ export class House extends Base {
   @Column({ name: 'like_count', comment: '点赞数', default: 0 })
   likeCount!: number;
 
-  @ManyToOne(() => User, user => user.houses)
+  @ManyToOne(() => User, (user) => user.houses)
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 
-  @ManyToOne(() => City, city => city.houses)
-  @JoinColumn()
+  @ManyToOne(() => City, (city) => city.houses)
+  @JoinColumn({ name: 'city_id' })
   city!: City;
 
-  @ManyToOne(() => Subway, subway => subway.houses)
-  @JoinColumn()
+  @ManyToOne(() => Subway, (subway) => subway.houses)
+  @JoinColumn({ name: 'subway_id' })
   subway!: Subway;
 }

@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useImperativeHandle, forwardRef, ReactNode } from 'react';
 import { Card, Alert, Table, Popconfirm, Divider, Button } from 'antd';
 import { TableProps, ColumnProps } from 'antd/es/table';
-
 import { DEFAULT_PAGE_OPTIONS, DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
 import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
-
 import styles from './index.less';
 
 export interface IStandardTableProps<T> extends Omit<TableProps<T>, 'columns'> {
@@ -65,7 +63,7 @@ function StandardTable<T>(props: IStandardTableProps<T>, tableRef: any) {
 
   const paginationProps = pagination
     ? {
-        showTotal: total => `共${total}条记录 `,
+        showTotal: (total) => `共${total}条记录 `,
         showSizeChanger: true,
         showQuickJumper: true,
         defaultCurrent: 1,

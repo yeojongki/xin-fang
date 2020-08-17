@@ -11,7 +11,7 @@
     "seed:dev": "cross-env NODE_ENV=development node scripts/initDB.js",
     "seed:prod": "cross-env NODE_ENV=production node scripts/initDB.js",
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
-    "start:dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpileOnly -r tsconfig-paths/register ./src/main.ts",
+    "start:dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./src/main.ts",
     "start:debug": "tsc-watch -p tsconfig.build.json --onSuccess \"node --inspect-brk dist/main.js\"",
     "start:prod": "cross-env NODE_ENV=production node dist",
     "lint": "tslint -p tsconfig.json -c tslint.json",

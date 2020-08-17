@@ -8,16 +8,17 @@ export class Subway extends DateColumn {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ comment: '城市名称' })
+  @Column({ comment: '地铁名称' })
   name!: string;
 
-  @Column({ name: 'city_id', comment: '城市名称' })
+  @Column({ name: 'city_id', comment: '城市id' })
   cityId!: number;
 
-  @ManyToOne(() => City, city => city.subways)
+  @ManyToOne(() => City, (city) => city.subways)
   @JoinColumn({ name: 'city_id' })
   city!: City;
 
-  @OneToMany(() => House, house => house.subway)
+  @OneToMany(() => House, (house) => house.subway)
+  @JoinColumn({ name: 'house_id' })
   houses?: House[];
 }

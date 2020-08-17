@@ -5,6 +5,7 @@ strictEslint.rules = {
   'import/no-unresolved': [2, { ignore: ['^@/', '^@xf/', 'umi-types'] }],
   'class-methods-use-this': 0,
   '@typescript-eslint/no-explicit-any': 0,
+  '@typescript-eslint/camelcase': 0,
   'no-console': 0,
   'no-unused-expressions': [2, { allowShortCircuit: true }],
 };

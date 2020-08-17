@@ -6,9 +6,10 @@ import { ColumnProps } from 'antd/lib/table';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { ICity } from '@xf/common/src/interfaces/city.interface';
-import { Subway } from '@xf/common/src/entities';
+import { ISubway } from '@xf/common/src/interfaces/subway.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
-import { StateType } from './model';
+import { CityStatus } from '@xf/common/src/constants/city.const';
+import { CityStateType, namespace } from '@/models/city';
 import create, { IResetSelectedFn } from '@/components/StandardTable';
 import { IDColumn, DateColumn } from '@/components/TableColumn';
 import Query from './components/Query';
@@ -19,10 +20,9 @@ interface ICityProps {
   fetching: boolean;
   editing: boolean;
   viewDetailing: boolean;
-  city: StateType;
+  city: CityStateType;
 }
 
-export const namespace = 'city';
 // const pageName = '城市';
 const CityTable = create<ICity>();
 
@@ -118,28 +118,28 @@ const City: FC<ICityProps> = ({
       dataIndex: 'createdAt',
       title: '创建时间',
       width: 150,
-      render: date => <DateColumn date={date} />,
+      render: (date) => <DateColumn date={date} />,
     },
     {
       key: 'updatedAt',
       dataIndex: 'updatedAt',
       title: '更新时间',
       width: 150,
-      render: date => <DateColumn date={date} />,
+      render: (date) => <DateColumn date={date} />,
     },
   ];
 
   // 查看城市所有地铁
   const [detailVisible, setDetailVisible] = useState<boolean>(false);
   const [detailTitle, setDetailTitle] = useState<string>('');
-  const [subways, setSubways] = useState<Subway[]>([]);
+  const [subways, setSubways] = useState<ISubway[]>([]);
   const viewDetail = ({ id, name }: ICity) => {
     setDetailTitle(`「${name}」所有地铁`);
     dispatch({
       type: `${namespace}/getSubwaysByCityId`,
       payload: {
         id,
-        callback: (subwayList: Subway[]) => {
+        callback: (subwayList: ISubway[]) => {
           setDetailVisible(true);
           setSubways(subwayList);
         },
@@ -148,7 +148,12 @@ const City: FC<ICityProps> = ({
   };
 
   const customOperation = (row: ICity) => (
-    <Button onClick={() => viewDetail(row)} disabled={row.status !== 1} type="link" size="small">
+    <Button
+      onClick={() => viewDetail(row)}
+      disabled={row.status === CityStatus.OFF}
+      type="link"
+      size="small"
+    >
       查看地铁列表
     </Button>
   );
@@ -159,7 +164,7 @@ const City: FC<ICityProps> = ({
         renderSearchForm={renderSearchForm}
         columns={columns}
         ref={tableRef}
-        rowKey={record => `${record.id}`}
+        rowKey={(record) => `${record.id}`}
         loading={fetching || viewDetailing}
         pagination={pagination}
         fetchList={fetchList}
@@ -185,7 +190,7 @@ export default connect(
     city,
     loading,
   }: {
-    city: StateType;
+    city: CityStateType;
     loading: {
       effects: {
         [key: string]: string;

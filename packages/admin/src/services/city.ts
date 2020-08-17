@@ -1,6 +1,6 @@
 import { IPagination } from '@xf/common/src/interfaces/pagination.interface';
 import request from '@/utils/request';
-import { namespace } from '.';
+import { namespace } from '@/models/city';
 
 export const getList = (params: IPagination) => {
   const { pageSize, current, ...rest } = params;

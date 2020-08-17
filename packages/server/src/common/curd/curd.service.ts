@@ -25,7 +25,7 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
    * @returns {Promise<any>}
    * @memberof CurdService
    */
-  async create(dto: any): Promise<any> {
+  async create(dto: any, ...args: any): Promise<any> {
     const toSave = this.repository.create(dto);
     return await this.repository.save(toSave);
   }
