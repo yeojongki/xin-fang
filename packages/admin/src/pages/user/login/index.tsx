@@ -127,6 +127,7 @@ class Login extends Component<LoginProps, LoginState> {
               !submitting &&
               this.renderMessage('账户或密码错误')}
             <UserName
+              defaultValue="superAdmin"
               name="username"
               placeholder="superAdmin 或者 user"
               rules={[
@@ -138,6 +139,7 @@ class Login extends Component<LoginProps, LoginState> {
             />
             <Password
               name="password"
+              defaultValue="123456"
               placeholder="123456"
               rules={[
                 {
@@ -149,7 +151,7 @@ class Login extends Component<LoginProps, LoginState> {
                   message: '至少为6位!',
                 },
               ]}
-              onPressEnter={e => {
+              onPressEnter={(e) => {
                 e.preventDefault();
                 (this.loginForm as any).validateFields(this.handleSubmit);
               }}
