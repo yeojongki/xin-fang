@@ -87,21 +87,6 @@ const City: FC<ICityProps> = ({
       title: '城市名',
     },
     {
-      key: 'pinyin',
-      dataIndex: 'pinyin',
-      title: '拼音',
-    },
-    {
-      key: 'code',
-      dataIndex: 'code',
-      title: '城市代码',
-    },
-    {
-      key: 'pre',
-      dataIndex: 'pre',
-      title: '简写',
-    },
-    {
       key: 'status',
       dataIndex: 'status',
       title: '是否开通',

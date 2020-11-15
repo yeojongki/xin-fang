@@ -10,6 +10,6 @@ export class SubwayService extends BaseService<Subway> {
     @InjectRepository(Subway)
     protected readonly subwayRepository: Repository<Subway>,
   ) {
-    super(subwayRepository, '城市');
+    super(subwayRepository, '地铁');
   }
 }

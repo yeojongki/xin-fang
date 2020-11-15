@@ -45,7 +45,10 @@ export class HouseService extends CurdService<House, UpdateHouseInput> {
       qb.andWhere(`q.title LIKE '%${title}%'`);
     }
 
-    return qb.skip(skip).take(take).getManyAndCount();
+    return qb
+      .skip(skip * take)
+      .take(take)
+      .getManyAndCount();
   }
 
   private async addCitySubwayToHouse(to: House, dto: { cityId?: number; subwayId?: number }) {

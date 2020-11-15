@@ -37,7 +37,7 @@ export abstract class BaseService<T> implements IServiceName {
     return this.repository.findAndCount({
       relations,
       where: rest,
-      skip,
+      skip: skip * take,
       take,
     });
   }
@@ -54,7 +54,9 @@ export abstract class BaseService<T> implements IServiceName {
     let { skip, take } = query;
     if (!skip) skip = query.current;
     if (!take) take = query.pageSize;
+    // @ts-ignore
     delete query.pageSize;
+    // @ts-ignore
     delete query.current;
     const [list, count] = await this.findAndCount(query, relations);
     return {

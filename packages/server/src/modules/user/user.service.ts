@@ -132,7 +132,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
       qb.andWhere('role.token = :roles', { roles });
     }
 
-    qb.skip(skip).take(take);
+    qb.skip(skip * take).take(take);
 
     return await qb.getManyAndCount();
   }
@@ -146,7 +146,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
   async getRolesByToken(tokenArr?: string[] | null): Promise<Role[]> {
     const toFind = tokenArr && tokenArr.length ? tokenArr : [DEFAULT_ROLE];
     // query for role
-    const where = toFind.map(token => ({ token }));
+    const where = toFind.map((token) => ({ token }));
     const roles = await this.rolesRepository.find({
       where,
     });

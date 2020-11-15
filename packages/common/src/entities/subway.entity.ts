@@ -14,6 +14,9 @@ export class Subway extends DateColumn {
   @Column({ name: 'city_id', comment: '城市id' })
   cityId!: number;
 
+  @Column({ name: 'city_name', comment: '城市名称' })
+  cityName!: string;
+
   @ManyToOne(() => City, (city) => city.subways)
   @JoinColumn({ name: 'city_id' })
   city!: City;
