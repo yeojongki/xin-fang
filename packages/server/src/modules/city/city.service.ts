@@ -27,7 +27,9 @@ export class CityService extends CurdService<City, UpdateCityInput> {
 
   async findAndCount(query: TListQuery<City>): Promise<[City[], number]> {
     const { skip, take, name, status } = query;
+
     const qb = this.repository.createQueryBuilder('q');
+
     if (name) {
       qb.andWhere(`q.name LIKE '%${name}%'`);
     }
@@ -38,7 +40,8 @@ export class CityService extends CurdService<City, UpdateCityInput> {
     }
 
     return qb
-      .skip(skip)
+      .orderBy('q.status', 'DESC')
+      .skip(skip * take)
       .take(take)
       .getManyAndCount();
   }

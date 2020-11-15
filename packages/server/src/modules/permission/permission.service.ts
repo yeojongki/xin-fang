@@ -27,7 +27,7 @@ export class PermissionService extends CurdService<Permission, UpdatePermissionI
     }
 
     return qb
-      .skip(skip)
+      .skip(skip * take)
       .take(take)
       .getManyAndCount();
   }
