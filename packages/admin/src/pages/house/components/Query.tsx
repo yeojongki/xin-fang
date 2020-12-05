@@ -1,7 +1,12 @@
 import React, { FC, useMemo, useCallback, FormEvent } from 'react';
 import { Form, Input, Button, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { houseOptions } from '@xf/common/src/constants/house.const';
+import {
+  HouseRentPayTypeOptions,
+  HouseRentTypeOptions,
+  houseReviewedOptions,
+  houseStatusOptions,
+} from '@xf/common/src/constants/house.const';
 import { ICity } from '@xf/common/src/interfaces/city.interface';
 import { CityStatus } from '@xf/common/src/constants/city.const';
 import styles from '@/assets/styles/form.less';
@@ -84,7 +89,43 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
           <FormItem label="状态">
             {getFieldDecorator('status')(
               <Select placeholder="请选择状态" style={{ minWidth: '174px' }}>
-                {houseOptions.map(({ value, name }) => (
+                {houseStatusOptions.map(({ value, name }) => (
+                  <Option key={value} value={value}>
+                    {name}
+                  </Option>
+                ))}
+              </Select>,
+            )}
+          </FormItem>
+
+          <FormItem label="是否审核">
+            {getFieldDecorator('reviewed')(
+              <Select placeholder="请选择是否审核" style={{ minWidth: '174px' }}>
+                {houseReviewedOptions.map(({ value, name }) => (
+                  <Option key={value} value={value}>
+                    {name}
+                  </Option>
+                ))}
+              </Select>,
+            )}
+          </FormItem>
+
+          <FormItem label="出租类型">
+            {getFieldDecorator('rentType')(
+              <Select placeholder="请选择出租类型" style={{ minWidth: '174px' }}>
+                {HouseRentTypeOptions.map(({ value, name }) => (
+                  <Option key={value} value={value}>
+                    {name}
+                  </Option>
+                ))}
+              </Select>,
+            )}
+          </FormItem>
+
+          <FormItem label="出租方式">
+            {getFieldDecorator('rentPayType')(
+              <Select placeholder="请选择出租方式" style={{ minWidth: '174px' }}>
+                {HouseRentPayTypeOptions.map(({ value, name }) => (
                   <Option key={value} value={value}>
                     {name}
                   </Option>

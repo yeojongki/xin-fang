@@ -6,6 +6,8 @@ export const MIN_LENGTH_PASSWORD = 6;
 
 /** 最大用户名长度 */
 export const MAX_LENGTH_USERNAME = 16;
+/** 最大微信号长度 */
+export const MAX_LENGTH_WECHAT = 16;
 /** 最大邮箱长度 */
 export const MAX_LENGTH_EMAIL = 50;
 /** 最大手机号长度 */

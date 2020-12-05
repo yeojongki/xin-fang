@@ -1,9 +1,15 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Exclude, Expose } from 'class-transformer';
 import { Base } from './base.entity';
 import { User } from './user.entity';
 import { City } from './city.entity';
 import { Subway } from './subway.entity';
-import { HouseStatus } from '../constants/house.const';
+import {
+  HouseRentPayType,
+  HouseRentType,
+  HouseReviewed,
+  HouseStatus,
+} from '../constants/house.const';
 import { isNotEmpty } from '../utils/is-empty';
 
 @Entity('house')
@@ -24,8 +30,40 @@ export class House extends Base {
   })
   imgs!: string;
 
-  @Column({ type: 'enum', enum: HouseStatus, default: 0, comment: '状态' })
+  @Column({
+    type: 'enum',
+    enum: HouseStatus,
+    default: HouseStatus.OFF,
+    comment: '房子状态(上架中0/已下架1)',
+  })
   status!: number;
+
+  @Column({
+    type: 'enum',
+    enum: HouseReviewed,
+    default: HouseReviewed.NO,
+    comment: '审核状态(未审核0/已审核1)',
+  })
+  reviewed!: number;
+
+  @Column({ comment: '房租' })
+  rent!: number;
+
+  @Column({
+    type: 'enum',
+    enum: HouseRentType,
+    default: HouseRentType.ALL,
+    comment: '出租类型(整租0/合租1)',
+  })
+  rentType!: number;
+
+  @Column({
+    type: 'enum',
+    enum: HouseRentPayType,
+    default: HouseRentPayType.MONTH,
+    comment: '出租支付类型(月付0/季付1/天付2/年付3/面议4)',
+  })
+  rentPayType!: number;
 
   // @Column({ comment: '评论', default: '' })
   // comment!: string;
@@ -39,9 +77,15 @@ export class House extends Base {
   @Column({ name: 'like_count', comment: '点赞数', default: 0 })
   likeCount!: number;
 
+  @Exclude({ toPlainOnly: true })
   @ManyToOne(() => User, (user) => user.houses)
   @JoinColumn({ name: 'user_id' })
   user!: User;
+
+  @Expose({ name: 'author' })
+  getAuthor() {
+    return this.user.username;
+  }
 
   @ManyToOne(() => City, (city) => city.houses)
   @JoinColumn({ name: 'city_id' })

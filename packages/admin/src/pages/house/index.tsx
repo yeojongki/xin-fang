@@ -5,7 +5,6 @@ import { House } from '@xf/common/src/entities';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { HouseStatus, HouseStatusMap } from '@xf/common/src/constants/house.const';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
-import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { ICity } from '@xf/common/src/interfaces/city.interface';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { DEFAULT_PAGE_SIZE } from '@xf/common/src/constants/pagination.const';
@@ -101,8 +100,10 @@ const Houses: FC<IHousesProps> = ({
 
   const submitCreateForm = (values: TSubmitHouse) => {
     values.cityId = values.city;
-    delete values.city;
     values.subwayId = values.subway;
+    // @ts-ignore
+    delete values.city;
+    // @ts-ignore
     delete values.subway;
     const imgs = getUploadImgs(values.imgs);
     dispatch({
@@ -210,10 +211,9 @@ const Houses: FC<IHousesProps> = ({
       ),
     },
     {
-      key: 'user',
-      dataIndex: 'user',
+      key: 'author',
+      dataIndex: 'author',
       title: '发布者',
-      render: (user: IUser) => <div>{user.username}</div>,
     },
     {
       key: 'city',

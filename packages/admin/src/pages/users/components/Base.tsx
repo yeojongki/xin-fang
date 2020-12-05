@@ -8,6 +8,7 @@ import {
   MAX_LENGTH_MOBILE,
   MIN_LENGTH_PASSWORD,
   MOBILE_REG,
+  MAX_LENGTH_WECHAT,
 } from '@xf/common/src/constants/validation.const';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
 import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
@@ -102,6 +103,12 @@ export const BaseForm = ({ initValue, form, type, roleList }: IBaseProps) => {
             },
           ],
         })(<Input maxLength={MAX_LENGTH_MOBILE} placeholder="请输入手机号" />)}
+      </FormItem>
+
+      <FormItem label="微信">
+        {getFieldDecorator('wechat', {
+          initialValue: initValue ? initValue.wechat : '',
+        })(<Input maxLength={MAX_LENGTH_WECHAT} placeholder="请输入微信号" />)}
       </FormItem>
 
       <FormItem label="邮箱" hasFeedback>

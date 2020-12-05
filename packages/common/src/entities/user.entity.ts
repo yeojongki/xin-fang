@@ -33,18 +33,21 @@ export class User extends Base {
   })
   gender?: number;
 
-  @Transform(v => v || 'logo.png')
+  @Transform((v) => v || 'logo.png')
   @Column({ default: null })
   avatar?: string;
 
   @Column({ name: 'self_desc', default: null, comment: '自我介绍' })
   selfDesc?: string;
 
-  @OneToMany(() => House, house => house.user)
+  @Column({ name: 'wechat', default: null, comment: '微信号' })
+  wechat?: string;
+
+  @OneToMany(() => House, (house) => house.user)
   houses!: House[];
 
   @Exclude()
-  @ManyToMany(() => Role, role => role.users)
+  @ManyToMany(() => Role, (role) => role.users)
   @JoinTable({
     name: 'user_role',
     joinColumn: { name: 'user_id' },
@@ -55,7 +58,7 @@ export class User extends Base {
   @Expose({ name: 'roles' })
   getRoles(): string[] {
     if (this.roles && Array.isArray(this.roles)) {
-      return this.roles.map(role => role.token);
+      return this.roles.map((role) => role.token);
     }
     return [];
   }
@@ -64,12 +67,12 @@ export class User extends Base {
   getPermissions() {
     if (!this.roles || !this.roles.length) return [];
     let permissions: Permission[] = [];
-    this.roles.forEach(role => {
+    this.roles.forEach((role) => {
       if (role.permissions && role.permissions.length > 0) {
         permissions = permissions.concat(role.permissions);
       }
     });
-    return [...new Set(permissions.map(permission => permission.token))];
+    return [...new Set(permissions.map((permission) => permission.token))];
   }
 
   // not in db

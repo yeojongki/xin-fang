@@ -162,12 +162,17 @@ const Users: FC<IUsersProps> = ({
       key: 'roles',
       dataIndex: 'roles',
       title: '角色',
-      render: (roles: string[]) => roles.map(role => <Tag key={role}>{roleMap[role]}</Tag>),
+      render: (roles: string[]) => roles.map((role) => <Tag key={role}>{roleMap[role]}</Tag>),
     },
     {
       key: 'mobile',
       dataIndex: 'mobile',
       title: '手机号',
+    },
+    {
+      key: 'wechat',
+      dataIndex: 'wechat',
+      title: '微信',
     },
     {
       key: 'email',
@@ -196,14 +201,14 @@ const Users: FC<IUsersProps> = ({
       dataIndex: 'createdAt',
       title: '创建时间',
       width: 150,
-      render: date => <DateColumn date={date} />,
+      render: (date) => <DateColumn date={date} />,
     },
     {
       key: 'updatedAt',
       dataIndex: 'updatedAt',
       title: '更新时间',
       width: 150,
-      render: date => <DateColumn date={date} />,
+      render: (date) => <DateColumn date={date} />,
     },
   ];
 
@@ -218,7 +223,7 @@ const Users: FC<IUsersProps> = ({
         )}
         columns={columns}
         ref={tableRef}
-        rowKey={record => record.id}
+        rowKey={(record) => record.id}
         loading={fetching}
         pagination={pagination}
         fetchList={fetchList}
@@ -232,7 +237,7 @@ const Users: FC<IUsersProps> = ({
         title={`编辑${pageName}`}
         type="edit"
         ref={editFormRef}
-        renderItems={props => BaseForm({ ...props, roleList })}
+        renderItems={(props) => BaseForm({ ...props, roleList })}
         loading={editing}
         visible={editFormVisible}
         initValue={currentRow}
@@ -243,7 +248,7 @@ const Users: FC<IUsersProps> = ({
         title={`创建${pageName}`}
         type="create"
         ref={createFormRef}
-        renderItems={props => BaseForm({ ...props, roleList })}
+        renderItems={(props) => BaseForm({ ...props, roleList })}
         loading={creating}
         visible={createFormVisible}
         onCancel={() => setCreateFormVisible(false)}

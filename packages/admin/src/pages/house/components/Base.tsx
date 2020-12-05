@@ -2,7 +2,12 @@ import React from 'react';
 import { Form, Input, Select } from 'antd';
 import { ICity } from '@xf/common/src/interfaces/city.interface';
 import { ISubway } from '@xf/common/src/interfaces/subway.interface';
-import { houseOptions } from '@xf/common/src/constants/house.const';
+import {
+  HouseRentPayTypeOptions,
+  HouseRentTypeOptions,
+  houseReviewedOptions,
+  houseStatusOptions,
+} from '@xf/common/src/constants/house.const';
 import { CityStatus, DEFAULT_CITY_ID } from '@xf/common/src/constants/city.const';
 import { TRenderItems } from '@/components/BaseFormWrap';
 import { PicturesWall, IUploadFile } from '@/components/PicturesWall';
@@ -73,16 +78,16 @@ export const Base = (
 
       <FormItem label="状态" hasFeedback>
         {getFieldDecorator('status', {
-          initialValue: initValue ? `${initValue.status}` : houseOptions[0].value,
+          initialValue: initValue ? `${initValue.status}` : houseStatusOptions[0].value,
           rules: [
             {
               required: true,
-              message: '请输入状态！',
+              message: '请选择状态！',
             },
           ],
         })(
           <Select>
-            {houseOptions.map(({ value, name }) => (
+            {houseStatusOptions.map(({ value, name }) => (
               <Option key={value} value={value}>
                 {name}
               </Option>
@@ -143,6 +148,66 @@ export const Base = (
           valuePropName: 'fileList',
           getValueFromEvent: getUploadFileUrls,
         })(<PicturesWall dir="house" />)}
+      </FormItem>
+
+      <FormItem label="是否审核" hasFeedback>
+        {getFieldDecorator('reviewed', {
+          initialValue: initValue ? `${initValue.reviewed}` : houseReviewedOptions[0].value,
+          rules: [
+            {
+              required: true,
+              message: '请选择审核状态！',
+            },
+          ],
+        })(
+          <Select>
+            {houseReviewedOptions.map(({ value, name }) => (
+              <Option key={value} value={value}>
+                {name}
+              </Option>
+            ))}
+          </Select>,
+        )}
+      </FormItem>
+
+      <FormItem label="出租类型" hasFeedback>
+        {getFieldDecorator('rentType', {
+          initialValue: initValue ? `${initValue.rentType}` : HouseRentTypeOptions[0].value,
+          rules: [
+            {
+              required: true,
+              message: '请选择出租类型！',
+            },
+          ],
+        })(
+          <Select>
+            {HouseRentTypeOptions.map(({ value, name }) => (
+              <Option key={value} value={value}>
+                {name}
+              </Option>
+            ))}
+          </Select>,
+        )}
+      </FormItem>
+
+      <FormItem label="出租方式" hasFeedback>
+        {getFieldDecorator('rentPayType', {
+          initialValue: initValue ? `${initValue.rentPayType}` : HouseRentPayTypeOptions[0].value,
+          rules: [
+            {
+              required: true,
+              message: '请选择出租支付方式！',
+            },
+          ],
+        })(
+          <Select>
+            {HouseRentPayTypeOptions.map(({ value, name }) => (
+              <Option key={value} value={value}>
+                {name}
+              </Option>
+            ))}
+          </Select>,
+        )}
       </FormItem>
     </>
   );

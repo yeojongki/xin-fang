@@ -1,4 +1,4 @@
-export const DEFAULT_CITY_ID = 3;
+export const DEFAULT_CITY_ID = 4401;
 
 export enum CityStatus {
   OFF,

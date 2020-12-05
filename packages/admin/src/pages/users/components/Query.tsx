@@ -4,6 +4,7 @@ import {
   MAX_LENGTH_USERNAME,
   MAX_LENGTH_MOBILE,
   MAX_LENGTH_EMAIL,
+  MAX_LENGTH_WECHAT,
 } from '@xf/common/src/constants/validation.const';
 import { IRole } from '@xf/common/src/interfaces/role.interfaces';
 import { FormComponentProps } from 'antd/lib/form';
@@ -43,8 +44,8 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
     onReset();
   }, [form]);
 
-  const disabledEndDate = (endvalue: Moment | undefined) => {
-    if (endvalue === undefined) return false;
+  const disabledEndDate = (endvalue: moment.Moment | null) => {
+    if (endvalue === null) return false;
     return endvalue.valueOf() > moment().valueOf();
   };
 
@@ -67,6 +68,12 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
           <FormItem label="邮箱">
             {getFieldDecorator('email')(
               <Input maxLength={MAX_LENGTH_EMAIL} placeholder="请输入邮箱" />,
+            )}
+          </FormItem>
+
+          <FormItem label="微信号">
+            {getFieldDecorator('wechat')(
+              <Input maxLength={MAX_LENGTH_WECHAT} placeholder="请输入微信号" />,
             )}
           </FormItem>
 
