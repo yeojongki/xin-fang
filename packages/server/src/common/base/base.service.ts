@@ -54,8 +54,10 @@ export abstract class BaseService<T> implements IServiceName {
     let { skip, take } = query;
     if (!skip) skip = query.current;
     if (!take) take = query.pageSize;
+    /* eslint-disable-next-line*/
     // @ts-ignore
     delete query.pageSize;
+    /* eslint-disable-next-line*/
     // @ts-ignore
     delete query.current;
     const [list, count] = await this.findAndCount(query, relations);
@@ -102,7 +104,7 @@ export abstract class BaseService<T> implements IServiceName {
    * @param {string} [filed='id'] 错误字段 默认为id {error: {id}}
    * @memberof BaseService
    */
-  handleNotFoundError(value: TID, filed: string = 'id'): void {
+  handleNotFoundError(value: TID, filed = 'id'): void {
     throw new BadRequestException({
       message: `${this.serviceName}不存在`,
       error: { [filed]: value },

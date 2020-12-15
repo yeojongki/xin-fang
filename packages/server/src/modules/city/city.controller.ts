@@ -10,7 +10,9 @@ export class CityController extends CurdController<City, UpdateCityInput> {
     super(cityService);
   }
 
-  async create(): Promise<any> {}
+  async create(): Promise<any> {
+    // do nothing
+  }
 
   @Put()
   async update(@Body() dto: UpdateCityInput): Promise<void> {

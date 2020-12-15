@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository, Like } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permission } from '@xf/common/src/entities';
 import { UpdatePermissionInput } from '@xf/common/src/dtos/permission/update-permission.input';

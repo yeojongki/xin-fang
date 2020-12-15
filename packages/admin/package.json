@@ -85,7 +85,7 @@
     "lint-staged": "^9.0.0",
     "mockjs": "^1.0.1-beta3",
     "node-fetch": "^2.6.0",
-    "prettier": "^1.17.1",
+    "prettier": "^2.2.1",
     "pro-download": "1.0.1",
     "stylelint": "^10.1.0",
     "umi-plugin-ga": "^1.1.3",

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { House, City } from '@xf/common/src/entities';
+import { House } from '@xf/common/src/entities';
 import { UpdateHouseInput } from '@xf/common/src/dtos/house/update-house.input';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
 import { CurdService } from '@/common/curd/curd.service';

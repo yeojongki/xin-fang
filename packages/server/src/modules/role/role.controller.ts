@@ -1,4 +1,4 @@
-import { Controller, Put, Body, Post, UseGuards, Get, Query } from '@nestjs/common';
+import { Controller, Put, Body, Post, Get, Query } from '@nestjs/common';
 import { Role } from '@xf/common/src/entities/role.entity';
 import { UpdateRoleInput } from '@xf/common/src/dtos/role/update-role.input';
 import { CreateRoleInput } from '@xf/common/src/dtos/role/create-role.input';

@@ -137,7 +137,6 @@ export class EmailService {
     await this.singleSendEmail(id, {
       FromAlias: '馨房',
       Subject: '馨房 - 激活邮箱',
-      /* eslint-disable eslint-comments/disable-enable-pair */
       /* eslint-disable no-useless-escape */
       HtmlBody: `<html>
         <div><span style=\"font-weight:bold\">Hi~${username}：</span></div>
@@ -199,7 +198,7 @@ export class EmailService {
       const params = { ...defaultOptions, ...options };
 
       const paramsArray = Object.keys(params)
-        .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
+        .map((param) => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
         .sort();
 
       const stringToSign = `POST&%2F&${encodeURIComponent(paramsArray.join('&'))}`;
@@ -210,7 +209,7 @@ export class EmailService {
         .digest('base64');
 
       const data = [`Signature=${signature}`];
-      Object.keys(params).forEach(key => {
+      Object.keys(params).forEach((key) => {
         data.push(`${key}=${encodeURIComponent(params[key])}`);
       });
 
@@ -222,7 +221,7 @@ export class EmailService {
         method: 'POST',
         data: data.join('&'),
       })
-        .then(res => {
+        .then((res) => {
           resolve(res.data);
           this.redisClient.set(
             EmailService.getSendEmailKey(id),
