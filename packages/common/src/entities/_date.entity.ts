@@ -1,4 +1,4 @@
-import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 
 export class DateColumn {
   @CreateDateColumn({
@@ -16,4 +16,12 @@ export class DateColumn {
     default: () => 'CURRENT_TIMESTAMP',
   })
   readonly updatedAt!: Date;
+
+  @DeleteDateColumn({
+    name: 'deleted_at',
+    type: 'timestamp',
+    precision: 0,
+    default: () => null,
+  })
+  readonly deletedAt?: Date;
 }

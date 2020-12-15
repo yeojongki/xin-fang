@@ -50,7 +50,7 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
    */
   async delete(id: TID): Promise<T> {
     const toDelete = await this.findByIdAndThrowError(id);
-    return await this.repository.remove(toDelete as T);
+    return await this.repository.softRemove(toDelete as T);
   }
 
   /**
@@ -60,6 +60,6 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
    * @memberof CurdService
    */
   async deleteByIds(ids: TIDs): Promise<T[]> {
-    return await this.repository.remove(await this.repository.findByIds(ids));
+    return await this.repository.softRemove(await this.repository.findByIds(ids));
   }
 }
