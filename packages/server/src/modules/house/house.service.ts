@@ -20,6 +20,11 @@ export class HouseService extends CurdService<House, UpdateHouseInput> {
     super(houseRepository, '房子');
   }
 
+  async findWithTid(tid: number | string): Promise<House | undefined> {
+    const house = await this.houseRepository.findOne({ where: { tid } });
+    return house;
+  }
+
   async findAndCount(query: TListQuery<House>): Promise<[House[], number]> {
     const { skip, take, title, username, cityId, subwayId, ...rest } = query;
     const qb = this.repository.createQueryBuilder('q');

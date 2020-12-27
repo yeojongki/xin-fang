@@ -13,7 +13,7 @@ export class User extends Base {
 
   @Exclude()
   @Column({ type: 'char', length: 32 })
-  password!: string;
+  password?: string;
 
   @Column({ default: null, unique: true })
   email?: string;
@@ -43,10 +43,27 @@ export class User extends Base {
   @Column({ name: 'wechat', default: null, comment: '微信号' })
   wechat?: string;
 
+  @Transform(
+    (v: House[]) => {
+      if (v && Array.isArray(v)) {
+        return v.map((house) => house.id);
+      }
+      return [];
+    },
+    { toPlainOnly: true },
+  )
   @OneToMany(() => House, (house) => house.user)
   houses!: House[];
 
-  @Exclude()
+  @Transform(
+    (v: Role[]) => {
+      if (v && Array.isArray(v)) {
+        return v.map((role) => role.token);
+      }
+      return [];
+    },
+    { toPlainOnly: true },
+  )
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable({
     name: 'user_role',
@@ -54,14 +71,6 @@ export class User extends Base {
     inverseJoinColumn: { name: 'role_id' },
   })
   roles!: Role[];
-
-  @Expose({ name: 'roles' })
-  getRoles(): string[] {
-    if (this.roles && Array.isArray(this.roles)) {
-      return this.roles.map((role) => role.token);
-    }
-    return [];
-  }
 
   @Expose({ name: 'permissions' })
   getPermissions() {

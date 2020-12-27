@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsOptional, MaxLength, IsEnum, IsArray } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { HouseStatus } from '../../constants/house.const';
+import { User } from '../../entities';
 
 export class UpdateHouseInput {
   @IsNotEmpty({ message: 'id 不能为空' })
@@ -30,4 +31,7 @@ export class UpdateHouseInput {
   @IsOptional()
   @Transform((v) => parseInt(v, 10))
   subwayId?: number;
+
+  @IsOptional()
+  user?: User;
 }

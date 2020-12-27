@@ -33,6 +33,7 @@
   "dependencies": {
     "@ant-design/pro-layout": "^4.9.4",
     "@antv/data-set": "^0.10.2",
+    "@ctrl/tinycolor": "^3.3.1",
     "@types/react-router": "^5.0.2",
     "@xf/common": "0.0.1",
     "antd": "^3.2.6",

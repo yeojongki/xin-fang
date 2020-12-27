@@ -2,6 +2,10 @@ import { ValidationError } from 'class-validator';
 import { BadRequestException } from '@nestjs/common';
 import { errorCode } from '@/constants/error-code';
 
+export { default as request } from './request';
+export * from './random';
+export * from './user-agent';
+
 export function now(time = 0): number {
   return parseInt(((Date.now() + time) / 1000).toString());
 }

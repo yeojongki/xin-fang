@@ -1483,6 +1483,11 @@
   resolved "https://registry.npm.taobao.org/@commitlint/types/download/@commitlint/types-9.1.1.tgz#d97ebc35d20eed6d8458361cbca5c7cb85d45184"
   integrity sha1-2X68NdIO7W2EWDYcvKXHy4XUUYQ=
 
+"@ctrl/tinycolor@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.npm.taobao.org/@ctrl/tinycolor/download/@ctrl/tinycolor-3.3.1.tgz?cache=0&sync_timestamp=1607911458789&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ctrl%2Ftinycolor%2Fdownload%2F%40ctrl%2Ftinycolor-3.3.1.tgz#fa0efcf813daa43f8a6aef3ddaa80f7e66f1278e"
+  integrity sha1-+g78+BPapD+Kau892qgPfmbxJ44=
+
 "@emotion/is-prop-valid@^0.8.1":
   version "0.8.8"
   resolved "https://registry.npm.taobao.org/@emotion/is-prop-valid/download/@emotion/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
@@ -2510,6 +2515,14 @@
     multer "1.4.2"
     tslib "1.11.1"
 
+"@nestjs/schedule@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.npm.taobao.org/@nestjs/schedule/download/@nestjs/schedule-0.4.1.tgz#c02c26ee38e6bcbf82d909e7d5c3003dbe4bf17a"
+  integrity sha1-wCwm7jjmvL+C2Qnn1cMAPb5L8Xo=
+  dependencies:
+    cron "1.7.2"
+    uuid "8.3.0"
+
 "@nestjs/testing@6.1.1":
   version "6.1.1"
   resolved "https://registry.npm.taobao.org/@nestjs/testing/download/@nestjs/testing-6.1.1.tgz#cc871867f9bd053069467a5a2f1b429945413313"
@@ -2801,6 +2814,14 @@
   version "2.1.1"
   resolved "https://registry.npm.taobao.org/@types/cookiejar/download/@types/cookiejar-2.1.1.tgz#90b68446364baf9efd8e8349bb36bd3852b75b80"
   integrity sha1-kLaERjZLr579joNJuza9OFK3W4A=
+
+"@types/cron@^1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@types/cron/download/@types/cron-1.7.2.tgz#e9fb420da616920dae82d13adfca53282ffaab6e"
+  integrity sha1-6ftCDaYWkg2ugtE638pTKC/6q24=
+  dependencies:
+    "@types/node" "*"
+    moment ">=2.14.0"
 
 "@types/debug@^4.1.5":
   version "4.1.5"
@@ -6480,6 +6501,20 @@ crequire@1.8.1:
   version "1.8.1"
   resolved "https://registry.npm.taobao.org/crequire/download/crequire-1.8.1.tgz#ac81f204786b5f201194eb1698cf441b10a4b57d"
   integrity sha1-rIHyBHhrXyARlOsWmM9EGxCktX0=
+
+cron@1.7.2:
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/cron/download/cron-1.7.2.tgz#2ea1f35c138a07edac2ac5af5084ed6fee5723db"
+  integrity sha1-LqHzXBOKB+2sKsWvUITtb+5XI9s=
+  dependencies:
+    moment-timezone "^0.5.x"
+
+cron@^1.8.2:
+  version "1.8.2"
+  resolved "https://registry.npm.taobao.org/cron/download/cron-1.8.2.tgz#4ac5e3c55ba8c163d84f3407bde94632da8370ce"
+  integrity sha1-SsXjxVuowWPYTzQHvelGMtqDcM4=
+  dependencies:
+    moment-timezone "^0.5.x"
 
 cross-env@^5.2.0:
   version "5.2.1"
@@ -13915,10 +13950,22 @@ module-alias@^2.2.1:
   resolved "https://registry.npm.taobao.org/module-alias/download/module-alias-2.2.2.tgz#151cdcecc24e25739ff0aa6e51e1c5716974c0e0"
   integrity sha1-FRzc7MJOJXOf8KpuUeHFcWl0wOA=
 
+moment-timezone@^0.5.x:
+  version "0.5.32"
+  resolved "https://registry.npm.taobao.org/moment-timezone/download/moment-timezone-0.5.32.tgz#db7677cc3cc680fd30303ebd90b0da1ca0dfecc2"
+  integrity sha1-23Z3zDzGgP0wMD69kLDaHKDf7MI=
+  dependencies:
+    moment ">= 2.9.0"
+
 moment@*, moment@2.x, moment@^2.15.1, moment@^2.22.1, moment@^2.24.0:
   version "2.27.0"
   resolved "https://registry.npm.taobao.org/moment/download/moment-2.27.0.tgz#8bff4e3e26a236220dfe3e36de756b6ebaa0105d"
   integrity sha1-i/9OPiaiNiIN/j423nVrbrqgEF0=
+
+"moment@>= 2.9.0", moment@>=2.14.0:
+  version "2.29.1"
+  resolved "https://registry.npm.taobao.org/moment/download/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=
 
 moo@^0.5.0:
   version "0.5.1"
@@ -21416,6 +21463,11 @@ uuid@7.0.1:
   version "7.0.1"
   resolved "https://registry.npm.taobao.org/uuid/download/uuid-7.0.1.tgz?cache=0&sync_timestamp=1595887683255&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fuuid%2Fdownload%2Fuuid-7.0.1.tgz#95ed6ff3d8c881cbf85f0f05cc3915ef994818ef"
   integrity sha1-le1v89jIgcv4Xw8FzDkV75lIGO8=
+
+uuid@8.3.0:
+  version "8.3.0"
+  resolved "https://registry.npm.taobao.org/uuid/download/uuid-8.3.0.tgz#ab738085ca22dc9a8c92725e459b1d507df5d6ea"
+  integrity sha1-q3OAhcoi3JqMknJeRZsdUH311uo=
 
 uuid@^3.0.1, uuid@^3.3.2:
   version "3.4.0"

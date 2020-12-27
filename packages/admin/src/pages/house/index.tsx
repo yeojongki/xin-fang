@@ -219,13 +219,13 @@ const Houses: FC<IHousesProps> = ({
       key: 'city',
       dataIndex: 'city',
       title: '城市',
-      render: (c: ICity) => <div>{c.name}</div>,
+      render: (c: string) => <div>{c}</div>,
     },
     {
       key: 'subway',
       dataIndex: 'subway',
       title: '地铁站',
-      render: (subway: ISubway) => <div>{subway.name}</div>,
+      render: (subway: string) => <div>{subway}</div>,
     },
     {
       key: 'commentCount',

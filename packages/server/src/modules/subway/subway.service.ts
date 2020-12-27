@@ -12,4 +12,8 @@ export class SubwayService extends BaseService<Subway> {
   ) {
     super(subwayRepository, '地铁');
   }
+
+  public findByName(name: string) {
+    return this.subwayRepository.findOne({ where: { name } });
+  }
 }
