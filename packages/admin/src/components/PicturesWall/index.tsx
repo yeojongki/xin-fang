@@ -37,7 +37,7 @@ function getBase64(file: UploadFile['originFileObj']): Promise<any> {
     const reader = new FileReader();
     reader.readAsDataURL(file as Blob);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 }
 
@@ -99,7 +99,7 @@ export class PicturesWall extends React.Component<IProps, IState> {
 
   handleRemove = (file: UploadFile) => {
     const { fileList = [], onChange } = this.props;
-    const files = getFileList(fileList).filter(v => v.url !== file.url);
+    const files = getFileList(fileList).filter((v) => v.url !== file.url);
     onChange && onChange(files);
   };
 
@@ -163,6 +163,7 @@ export class PicturesWall extends React.Component<IProps, IState> {
           {fileList.length >= maxLength ? null : uploadIcon}
         </Upload>
         <Modal
+          title="查看大图"
           width={previewWidth}
           visible={previewVisible}
           footer={null}

@@ -28,6 +28,8 @@ export class HouseService extends CurdService<House, UpdateHouseInput> {
   async findAndCount(query: TListQuery<House>): Promise<[House[], number]> {
     const { skip, take, title, username, cityId, subwayId, ...rest } = query;
     const qb = this.repository.createQueryBuilder('q');
+
+    qb.orderBy('q.updatedAt', 'DESC');
     qb.leftJoinAndSelect('q.city', 'city');
     qb.leftJoinAndSelect('q.subway', 'subway');
     qb.leftJoinAndSelect('q.user', 'user');

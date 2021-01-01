@@ -18,6 +18,7 @@ import { IDColumn, DateColumn, CenterTextColumn } from '@/components/TableColumn
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { IUploadFile } from '@/components/PicturesWall';
 import { getUploadImgs } from '@/components/PicturesWall/utils';
+import TooltipColumn from '@/components/TableColumn/TooltipColumn';
 import { CityStateType, namespace as cityNS } from '@/models/city';
 import { Base } from './components/Base';
 import Query from './components/Query';
@@ -201,6 +202,7 @@ const Houses: FC<IHousesProps> = ({
       key: 'title',
       dataIndex: 'title',
       title: '标题',
+      render: (title: string) => <TooltipColumn text={title} width="300px" />,
     },
     {
       key: 'status',
@@ -211,8 +213,8 @@ const Houses: FC<IHousesProps> = ({
       ),
     },
     {
-      key: 'author',
-      dataIndex: 'author',
+      key: 'user',
+      dataIndex: 'user',
       title: '发布者',
     },
     {
@@ -230,7 +232,7 @@ const Houses: FC<IHousesProps> = ({
     {
       key: 'commentCount',
       dataIndex: 'commentCount',
-      title: '评论数',
+      title: '评论',
       align: 'center',
       width: 100,
       render: (text: string) => <CenterTextColumn text={text} />,
@@ -238,7 +240,7 @@ const Houses: FC<IHousesProps> = ({
     {
       key: 'likeCount',
       dataIndex: 'likeCount',
-      title: '点赞数',
+      title: '点赞',
       align: 'center',
       width: 100,
       render: (text: string) => <CenterTextColumn text={text} />,
@@ -246,7 +248,7 @@ const Houses: FC<IHousesProps> = ({
     {
       key: 'clickCount',
       dataIndex: 'clickCount',
-      title: '点击数',
+      title: '点击',
       align: 'center',
       width: 100,
       render: (text: string) => <CenterTextColumn text={text} />,

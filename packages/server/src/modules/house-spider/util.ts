@@ -30,7 +30,7 @@ function getNumberOfStr(str: string): number {
   return +firstStr.match(/\d/)![0];
 }
 
-export function parseHouseHtml(html: string) {
+export function parseHouseHtml(html: string, title: string) {
   const pricesPatt1 = /\d{3,5}(?=元|\/月|每月|一个月|每个月)/g;
   const pricesPatt2 = /(月租|租金|价钱|价格|房租)(:|：| )*(\d{3,5})/g;
   const contactPatt = /((手机|电话|微信|v)号?(:|：|\s)?(\s)?([\d\w_一二两三四五六七八九零]{5,}))/;
@@ -102,7 +102,7 @@ export function parseHouseHtml(html: string) {
 
   // subwayPatt.exec('a阿斯顿14号线爱是广佛线线')
   //  ["14号线", "14", index: 4, input: "a阿斯顿14号线爱是广佛线线", groups: undefined]
-  const resSubway = subwayPatt.exec(html);
+  const resSubway = subwayPatt.exec(html) || subwayPatt.exec(title);
   if (resSubway) {
     subwayName = resSubway[1] + (Number.isInteger(+resSubway[1]) ? '号线' : '线');
   }

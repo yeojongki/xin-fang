@@ -1,18 +1,5 @@
 import React from 'react';
-import { Tooltip } from 'antd';
 import { IID } from '@xf/common/src/interfaces/id.interface';
+import TooltipColumn from './TooltipColumn';
 
-export default ({ id }: IID) => (
-  <Tooltip title={id}>
-    <div
-      style={{
-        width: '60px',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-      }}
-    >
-      {id}
-    </div>
-  </Tooltip>
-);
+export default ({ id }: IID) => <TooltipColumn text={id} width="60px" />;

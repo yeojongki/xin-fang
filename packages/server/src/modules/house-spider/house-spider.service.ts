@@ -2,11 +2,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import { getConnection } from 'typeorm';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import * as cheerio from 'cheerio';
-import { City, House, Subway, User } from '@xf/common/src/entities';
+import { City, House, Role, Subway, User } from '@xf/common/src/entities';
 import { DEFAULT_CITY_ID } from '@xf/common/src/constants/city.const';
+import { DEFAULT_USER_PASSWORD } from '@xf/common/src/constants/user.const';
 import { request, createRangeRandom } from '@/utils';
 import { CronService } from '@/common/cron/cron.service';
 import { parseHouseHtml, createUserAgent } from './util';
+import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
 
 export interface IDoubanGroupTopic {
   title: string;
@@ -59,7 +61,7 @@ export class HouseSpiderService extends CronService {
    * @static
    * @memberof HouseSpiderService
    */
-  static maxFetchCount = process.env.NODE_ENV === 'development' ? 1 : Infinity;
+  static maxFetchCount = process.env.NODE_ENV === 'development' ? 3 : Infinity;
 
   /**
    * cron 任务名
@@ -245,8 +247,6 @@ export class HouseSpiderService extends CronService {
    * @memberof HouseSpiderService
    */
   private fetchDetail(): Promise<void> {
-    this.logger.log('开始获取豆瓣小组出租详情');
-
     const handler = (resolve: any) => {
       // 5 - 10 秒后爬取下一详情
       const fetchNextDetail = () => {
@@ -260,13 +260,21 @@ export class HouseSpiderService extends CronService {
         // 队列中还存在未爬取数据
         if (this.pendingFetchList.length) {
           const firstItem = this.pendingFetchList.shift()!;
-          const url = HouseSpiderService.topicUrl + firstItem.tid;
+          const { tid } = firstItem;
+          const url = HouseSpiderService.topicUrl + tid;
+          this.logger.log(`开始获取豆瓣小组出租详情, tid: ${tid}`);
           request
             .get<any, string>(url, createUserAgent())
             .then((res) => {
-              this.parseDetailData(res, firstItem.tid)
-                .then(() => {
-                  this.logger.log(`保存房源成功豆瓣话题成功, tid:${firstItem.tid}`);
+              this.parseDetailData(res, tid)
+                .then((reason) => {
+                  // 解析出来若结果为 null 说明有信息丢失(地铁名没有解析到/已存在数据库中)
+                  // 跳过继续爬取下一条
+                  if (reason) {
+                    this.logger.log(`已跳过房源保存, ${url}, 原因: ${reason}`);
+                  } else {
+                    this.logger.log(`保存房源成功豆瓣话题成功, tid:${tid}`);
+                  }
                   this.fetchCount++;
                   fetchNextDetail();
                 })
@@ -286,6 +294,7 @@ export class HouseSpiderService extends CronService {
               this.pendingFetchList.push(firstItem);
             });
         } else {
+          this.logger.log('详情爬取完毕!');
           resolve();
         }
       } else {
@@ -307,6 +316,9 @@ export class HouseSpiderService extends CronService {
    * @memberof HouseSpiderService
    */
   private async parseDetailData(html: string, tid: string) {
+    // 列表中的保存的用户名和标题
+    const { username, title, updateAt } = this.houseDataMap.get(tid)!;
+
     // 获取连接并创建新的queryRunner
     const connection = getConnection();
     const queryRunner = connection.createQueryRunner();
@@ -321,7 +333,7 @@ export class HouseSpiderService extends CronService {
       const dbHouse = await queryRunner.manager.findOne(House, { where: { tid } });
       if (dbHouse) {
         await queryRunner.release();
-        return Promise.resolve();
+        return Promise.resolve('已经存在数据库中');
       }
 
       const $ = cheerio.load(html);
@@ -329,10 +341,10 @@ export class HouseSpiderService extends CronService {
       const cTime = $('#content h3 .color-green').text();
       const userface = $('.user-face img').attr('src')!;
 
-      const { house: parsedHouse, user, subwayName } = parseHouseHtml(text);
+      const { house: parsedHouse, user, subwayName } = parseHouseHtml(text, title);
       parsedHouse.content = text;
       parsedHouse.createdAt = new Date(cTime);
-      parsedHouse.updatedAt = new Date();
+      parsedHouse.updatedAt = new Date(updateAt);
 
       // 目前写死为广州
       parsedHouse.city = await queryRunner.manager.findOneOrFail(City, {
@@ -344,6 +356,8 @@ export class HouseSpiderService extends CronService {
           name: subwayName,
           cityId: DEFAULT_CITY_ID,
         });
+      } else {
+        return Promise.resolve('解析地铁名失败');
       }
 
       // 图片
@@ -356,7 +370,6 @@ export class HouseSpiderService extends CronService {
         parsedHouse.imgs = imgArr.join(',');
       }
 
-      const { username, title } = this.houseDataMap.get(tid)!;
       // 标题和 tid
       parsedHouse.title = title;
       parsedHouse.tid = +tid;
@@ -376,13 +389,15 @@ export class HouseSpiderService extends CronService {
         await queryRunner.manager.save(House, parsedHouse);
       } else {
         // 创建默认密码为 123456
-        const password = 'e10adc3949ba59abbe56e057f20f883e';
+        const password = DEFAULT_USER_PASSWORD;
         // 创建用户
+        const defaultRoles = await queryRunner.manager.find(Role, { token: DEFAULT_ROLE });
         const newUser = await queryRunner.manager.save(User, {
           ...user,
           username,
           password,
           avatar: userface,
+          roles: defaultRoles,
           houses: [parsedHouse as House],
         });
         parsedHouse.user = newUser as User;
@@ -392,6 +407,7 @@ export class HouseSpiderService extends CronService {
 
       // 提交事务
       await queryRunner.commitTransaction();
+      return void 0;
     } catch (err) {
       console.log(err);
       this.logger.error('保存房源事务失败，即将回滚', err);

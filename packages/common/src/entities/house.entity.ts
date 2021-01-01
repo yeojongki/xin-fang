@@ -64,10 +64,11 @@ export class House extends Base {
     transformer: {
       from: (v) => (v && typeof v.split === 'function' ? v.split(',') : []),
       to: (v) => {
-        if (typeof v === 'string') {
-          return v;
+        if (!v) return '';
+        if (Array.isArray(v)) {
+          return v.length ? v.filter(isNotEmpty).join(',') : '';
         }
-        return v.length ? v.filter(isNotEmpty).join(',') : '';
+        return v.toString();
       },
     },
   })
@@ -140,22 +141,12 @@ export class House extends Base {
   @JoinColumn({ name: 'user_id' })
   user!: User;
 
-  @Transform(
-    (v: City) => {
-      return v.name;
-    },
-    { toPlainOnly: true },
-  )
+  @Transform((v: City) => v.name, { toPlainOnly: true })
   @ManyToOne(() => City, (city) => city.houses)
   @JoinColumn({ name: 'city_id' })
   city!: City;
 
-  @Transform(
-    (v: Subway) => {
-      return v.name;
-    },
-    { toPlainOnly: true },
-  )
+  @Transform((v: Subway) => v.name, { toPlainOnly: true })
   @ManyToOne(() => Subway, (subway) => subway.houses)
   @JoinColumn({ name: 'subway_id' })
   subway!: Subway;
