@@ -48,7 +48,7 @@ export const checkPermission = (
     return permissions.includes(`${controllerName}.update`);
   }
 
-  // PUT => 更新权限
+  // POST => 创建权限
   if (method === RequestMethod.POST) {
     return permissions.includes(`${controllerName}.create`);
   }
