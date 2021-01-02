@@ -219,11 +219,13 @@ const Houses: FC<IHousesProps> = ({
       ),
     },
     {
-      key: 'status',
-      dataIndex: 'status',
+      key: 'reviewed',
+      dataIndex: 'reviewed',
       title: '审核状态',
-      render: (status: HouseReviewed) => (
-        <Tag color={status === HouseReviewed.NO ? 'red' : 'green'}>{HouseReviewedMap[status]}</Tag>
+      render: (reviewed: HouseReviewed) => (
+        <Tag color={reviewed === HouseReviewed.NO ? 'red' : 'green'}>
+          {HouseReviewedMap[reviewed]}
+        </Tag>
       ),
     },
     {
