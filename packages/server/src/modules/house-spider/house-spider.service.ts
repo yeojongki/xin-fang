@@ -4,11 +4,12 @@ import { SchedulerRegistry } from '@nestjs/schedule';
 import * as cheerio from 'cheerio';
 import { City, House, Role, Subway, User } from '@xf/common/src/entities';
 import { DEFAULT_CITY_ID } from '@xf/common/src/constants/city.const';
-import { DEFAULT_USER_PASSWORD } from '@xf/common/src/constants/user.const';
-import { request, createRangeRandom } from '@/utils';
-import { CronService } from '@/common/cron/cron.service';
-import { parseHouseHtml, createUserAgent } from './util';
 import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
+import { DEFAULT_USER_PASSWORD } from '@xf/common/src/constants/user.const';
+import { CronService } from '@/common/cron/cron.service';
+import { AttachmentService } from '@/modules/attachment/attachment.service';
+import { parseHouseHtml, createUserAgent } from './util';
+import { request, createRangeRandom } from '@/utils';
 
 export interface IDoubanGroupTopic {
   title: string;
@@ -51,7 +52,10 @@ export class HouseSpiderService extends CronService {
    */
   private pendingFetchList: IDoubanGroupTopic[] = [];
 
-  constructor(protected readonly schedulerRegistry: SchedulerRegistry) {
+  constructor(
+    protected readonly schedulerRegistry: SchedulerRegistry,
+    private readonly attachmentService: AttachmentService,
+  ) {
     super(schedulerRegistry);
   }
 
@@ -339,7 +343,7 @@ export class HouseSpiderService extends CronService {
       const $ = cheerio.load(html);
       const text = $('#link-report .topic-richtext').text().trim();
       const cTime = $('#content h3 .color-green').text();
-      const userface = $('.user-face img').attr('src')!;
+      // const userface = $('.user-face img').attr('src')!;
 
       const { house: parsedHouse, user, subwayName } = parseHouseHtml(text, title);
       parsedHouse.content = text;
@@ -362,13 +366,16 @@ export class HouseSpiderService extends CronService {
 
       // 图片
       const $imgs = $('#link-report img');
+      let imgArr: string[] = [];
+
       if ($imgs.length) {
-        const imgArr: string[] = [];
         $imgs.each((_, el) => {
           imgArr.push($(el).attr('src')!);
         });
         parsedHouse.imgs = imgArr.join(',');
       }
+      // 只保存 9 张图
+      imgArr = imgArr.slice(0, 9);
 
       // 标题和 tid
       parsedHouse.title = title;
@@ -383,9 +390,13 @@ export class HouseSpiderService extends CronService {
       });
 
       if (dbUser) {
+        // 上传图片
+        const imgs = await this.attachmentService.uploadImgs2OSS(imgArr, dbUser.id, 'house');
+        parsedHouse.imgs = imgs.join(',');
         parsedHouse.user = dbUser;
         parsedHouse.user!.houses.push(parsedHouse as House);
         // 更新数据库房子数据
+        await queryRunner.manager.save(User, parsedHouse.user);
         await queryRunner.manager.save(House, parsedHouse);
       } else {
         // 创建默认密码为 123456
@@ -396,11 +407,16 @@ export class HouseSpiderService extends CronService {
           ...user,
           username,
           password,
-          avatar: userface,
+          // 设置默认头像
+          avatar: 'logo.png',
           roles: defaultRoles,
           houses: [parsedHouse as House],
         });
         parsedHouse.user = newUser as User;
+        // 上传图片
+        const imgs = await this.attachmentService.uploadImgs2OSS(imgArr, newUser.id!, 'house');
+        parsedHouse.imgs = imgs.join(',');
+
         // 创建房子
         await queryRunner.manager.save(House, parsedHouse);
       }
