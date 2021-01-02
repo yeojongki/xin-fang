@@ -3,7 +3,13 @@ import { WrappedFormUtils } from 'antd/es/form/Form';
 import { Tag } from 'antd';
 import { House } from '@xf/common/src/entities';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { HouseStatus, HouseStatusMap } from '@xf/common/src/constants/house.const';
+import {
+  HouseRentPayTypeMap,
+  HouseReviewed,
+  HouseReviewedMap,
+  HouseStatus,
+  HouseStatusMap,
+} from '@xf/common/src/constants/house.const';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { ICity } from '@xf/common/src/interfaces/city.interface';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
@@ -205,11 +211,27 @@ const Houses: FC<IHousesProps> = ({
       render: (title: string) => <TooltipColumn text={title} width="300px" />,
     },
     {
+      key: 'price',
+      dataIndex: 'price',
+      title: '价格',
+      render: (price: number, { rentPayType }) => (
+        <div>{price ? `${price}/${HouseRentPayTypeMap[rentPayType].replace('按', '')}` : '-'}</div>
+      ),
+    },
+    {
       key: 'status',
       dataIndex: 'status',
-      title: '状态',
+      title: '审核状态',
+      render: (status: HouseReviewed) => (
+        <Tag color={status === HouseReviewed.NO ? 'red' : 'green'}>{HouseReviewedMap[status]}</Tag>
+      ),
+    },
+    {
+      key: 'status',
+      dataIndex: 'status',
+      title: '上架状态',
       render: (status: HouseStatus) => (
-        <Tag color={status === 0 ? 'blue' : ''}>{HouseStatusMap[status]}</Tag>
+        <Tag color={status === HouseStatus.ON ? 'blue' : ''}>{HouseStatusMap[status]}</Tag>
       ),
     },
     {
@@ -226,7 +248,7 @@ const Houses: FC<IHousesProps> = ({
     {
       key: 'subway',
       dataIndex: 'subway',
-      title: '地铁站',
+      title: '地铁线路',
       render: (subway: string) => <div>{subway}</div>,
     },
     {

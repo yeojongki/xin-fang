@@ -17,9 +17,9 @@ export abstract class CurdController<E extends IFindIdResult, U extends IID> ext
     super(service);
   }
 
-  abstract async create(dto: any, ...args: any): Promise<any>;
+  abstract create(dto: any, ...args: any): Promise<any>;
 
-  abstract async update(dto: U): Promise<any>;
+  abstract update(dto: U, ...args: any): Promise<any>;
 
   @Delete(':id')
   @Message('删除成功')

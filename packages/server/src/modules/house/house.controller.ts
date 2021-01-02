@@ -19,7 +19,8 @@ export class HouseController extends CurdController<House, UpdateHouseInput> {
   }
 
   @Put()
-  async update(@Body() dto: UpdateHouseInput): Promise<void> {
-    await this.service.update(dto);
+  async update(@Body() dto: UpdateHouseInput, @Req() req: IAuthRequest): Promise<void> {
+    const { user } = req;
+    await this.service.update(dto, user);
   }
 }

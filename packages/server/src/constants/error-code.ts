@@ -71,4 +71,9 @@ export enum errorCode {
    * 两次邮箱相同
    */
   EMAIL_IS_SAME = -1065,
+
+  /**
+   * 非法更新房子
+   */
+  INVALID_UPDATE_HOUSE = -1090,
 }

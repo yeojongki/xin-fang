@@ -7,21 +7,25 @@ import {
   HouseReviewed,
   HouseStatus,
 } from '../../constants/house.const';
+import { User } from '../../entities';
 
 export class CreateHouseInput {
   @IsNotEmpty()
   @IsString()
-  @MaxLength(50)
+  @MaxLength(200)
   title!: string;
 
   @IsNotEmpty()
   @IsString()
-  @MaxLength(500)
+  @MaxLength(2000)
   content!: string;
 
   @IsNotEmpty()
   @IsString()
   imgs!: string;
+
+  @IsNotEmpty()
+  user!: User;
 
   @IsNotEmpty()
   @Transform((v) => parseInt(v, 10))
@@ -71,4 +75,8 @@ export class CreateHouseInput {
   @IsOptional()
   @IsNumber()
   kitchenNumber?: number;
+
+  @IsOptional()
+  @Transform((v) => parseInt(v, 10))
+  price?: number;
 }

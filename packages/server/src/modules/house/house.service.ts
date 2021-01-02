@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { House } from '@xf/common/src/entities';
@@ -9,6 +9,7 @@ import { CityService } from '@/modules/city/city.service';
 import { CreateHouseInput } from '@xf/common/src/dtos/house/create-house.input';
 import { IUser } from '@xf/common/src/interfaces/user.interfaces';
 import { SubwayService } from '../subway/subway.service';
+import { errorCode } from '@/constants/error-code';
 @Injectable()
 export class HouseService extends CurdService<House, UpdateHouseInput> {
   constructor(
@@ -75,11 +76,20 @@ export class HouseService extends CurdService<House, UpdateHouseInput> {
   /**
    * 更新数据 数据实体不存在 id 时抛错
    */
-  async update(dto: UpdateHouseInput): Promise<House> {
+  async update(dto: UpdateHouseInput, user: IUser): Promise<House> {
     const { id } = dto;
-    let toUpdate = await this.findByIdAndThrowError(id);
-    toUpdate = await this.addCitySubwayToHouse(toUpdate, dto);
-    return await this.repository.save(Object.assign(toUpdate, dto));
+    const userHouses = (user.houses as unknown) as string[];
+    // 只能本人修改本人的房子
+    if (userHouses.includes(id)) {
+      let toUpdate = await this.findByIdAndThrowError(id);
+      toUpdate = await this.addCitySubwayToHouse(toUpdate, dto);
+      return await this.repository.save(Object.assign(toUpdate, dto));
+    }
+    // 不是本人修改
+    throw new ForbiddenException({
+      message: '非法更新房源',
+      errno: errorCode.INVALID_UPDATE_HOUSE,
+    });
   }
 
   /**

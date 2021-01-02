@@ -76,7 +76,7 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
 
           <FormItem label="地铁">
             {getFieldDecorator('subwayId')(
-              <Select placeholder="请选择地铁" style={{ minWidth: '174px' }}>
+              <Select placeholder="请选择地铁线路" style={{ minWidth: '174px' }}>
                 {subwayList.map(({ id, name }) => (
                   <Option key={id} value={id}>
                     {name}
@@ -86,9 +86,9 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
             )}
           </FormItem>
 
-          <FormItem label="状态">
+          <FormItem label="上架状态">
             {getFieldDecorator('status')(
-              <Select placeholder="请选择状态" style={{ minWidth: '174px' }}>
+              <Select placeholder="请选择上架状态" style={{ minWidth: '174px' }}>
                 {houseStatusOptions.map(({ value, name }) => (
                   <Option key={value} value={value}>
                     {name}
@@ -98,9 +98,9 @@ const Query: FC<IQueryProps> = (props: IQueryProps) => {
             )}
           </FormItem>
 
-          <FormItem label="是否审核">
+          <FormItem label="审核状态">
             {getFieldDecorator('reviewed')(
-              <Select placeholder="请选择是否审核" style={{ minWidth: '174px' }}>
+              <Select placeholder="请选择审核状态" style={{ minWidth: '174px' }}>
                 {houseReviewedOptions.map(({ value, name }) => (
                   <Option key={value} value={value}>
                     {name}

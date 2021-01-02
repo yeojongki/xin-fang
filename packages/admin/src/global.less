@@ -45,3 +45,24 @@ ol {
     }
   }
 }
+
+@media (-webkit-max-device-pixel-ratio: 1) {
+  ::-webkit-scrollbar-track-piece {
+    background-color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    min-height: 28px;
+    background-color: #c2c2c2;
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #a0a0a0;
+  }
+}
