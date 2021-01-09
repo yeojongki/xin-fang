@@ -2,7 +2,7 @@ import { ValidationError } from 'class-validator';
 import { BadRequestException } from '@nestjs/common';
 import { errorCode } from '@/constants/error-code';
 
-export { default as request } from './request';
+export * from './request';
 export * from './random';
 export * from './user-agent';
 

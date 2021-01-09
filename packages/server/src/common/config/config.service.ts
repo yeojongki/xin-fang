@@ -131,4 +131,8 @@ export class ConfigService {
   get REDIS_PORT(): number {
     return +this.envConfig.REDIS_PORT;
   }
+
+  get PROXY_POOL_COUNT(): number {
+    return +this.envConfig.PROXY_POOL_COUNT;
+  }
 }

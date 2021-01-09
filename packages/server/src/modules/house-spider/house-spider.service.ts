@@ -2,14 +2,16 @@ import { Injectable, Logger } from '@nestjs/common';
 import { getConnection } from 'typeorm';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import * as cheerio from 'cheerio';
+import { AxiosRequestConfig } from 'axios';
 import { City, House, Role, Subway, User } from '@xf/common/src/entities';
 import { DEFAULT_CITY_ID } from '@xf/common/src/constants/city.const';
 import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
 import { DEFAULT_USER_PASSWORD } from '@xf/common/src/constants/user.const';
 import { CronService } from '@/common/cron/cron.service';
 import { AttachmentService } from '@/modules/attachment/attachment.service';
-import { parseHouseHtml, createUserAgent } from './util';
 import { request, createRangeRandom } from '@/utils';
+import { parseHouseHtml, createBid } from './util';
+// import { ProxyService } from '@/common/proxy/proxy.service';
 
 export interface IDoubanGroupTopic {
   title: string;
@@ -54,7 +56,7 @@ export class HouseSpiderService extends CronService {
 
   constructor(
     protected readonly schedulerRegistry: SchedulerRegistry,
-    private readonly attachmentService: AttachmentService,
+    private readonly attachmentService: AttachmentService, // private readonly proxyService: ProxyService,
   ) {
     super(schedulerRegistry);
   }
@@ -133,12 +135,25 @@ export class HouseSpiderService extends CronService {
 
   public startCronJob(expression: string | Date = HouseSpiderService.CronExpression) {
     const cronJob = this.addCronJob(HouseSpiderService.cronJobName, expression, () => {
+      // 创建代理池
+      // this.proxyService.createProxyPool().then(() => {
       this.fetchList().then(() => {
         // 爬取详情
         this.fetchDetail();
       });
+      // });
     });
     cronJob.start();
+  }
+
+  private request(options: AxiosRequestConfig) {
+    const bid = createBid();
+    if (!options.headers) {
+      options.headers = { Cookie: bid };
+    } else {
+      options.headers.Cookie = bid;
+    }
+    return request(options);
   }
 
   /**
@@ -160,9 +175,9 @@ export class HouseSpiderService extends CronService {
       };
 
       const url = HouseSpiderService.groupListUrl + this.pageNum * 25;
-      request
-        .get<any, string>(url, createUserAgent())
-        .then((res) => {
+      // this.proxyService
+      this.request({ url })
+        .then((res: any) => {
           this.pageNum++;
           this.parseListData(res);
 
@@ -267,9 +282,9 @@ export class HouseSpiderService extends CronService {
           const { tid } = firstItem;
           const url = HouseSpiderService.topicUrl + tid;
           this.logger.log(`开始获取豆瓣小组出租详情, tid: ${tid}`);
-          request
-            .get<any, string>(url, createUserAgent())
-            .then((res) => {
+          // this.proxyService
+          this.request({ url })
+            .then((res: any) => {
               this.parseDetailData(res, tid)
                 .then((reason) => {
                   // 解析出来若结果为 null 说明有信息丢失(地铁名没有解析到/已存在数据库中)

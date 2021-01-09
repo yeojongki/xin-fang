@@ -1,5 +1,5 @@
 import { House, User } from '@xf/common/src/entities';
-import { userAgents } from '@/utils';
+import { getRandomUserAgent } from '@/utils';
 import { HouseRentType, HouseRentTypeMap } from '@xf/common/src/constants/house.const';
 
 const chineseMap = {
@@ -127,6 +127,22 @@ export const createUserAgent = () => ({
     'Sec-Fetch-Site': 'same-origin',
     'Sec-Fetch-User': '?1',
     'Upgrade-Insecure-Requests': '1',
-    'User-Agent': userAgents[parseInt(Math.random() * userAgents.length + '')],
+    'User-Agent': getRandomUserAgent(),
   },
 });
+
+/**
+ * 生成 11 位 bid for Cookie bid=xxx
+ *
+ * @export
+ * @returns
+ */
+export function createBid() {
+  const leng = 11;
+  const str = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz123456789';
+  let result = '';
+  for (let i = 0; i < leng; i++) {
+    result += str.charAt(Math.floor(Math.random() * str.length));
+  }
+  return `bid=${result}`;
+}

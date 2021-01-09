@@ -24,6 +24,8 @@ export const permissionWhiteList = {
   '/attachment/signature': true,
   '/email/sendVerifyEmail': true,
   '/email/verifyByCode': true,
+  '/test/req': true,
+  '/test/proxy': true,
 };
 
 export const checkPermission = (
