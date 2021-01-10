@@ -11,7 +11,7 @@
  Target Server Version : 80014
  File Encoding         : 65001
 
- Date: 02/01/2021 16:48:13
+ Date: 10/01/2021 23:43:27
 */
 
 SET NAMES utf8mb4;
@@ -117,8 +117,8 @@ CREATE TABLE `house`  (
 -- ----------------------------
 -- Records of house
 -- ----------------------------
-INSERT INTO `house` VALUES ('2020-08-17 15:30:41', '2021-01-02 01:11:09', '3651ed2e-b137-40ce-b88f-f22890b7e9c0', '广州南', '0', 0, 0, 0, '491446a5-5df3-4ae1-b44a-7a0fcce98453', 4401, 54, '0', '0', '0', NULL, '0', 0, 0, 0, 0, 0, 0, -1, '0b674fe76102a4e0488ce3e2e3bc605e/house/1597649439893.JPG', '编辑');
-INSERT INTO `house` VALUES ('2020-11-15 23:03:18', '2021-01-02 01:10:21', '4a2975cf-5a2b-462b-b1b1-c7c851c990a1', '测试房子', '0', 0, 0, 0, '491446a5-5df3-4ae1-b44a-7a0fcce98453', 4401, 52, '0', '0', '0', NULL, '0', 0, 0, 0, 0, 0, 0, -1, '0b674fe76102a4e0488ce3e2e3bc605e/house/1597649077437.JPG,0b674fe76102a4e0488ce3e2e3bc605e/house/1609520952554.png', 'detail');
+INSERT INTO `house` VALUES ('2020-08-17 15:30:41', '2021-01-10 14:09:49', '3651ed2e-b137-40ce-b88f-f22890b7e9c0', '广州南', '0', 0, 0, 0, '491446a5-5df3-4ae1-b44a-7a0fcce98453', 4401, 54, '1', '1', '1', NULL, '0', 0, 0, 0, 0, 0, 0, -1, '0b674fe76102a4e0488ce3e2e3bc605e/house/1597649439893.JPG,0b674fe76102a4e0488ce3e2e3bc605e/house/1610258986451.png', '编辑12');
+INSERT INTO `house` VALUES ('2020-11-15 23:03:18', '2021-01-10 23:11:29', '4a2975cf-5a2b-462b-b1b1-c7c851c990a1', '测试房子', '0', 0, 0, 0, '491446a5-5df3-4ae1-b44a-7a0fcce98453', 4401, 52, '1', '0', '0', NULL, '0', 0, 0, 0, 0, 0, 0, -1, '0b674fe76102a4e0488ce3e2e3bc605e/house/1597649077437.JPG', 'detail');
 
 -- ----------------------------
 -- Table structure for permission
@@ -141,30 +141,32 @@ CREATE TABLE `permission`  (
 -- ----------------------------
 -- Records of permission
 -- ----------------------------
-INSERT INTO `permission` VALUES ('2019-11-04 22:22:12', '2019-11-04 22:22:12', '106b2de4-7423-48a0-ad3c-f585928d1d25', 'house.create', 'house', '房子创建', '', NULL);
-INSERT INTO `permission` VALUES ('2019-11-04 22:22:32', '2019-11-04 22:22:32', '187ce680-4388-4096-8894-1274777bc056', 'house.update', 'house', '房子更新', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:55:43', '2019-09-24 22:56:28', '1c5008c8-5dcc-41de-9f69-60873424f216', 'permission.create', 'permission', '权限创建', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:36:51', '2019-09-24 22:36:51', '2b8f8412-acad-447a-9b5a-a5ccb2001990', 'user.delete', 'user', '用户删除', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:57:37', '2019-09-24 22:57:37', '33418f6e-0c17-48ab-9e7e-415716bf63d2', 'permission.update', 'permission', '权限更新', '', NULL);
-INSERT INTO `permission` VALUES ('2019-10-04 11:03:11', '2019-10-04 11:03:11', '4add5c1b-972e-41d7-99d5-2060868acb24', 'city.list', 'city', '城市列表', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:53:51', '2019-09-24 22:53:51', '561311a8-e37f-415d-8a62-4e06a9a3a0bc', 'role.create', 'role', '角色创建', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:56:40', '2019-09-24 22:56:40', '6c5652bd-073e-4faf-99a9-26eeadeb9f2b', 'permission.delete', 'permission', '权限删除', '', NULL);
-INSERT INTO `permission` VALUES ('2019-11-04 22:22:50', '2019-11-04 22:22:50', '6e611ae7-fd20-44a9-935b-43574b2bbd3e', 'house.delete', 'house', '房子删除', '', NULL);
-INSERT INTO `permission` VALUES ('2019-10-04 17:42:39', '2019-10-04 17:42:39', '70413f64-7aae-45a1-8742-4b07da967404', 'city.item', 'city', '城市 Item', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:38:11', '2019-09-24 22:38:11', '7cf99844-e99b-409f-aef9-924aa3a06a3b', 'user.update', 'user', '用户更新', '', NULL);
-INSERT INTO `permission` VALUES ('2019-10-04 11:03:35', '2019-10-04 11:03:35', '8610715e-830a-4181-be8f-7f4b6f751559', 'city.update', 'city', '城市更新', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:49:26', '2019-09-24 22:53:17', 'a41d8e7c-2707-48d8-8dbd-50d6b2f66bed', 'role.item', 'role', '角色 Item', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:55:13', '2019-09-24 22:55:13', 'b2df8029-b41b-4fb1-9948-30714dac0892', 'permission.list', 'permission', '权限列表', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:38:25', '2019-09-24 22:38:25', 'b894f1fa-ed74-4368-8666-18b971809efb', 'user.create', 'user', '用户创建', '', NULL);
-INSERT INTO `permission` VALUES ('2019-11-04 22:23:39', '2019-11-04 22:23:39', 'c23cfc33-05e7-47e8-8434-f20da372149c', 'house.list', 'house', '房子列表', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:53:42', '2019-09-24 22:53:42', 'ca8ab26d-0637-42d0-b61b-3f671ef958f3', 'role.update', 'role', '角色更新', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:28:28', '2019-09-24 22:37:04', 'cdf2372c-31ec-42f1-b552-fb58e9f124fb', 'user.list', 'user', '用户列表', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:53:31', '2019-09-24 22:53:31', 'd6c57cba-04bb-4e50-8893-120e4276698b', 'role.list', 'role', '角色列表', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:37:44', '2019-09-24 22:52:59', 'e06ea503-4bb3-4ec3-a58b-d86825ce2fec', 'user.item', 'user', '用户 Item', '', NULL);
-INSERT INTO `permission` VALUES ('2019-10-05 00:52:05', '2019-10-05 00:52:05', 'e1bb48eb-29f0-4b06-97dc-31e06f923256', 'subway.list', 'subway', '地铁列表', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:54:54', '2019-09-24 22:54:54', 'e2ceb8b7-deaf-49e6-8ce2-bde931ae5bc2', 'role.delete', 'role', '角色删除', '', NULL);
-INSERT INTO `permission` VALUES ('2019-09-24 22:56:52', '2019-09-24 22:56:52', 'e5575e16-c92a-4432-917e-e9a51fce47d7', 'permission.item', 'permission', '权限 Item', '', NULL);
-INSERT INTO `permission` VALUES ('2019-11-04 22:23:23', '2019-11-04 22:23:23', 'eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', 'house.item', 'house', '房子 Item', '', NULL);
+INSERT INTO `permission` VALUES ('2019-11-04 22:22:12', '2019-11-04 22:22:12', '106b2de4-7423-48a0-ad3c-f585928d1d25', 'post.house', 'house', '房子创建', '', NULL);
+INSERT INTO `permission` VALUES ('2019-11-04 22:22:32', '2019-11-04 22:22:32', '187ce680-4388-4096-8894-1274777bc056', 'put.house', 'house', '房子更新', '', NULL);
+INSERT INTO `permission` VALUES ('2021-01-10 23:16:45', '2021-01-10 23:16:45', '1c3b2792-5a0d-47ca-93d9-5fb22e117c9e', 'put.house-spider.toggleSpiderOpen', 'house-spider', '更新豆瓣爬虫开启状态', NULL, NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:55:43', '2019-09-24 22:56:28', '1c5008c8-5dcc-41de-9f69-60873424f216', 'post.permission', 'permission', '权限创建', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:36:51', '2019-09-24 22:36:51', '2b8f8412-acad-447a-9b5a-a5ccb2001990', 'delete.user', 'user', '用户删除', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:57:37', '2019-09-24 22:57:37', '33418f6e-0c17-48ab-9e7e-415716bf63d2', 'put.permission', 'permission', '权限更新', '', NULL);
+INSERT INTO `permission` VALUES ('2019-10-04 11:03:11', '2019-10-04 11:03:11', '4add5c1b-972e-41d7-99d5-2060868acb24', 'get.city.list', 'city', '城市列表', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:53:51', '2019-09-24 22:53:51', '561311a8-e37f-415d-8a62-4e06a9a3a0bc', 'post.role', 'role', '角色创建', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:56:40', '2019-09-24 22:56:40', '6c5652bd-073e-4faf-99a9-26eeadeb9f2b', 'delete.permission', 'permission', '权限删除', '', NULL);
+INSERT INTO `permission` VALUES ('2019-11-04 22:22:50', '2019-11-04 22:22:50', '6e611ae7-fd20-44a9-935b-43574b2bbd3e', 'delete.house', 'house', '房子删除', '', NULL);
+INSERT INTO `permission` VALUES ('2019-10-04 17:42:39', '2019-10-04 17:42:39', '70413f64-7aae-45a1-8742-4b07da967404', 'get.city', 'city', '城市 Item', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:38:11', '2019-09-24 22:38:11', '7cf99844-e99b-409f-aef9-924aa3a06a3b', 'put.user', 'user', '用户更新', '', NULL);
+INSERT INTO `permission` VALUES ('2019-10-04 11:03:35', '2019-10-04 11:03:35', '8610715e-830a-4181-be8f-7f4b6f751559', 'put.city', 'city', '城市更新', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:49:26', '2019-09-24 22:53:17', 'a41d8e7c-2707-48d8-8dbd-50d6b2f66bed', 'get.role', 'role', '角色 Item', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:55:13', '2019-09-24 22:55:13', 'b2df8029-b41b-4fb1-9948-30714dac0892', 'get.permission.list', 'permission', '权限列表', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:38:25', '2019-09-24 22:38:25', 'b894f1fa-ed74-4368-8666-18b971809efb', 'post.user', 'user', '用户创建', '', NULL);
+INSERT INTO `permission` VALUES ('2019-11-04 22:23:39', '2019-11-04 22:23:39', 'c23cfc33-05e7-47e8-8434-f20da372149c', 'get.house.list', 'house', '房子列表', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:53:42', '2019-09-24 22:53:42', 'ca8ab26d-0637-42d0-b61b-3f671ef958f3', 'put.role', 'role', '角色更新', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:28:28', '2019-09-24 22:37:04', 'cdf2372c-31ec-42f1-b552-fb58e9f124fb', 'get.user.list', 'user', '用户列表', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:53:31', '2019-09-24 22:53:31', 'd6c57cba-04bb-4e50-8893-120e4276698b', 'get.role.list', 'role', '角色列表', '', NULL);
+INSERT INTO `permission` VALUES ('2021-01-10 23:15:57', '2021-01-10 23:15:57', 'd70da981-0fcd-46c6-82cf-c1998ae3e8de', 'get.house-spider.isOpened', 'house-spider', '获取豆瓣爬虫开启状态', NULL, NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:37:44', '2019-09-24 22:52:59', 'e06ea503-4bb3-4ec3-a58b-d86825ce2fec', 'get.user', 'user', '用户 Item', '', NULL);
+INSERT INTO `permission` VALUES ('2019-10-05 00:52:05', '2019-10-05 00:52:05', 'e1bb48eb-29f0-4b06-97dc-31e06f923256', 'get.subway.list', 'subway', '地铁列表', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:54:54', '2019-09-24 22:54:54', 'e2ceb8b7-deaf-49e6-8ce2-bde931ae5bc2', 'delete.role', 'role', '角色删除', '', NULL);
+INSERT INTO `permission` VALUES ('2019-09-24 22:56:52', '2019-09-24 22:56:52', 'e5575e16-c92a-4432-917e-e9a51fce47d7', 'get.permission', 'permission', '权限 Item', '', NULL);
+INSERT INTO `permission` VALUES ('2019-11-04 22:23:23', '2019-11-04 22:23:23', 'eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', 'get.house', 'house', '房子 Item', '', NULL);
 
 -- ----------------------------
 -- Table structure for role
@@ -212,6 +214,7 @@ INSERT INTO `role_permission` VALUES ('106b2de4-7423-48a0-ad3c-f585928d1d25', '4
 INSERT INTO `role_permission` VALUES ('106b2de4-7423-48a0-ad3c-f585928d1d25', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('187ce680-4388-4096-8894-1274777bc056', '4b7f2859-cc69-4781-ae40-2e8dc13aa21c');
 INSERT INTO `role_permission` VALUES ('187ce680-4388-4096-8894-1274777bc056', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('1c3b2792-5a0d-47ca-93d9-5fb22e117c9e', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('1c5008c8-5dcc-41de-9f69-60873424f216', '4b7f2859-cc69-4781-ae40-2e8dc13aa21c');
 INSERT INTO `role_permission` VALUES ('1c5008c8-5dcc-41de-9f69-60873424f216', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('2b8f8412-acad-447a-9b5a-a5ccb2001990', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
@@ -233,6 +236,7 @@ INSERT INTO `role_permission` VALUES ('b2df8029-b41b-4fb1-9948-30714dac0892', '4
 INSERT INTO `role_permission` VALUES ('b2df8029-b41b-4fb1-9948-30714dac0892', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('b894f1fa-ed74-4368-8666-18b971809efb', '4b7f2859-cc69-4781-ae40-2e8dc13aa21c');
 INSERT INTO `role_permission` VALUES ('b894f1fa-ed74-4368-8666-18b971809efb', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('c23cfc33-05e7-47e8-8434-f20da372149c', '1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1');
 INSERT INTO `role_permission` VALUES ('c23cfc33-05e7-47e8-8434-f20da372149c', '4b7f2859-cc69-4781-ae40-2e8dc13aa21c');
 INSERT INTO `role_permission` VALUES ('c23cfc33-05e7-47e8-8434-f20da372149c', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('ca8ab26d-0637-42d0-b61b-3f671ef958f3', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
@@ -240,6 +244,7 @@ INSERT INTO `role_permission` VALUES ('cdf2372c-31ec-42f1-b552-fb58e9f124fb', '4
 INSERT INTO `role_permission` VALUES ('cdf2372c-31ec-42f1-b552-fb58e9f124fb', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('d6c57cba-04bb-4e50-8893-120e4276698b', '4b7f2859-cc69-4781-ae40-2e8dc13aa21c');
 INSERT INTO `role_permission` VALUES ('d6c57cba-04bb-4e50-8893-120e4276698b', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('d70da981-0fcd-46c6-82cf-c1998ae3e8de', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('e06ea503-4bb3-4ec3-a58b-d86825ce2fec', '4b7f2859-cc69-4781-ae40-2e8dc13aa21c');
 INSERT INTO `role_permission` VALUES ('e06ea503-4bb3-4ec3-a58b-d86825ce2fec', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('e1bb48eb-29f0-4b06-97dc-31e06f923256', '4b7f2859-cc69-4781-ae40-2e8dc13aa21c');
@@ -247,6 +252,7 @@ INSERT INTO `role_permission` VALUES ('e1bb48eb-29f0-4b06-97dc-31e06f923256', '9
 INSERT INTO `role_permission` VALUES ('e2ceb8b7-deaf-49e6-8ce2-bde931ae5bc2', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 INSERT INTO `role_permission` VALUES ('e5575e16-c92a-4432-917e-e9a51fce47d7', '4b7f2859-cc69-4781-ae40-2e8dc13aa21c');
 INSERT INTO `role_permission` VALUES ('e5575e16-c92a-4432-917e-e9a51fce47d7', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', '1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1');
 INSERT INTO `role_permission` VALUES ('eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', '4b7f2859-cc69-4781-ae40-2e8dc13aa21c');
 INSERT INTO `role_permission` VALUES ('eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 
@@ -527,7 +533,21 @@ CREATE TABLE `user_role`  (
 -- Records of user_role
 -- ----------------------------
 INSERT INTO `user_role` VALUES ('10dc1736-69b4-4193-b59e-51d8360ffe17', '33d11ca6-8050-4d3e-9dcb-74bec03b36ff');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '3e58a442-aa72-4ba8-a93a-351c720c905f');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '55139e22-be2f-4b7c-bcdb-3e364aeec8a6');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '57443172-cfca-4c1f-b035-f1b87198e1d2');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '5e48cae5-437c-4acc-8573-856506a050fe');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '67a4065e-3323-48b5-a0a6-312f2183c563');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '6f715075-2598-4023-bbad-4bfb4deade6f');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '87a05730-5eba-4213-95d1-5a9835942f10');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '968ef89f-1356-412b-a039-e1ac49ea306c');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '979417ae-4c15-4ef3-b715-496e5d66d4b6');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'b3fa0661-9d8b-457d-9f73-b1e8d7477115');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'b98b9763-2f3c-4bfe-b0c8-7647664121c4');
 INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'cc21d2f5-f4fb-48c1-92ad-ee1230ccb2c6');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'd04c5704-a498-423e-9d4a-efc478df42e3');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'd365d5b8-6692-4c13-b8c5-854bd8400e23');
+INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'fa883642-c0e9-4cc0-8095-496c447671b1');
 INSERT INTO `user_role` VALUES ('4b7f2859-cc69-4781-ae40-2e8dc13aa21c', 'ace64f4d-c83b-4de2-96fd-09fd778f9296');
 INSERT INTO `user_role` VALUES ('9adf12e6-079e-4695-aab8-6e19cbe1082e', '491446a5-5df3-4ae1-b44a-7a0fcce98453');
 
