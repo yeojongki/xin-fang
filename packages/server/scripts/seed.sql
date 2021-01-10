@@ -533,21 +533,7 @@ CREATE TABLE `user_role`  (
 -- Records of user_role
 -- ----------------------------
 INSERT INTO `user_role` VALUES ('10dc1736-69b4-4193-b59e-51d8360ffe17', '33d11ca6-8050-4d3e-9dcb-74bec03b36ff');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '3e58a442-aa72-4ba8-a93a-351c720c905f');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '55139e22-be2f-4b7c-bcdb-3e364aeec8a6');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '57443172-cfca-4c1f-b035-f1b87198e1d2');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '5e48cae5-437c-4acc-8573-856506a050fe');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '67a4065e-3323-48b5-a0a6-312f2183c563');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '6f715075-2598-4023-bbad-4bfb4deade6f');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '87a05730-5eba-4213-95d1-5a9835942f10');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '968ef89f-1356-412b-a039-e1ac49ea306c');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', '979417ae-4c15-4ef3-b715-496e5d66d4b6');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'b3fa0661-9d8b-457d-9f73-b1e8d7477115');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'b98b9763-2f3c-4bfe-b0c8-7647664121c4');
 INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'cc21d2f5-f4fb-48c1-92ad-ee1230ccb2c6');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'd04c5704-a498-423e-9d4a-efc478df42e3');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'd365d5b8-6692-4c13-b8c5-854bd8400e23');
-INSERT INTO `user_role` VALUES ('1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1', 'fa883642-c0e9-4cc0-8095-496c447671b1');
 INSERT INTO `user_role` VALUES ('4b7f2859-cc69-4781-ae40-2e8dc13aa21c', 'ace64f4d-c83b-4de2-96fd-09fd778f9296');
 INSERT INTO `user_role` VALUES ('9adf12e6-079e-4695-aab8-6e19cbe1082e', '491446a5-5df3-4ae1-b44a-7a0fcce98453');
 
