@@ -5,5 +5,4 @@ require('fs').copyFileSync(
   resolve('packages/server/dist/.env.production'),
 );
 
-// todo fix fail to sync .env file 
 require('./_base')('server', async ssh => await ssh.execCommand('pm2 restart xf-server'), false);

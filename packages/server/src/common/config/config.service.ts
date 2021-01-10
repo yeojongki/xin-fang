@@ -144,6 +144,10 @@ export class ConfigService {
     return this.envConfig.SC_KEY;
   }
 
+  get IS_OPEN_HOUSE_SPIDER(): boolean {
+    return +this.envConfig.IS_OPEN_HOUSE_SPIDER === 1;
+  }
+
   get HOUSE_PUSH_KEYWORD(): string[] {
     return this.envConfig.HOUSE_PUSH_KEYWORD.split(',');
   }

@@ -37,8 +37,13 @@ async function bootstrap() {
   app.useGlobalInterceptors(new HttpResInterceptor(reflector));
 
   await app.listen(configService.get('SERVER_PORT'));
-  const houseSpiderService = app.get(HouseSpiderService);
-  houseSpiderService.startCronJob();
-  // houseSpiderService.startCronJob(new Date(+new Date() + 2000));
+
+  // 豆瓣爬虫
+  if (configService.IS_OPEN_HOUSE_SPIDER) {
+    const houseSpiderService = app.get(HouseSpiderService);
+    houseSpiderService.startCronJob();
+    // houseSpiderService.startCronJob(new Date(+new Date() + 2000));
+  }
 }
+
 bootstrap();

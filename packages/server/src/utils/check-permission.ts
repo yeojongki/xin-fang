@@ -2,6 +2,13 @@ import { RequestMethod } from '@nestjs/common/enums';
 import { IRoute } from '@xf/common/src/interfaces/route.interface';
 import { Permission } from '@xf/common/src/entities';
 
+const requestMethodMap = {
+  [RequestMethod.POST]: 'post',
+  [RequestMethod.GET]: 'get',
+  [RequestMethod.PUT]: 'put',
+  [RequestMethod.DELETE]: 'delete',
+};
+
 /**
  * 免认证的路由 不需要传 token
  */
@@ -35,30 +42,11 @@ export const checkPermission = (
   if (permissionWhiteList[path]) return true;
   if (!permissions) return false;
 
-  // GET list => 获取列表权限
-  if (method === RequestMethod.GET && methodPath === 'list') {
-    return permissions.includes(`${controllerName}.list`);
+  const infoArr = [requestMethodMap[method], controllerName, methodPath];
+  if (methodPath === ':id' || methodPath === '/') {
+    infoArr.splice(infoArr.length - 1, 1);
   }
 
-  // GET item => 获取 item 权限
-  if (method === RequestMethod.GET && methodPath === '/') {
-    return permissions.includes(`${controllerName}.item`);
-  }
-
-  // PUT => 更新权限
-  if (method === RequestMethod.PUT) {
-    return permissions.includes(`${controllerName}.update`);
-  }
-
-  // POST => 创建权限
-  if (method === RequestMethod.POST) {
-    return permissions.includes(`${controllerName}.create`);
-  }
-
-  // DELETE => 删除权限
-  if (method === RequestMethod.DELETE) {
-    return permissions.includes(`${controllerName}.delete`);
-  }
-
-  return false;
+  const permission = infoArr.join('.');
+  return permissions.includes(permission);
 };

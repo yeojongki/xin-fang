@@ -13,6 +13,7 @@ import { request, createRangeRandom } from '@/utils';
 import { parseHouseHtml, createBid } from './util';
 import { WxPushService } from '@/common/wx-push/wx-push.service';
 import { ConfigService } from '@/common/config/config.service';
+import { SystemService } from '@/common/system/system.service';
 // import { ProxyService } from '@/common/proxy/proxy.service';
 
 export interface IDoubanGroupTopic {
@@ -30,41 +31,6 @@ export interface IDoubanGroupTopic {
 
 @Injectable()
 export class HouseSpiderService extends CronService {
-  protected readonly logger = new Logger(HouseSpiderService.name);
-  /**
-   * 错误次数
-   *
-   * @private
-   * @memberof HouseSpiderService
-   */
-  private errorsCount = 0;
-
-  /**
-   * 当前请求次数
-   *
-   * @private
-   * @memberof HouseSpiderService
-   */
-  private fetchCount = 0;
-
-  /**
-   * 待爬取的豆瓣话题列表
-   *
-   * @private
-   * @type {IFetchDoubanItem}
-   * @memberof HouseSpiderService
-   */
-  private pendingFetchList: IDoubanGroupTopic[] = [];
-
-  constructor(
-    protected readonly schedulerRegistry: SchedulerRegistry,
-    private readonly attachmentService: AttachmentService, // private readonly proxyService: ProxyService,
-    private readonly wxPushService: WxPushService,
-    private readonly configService: ConfigService,
-  ) {
-    super(schedulerRegistry);
-  }
-
   /**
    * 每次爬取时最大请求数
    *
@@ -106,6 +72,14 @@ export class HouseSpiderService extends CronService {
   static readonly maxErrorListCount = 5;
 
   /**
+   * 最大爬取详情失败次数
+   *
+   * @static
+   * @memberof HouseSpiderService
+   */
+  static readonly maxErrorDetailCount = 10;
+
+  /**
    * 豆瓣小组每页个数
    *
    * @static
@@ -128,6 +102,56 @@ export class HouseSpiderService extends CronService {
    * @memberof HouseSpiderService
    */
   static readonly topicUrl = 'https://www.douban.com/group/topic/';
+
+  /**
+   * logger
+   *
+   * @protected
+   * @memberof HouseSpiderService
+   */
+  protected readonly logger = new Logger(HouseSpiderService.name);
+
+  /**
+   * 爬取列表错误次数
+   *
+   * @private
+   * @memberof HouseSpiderService
+   */
+  private listErrorCount = 0;
+
+  /**
+   * 爬取详情错误次数
+   *
+   * @private
+   * @memberof HouseSpiderService
+   */
+  private detailErrorCount = 0;
+
+  /**
+   * 当前请求次数
+   *
+   * @private
+   * @memberof HouseSpiderService
+   */
+  private fetchCount = 0;
+
+  /**
+   * 待爬取的豆瓣话题列表
+   *
+   * @private
+   * @type {IFetchDoubanItem}
+   * @memberof HouseSpiderService
+   */
+  private pendingFetchList: IDoubanGroupTopic[] = [];
+
+  constructor(
+    protected readonly schedulerRegistry: SchedulerRegistry,
+    private readonly attachmentService: AttachmentService, // private readonly proxyService: ProxyService,
+    private readonly wxPushService: WxPushService,
+    private readonly configService: ConfigService,
+  ) {
+    super(schedulerRegistry);
+  }
 
   /**
    * 爬取的当前页数
@@ -217,16 +241,16 @@ export class HouseSpiderService extends CronService {
         })
         .catch((err) => {
           // 爬取列表失败超过最大次数，则跳过去爬取详情
-          if (this.errorsCount > HouseSpiderService.maxErrorListCount) {
-            this.logger.error(`获取豆瓣小组列表失败超过最大错误次数${this.errorsCount}`);
+          if (this.listErrorCount > HouseSpiderService.maxErrorListCount) {
+            this.logger.error(`获取豆瓣小组列表失败超过最大错误次数${this.listErrorCount}`);
             // 重置错误为 0
-            this.errorsCount = 0;
+            this.listErrorCount = 0;
             return resolve();
           }
           this.logger.error(
-            `获取豆瓣小组列表失败, 次数:${this.errorsCount}, 地址:${url}, ${err.message}`,
+            `获取豆瓣小组列表失败, 次数:${this.listErrorCount}, 地址:${url}, ${err.message}`,
           );
-          this.errorsCount++;
+          this.listErrorCount++;
           // 重新请求列表
           fetchNextList();
         });
@@ -330,18 +354,25 @@ export class HouseSpiderService extends CronService {
                 });
             })
             .catch((err) => {
-              this.logger.error(`获取豆瓣话题失败, 地址:${url}, ${err.message}`);
-              // 失败则跳过爬取下一条
-              fetchNextDetail();
-              // 把失败的加入到队尾
-              this.pendingFetchList.push(firstItem);
+              if (this.detailErrorCount > HouseSpiderService.maxErrorDetailCount) {
+                const msg = `已超过获取详情失败最大次数${HouseSpiderService.maxErrorDetailCount}`;
+                this.logger.error(msg);
+                this.configService.IS_PROD && this.wxPushService.send(msg);
+                resolve();
+              } else {
+                this.logger.error(`获取豆瓣话题失败, 地址:${url}, ${err.message}`);
+                // 失败则跳过爬取下一条
+                fetchNextDetail();
+                // 把失败的加入到队尾
+                this.pendingFetchList.push(firstItem);
+              }
             });
         } else {
-          this.logger.log('详情爬取完毕!');
+          this.logger.log('列表中已无数据!');
           resolve();
         }
       } else {
-        const info = '已结束本次爬取';
+        const info = `已请求${HouseSpiderService.maxFetchCount}次，等待下一次获取`;
         this.logger.log(info);
         if (this.configService.IS_PROD) {
           this.wxPushService.send(info);

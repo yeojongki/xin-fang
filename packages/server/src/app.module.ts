@@ -16,6 +16,7 @@ import { EmailModule } from './common/email/email.module';
 import { ConfigService } from './common/config/config.service';
 import { HouseSpiderModule } from './modules/house-spider/house-spider.module';
 import { WxPushModule } from './common/wx-push/wx-push.module';
+import { SystemModule } from './common/system/system.module';
 // import { TestModule } from './common/test/test.module';
 
 @Module({
@@ -40,6 +41,7 @@ import { WxPushModule } from './common/wx-push/wx-push.module';
     }),
     HouseSpiderModule,
     WxPushModule,
+    SystemModule,
     // TestModule,
   ],
 })

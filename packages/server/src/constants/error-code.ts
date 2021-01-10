@@ -76,4 +76,9 @@ export enum errorCode {
    * 非法更新房子
    */
   INVALID_UPDATE_HOUSE = -1090,
+
+  /**
+   * 没找到配置项中的某个字段
+   */
+  CONFIG_FIELD_NOT_FOUND = -1120,
 }
