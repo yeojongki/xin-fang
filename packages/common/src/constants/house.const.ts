@@ -92,6 +92,10 @@ export const HouseRentPayTypeOptions = Object.keys(HouseRentPayTypeMap).map((k) 
  */
 export enum HouseRentType {
   /**
+   * 未知
+   */
+  UNKNOW,
+  /**
    * 整租
    */
   ALL,
@@ -102,11 +106,36 @@ export enum HouseRentType {
 }
 
 export const HouseRentTypeMap = {
+  [HouseRentType.UNKNOW]: '未知',
   [HouseRentType.ALL]: '整租',
   [HouseRentType.PART]: '合租',
 };
 
 export const HouseRentTypeOptions = Object.keys(HouseRentTypeMap).map((k) => ({
+  value: k,
+  name: HouseRentTypeMap[k],
+}));
+
+/**
+ * 发布来源类型枚举
+ */
+export enum HousePostType {
+  /**
+   * 平台
+   */
+  PLATFORM,
+  /**
+   * 豆瓣
+   */
+  DOUBAN,
+}
+
+export const HousePostTypeMap = {
+  [HousePostType.PLATFORM]: '平台',
+  [HousePostType.DOUBAN]: '豆瓣',
+};
+
+export const HousePostTypeOptions = Object.keys(HousePostTypeMap).map((k) => ({
   value: k,
   name: HouseRentTypeMap[k],
 }));

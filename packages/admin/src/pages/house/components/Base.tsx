@@ -98,7 +98,7 @@ export const Base = (
 
       <FormItem label="所属城市" hasFeedback>
         {getFieldDecorator('city', {
-          initialValue: initValue ? `${initValue.city.name}` : DEFAULT_CITY_ID,
+          initialValue: initValue ? `${initValue.city}` : DEFAULT_CITY_ID,
           rules: [
             {
               required: true,
@@ -118,7 +118,7 @@ export const Base = (
 
       <FormItem label="所属地铁" hasFeedback>
         {getFieldDecorator('subway', {
-          initialValue: initValue ? `${initValue.subway.name}` : undefined,
+          initialValue: initValue ? `${initValue.subway}` : undefined,
           rules: [
             {
               required: true,

@@ -10,5 +10,6 @@ import { SubwayService } from '../subway/subway.service';
   imports: [TypeOrmModule.forFeature([House, City, Subway])],
   controllers: [HouseController],
   providers: [HouseService, CityService, SubwayService],
+  exports: [HouseService],
 })
 export class HouseModule {}

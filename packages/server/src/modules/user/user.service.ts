@@ -34,7 +34,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
   @TransformClassToPlain()
   async findOne(query: TKeyStringObj): Promise<User | undefined> {
     return await this.userRepository.findOne(query, {
-      relations: ['roles', 'roles.permissions'],
+      relations: ['roles', 'roles.permissions', 'houses'],
     });
   }
 
@@ -72,7 +72,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
    * @returns {Promise<void>}
    * @memberof UserService
    */
-  async create(dto: CreateUserInput): Promise<void> {
+  async create(dto: CreateUserInput): Promise<User> {
     const toCreate = dto;
     const { username } = toCreate;
     const isExisted = await this.findOne({ username });
@@ -87,7 +87,7 @@ export class UserService extends CurdService<User, UpdateUserInput> {
     // 添加默认角色
     const roles = await this.getRolesByToken(toCreate.roles);
     const toSave = this.userRepository.create({ ...toCreate, roles });
-    await this.userRepository.save(toSave);
+    return await this.userRepository.save(toSave);
   }
 
   /**

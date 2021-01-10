@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 
 export class DateColumn {
@@ -17,6 +18,7 @@ export class DateColumn {
   })
   readonly updatedAt!: Date;
 
+  @Exclude({ toPlainOnly: true })
   @DeleteDateColumn({
     name: 'deleted_at',
     type: 'timestamp',

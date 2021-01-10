@@ -3,7 +3,13 @@ import { WrappedFormUtils } from 'antd/es/form/Form';
 import { Tag } from 'antd';
 import { House } from '@xf/common/src/entities';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { HouseStatus, HouseStatusMap } from '@xf/common/src/constants/house.const';
+import {
+  HouseRentPayTypeMap,
+  HouseReviewed,
+  HouseReviewedMap,
+  HouseStatus,
+  HouseStatusMap,
+} from '@xf/common/src/constants/house.const';
 import { TIDs } from '@xf/common/src/interfaces/id.interface';
 import { ICity } from '@xf/common/src/interfaces/city.interface';
 import { TListQuery } from '@xf/common/src/interfaces/list.query.interface';
@@ -18,6 +24,7 @@ import { IDColumn, DateColumn, CenterTextColumn } from '@/components/TableColumn
 import ModalForm from '@/components/BaseFormWrap/ModalForm';
 import { IUploadFile } from '@/components/PicturesWall';
 import { getUploadImgs } from '@/components/PicturesWall/utils';
+import TooltipColumn from '@/components/TableColumn/TooltipColumn';
 import { CityStateType, namespace as cityNS } from '@/models/city';
 import { Base } from './components/Base';
 import Query from './components/Query';
@@ -201,36 +208,55 @@ const Houses: FC<IHousesProps> = ({
       key: 'title',
       dataIndex: 'title',
       title: '标题',
+      render: (title: string) => <TooltipColumn text={title} width="300px" />,
+    },
+    {
+      key: 'price',
+      dataIndex: 'price',
+      title: '价格',
+      render: (price: number, { rentPayType }) => (
+        <div>{price ? `${price}/${HouseRentPayTypeMap[rentPayType].replace('按', '')}` : '-'}</div>
+      ),
+    },
+    {
+      key: 'reviewed',
+      dataIndex: 'reviewed',
+      title: '审核状态',
+      render: (reviewed: HouseReviewed) => (
+        <Tag color={reviewed === HouseReviewed.NO ? 'red' : 'green'}>
+          {HouseReviewedMap[reviewed]}
+        </Tag>
+      ),
     },
     {
       key: 'status',
       dataIndex: 'status',
-      title: '状态',
+      title: '上架状态',
       render: (status: HouseStatus) => (
-        <Tag color={status === 0 ? 'blue' : ''}>{HouseStatusMap[status]}</Tag>
+        <Tag color={status === HouseStatus.ON ? 'blue' : ''}>{HouseStatusMap[status]}</Tag>
       ),
     },
     {
-      key: 'author',
-      dataIndex: 'author',
+      key: 'user',
+      dataIndex: 'user',
       title: '发布者',
     },
     {
       key: 'city',
       dataIndex: 'city',
       title: '城市',
-      render: (c: ICity) => <div>{c.name}</div>,
+      render: (c: string) => <div>{c}</div>,
     },
     {
       key: 'subway',
       dataIndex: 'subway',
-      title: '地铁站',
-      render: (subway: ISubway) => <div>{subway.name}</div>,
+      title: '地铁线路',
+      render: (subway: string) => <div>{subway}</div>,
     },
     {
       key: 'commentCount',
       dataIndex: 'commentCount',
-      title: '评论数',
+      title: '评论',
       align: 'center',
       width: 100,
       render: (text: string) => <CenterTextColumn text={text} />,
@@ -238,7 +264,7 @@ const Houses: FC<IHousesProps> = ({
     {
       key: 'likeCount',
       dataIndex: 'likeCount',
-      title: '点赞数',
+      title: '点赞',
       align: 'center',
       width: 100,
       render: (text: string) => <CenterTextColumn text={text} />,
@@ -246,7 +272,7 @@ const Houses: FC<IHousesProps> = ({
     {
       key: 'clickCount',
       dataIndex: 'clickCount',
-      title: '点击数',
+      title: '点击',
       align: 'center',
       width: 100,
       render: (text: string) => <CenterTextColumn text={text} />,

@@ -1,5 +1,4 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import Axios from 'axios';
 import * as crypto from 'crypto';
 import { ISendEmailOptions } from '@xf/common/src/interfaces/email.interface';
 import { RedisService } from 'nestjs-redis';
@@ -8,6 +7,7 @@ import { decode, encode } from '@/utils/encode-decode';
 import { ConfigService } from '../config/config.service';
 import { UserService } from '@/modules/user/user.service';
 import { errorCode } from '@/constants/error-code';
+import { request } from '@/utils';
 
 @Injectable()
 export class EmailService {
@@ -213,7 +213,7 @@ export class EmailService {
         data.push(`${key}=${encodeURIComponent(params[key])}`);
       });
 
-      Axios({
+      request({
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },

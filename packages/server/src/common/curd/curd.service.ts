@@ -36,7 +36,7 @@ export abstract class CurdService<T, U extends IID> extends BaseService<T> {
    * @returns {(Promise<T>)}
    * @memberof CurdService
    */
-  async update(dto: U): Promise<T> {
+  async update(dto: U, ...args: any): Promise<T> {
     const { id } = dto;
     const toUpdate = await this.findByIdAndThrowError(id);
     return await this.repository.save(Object.assign(toUpdate, dto));

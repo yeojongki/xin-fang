@@ -28,7 +28,7 @@ export const Base = (props: TRenderItems<Permission>) => {
               message: '请输入标识！',
             },
           ],
-        })(<Input maxLength={20} placeholder="标识" />)}
+        })(<Input maxLength={50} placeholder="标识" />)}
       </FormItem>
 
       <FormItem label="名称" hasFeedback>

@@ -14,6 +14,10 @@ import { HouseModule } from './modules/house/house.module.';
 import { AttachmentModule } from './modules/attachment/attachment.module';
 import { EmailModule } from './common/email/email.module';
 import { ConfigService } from './common/config/config.service';
+import { HouseSpiderModule } from './modules/house-spider/house-spider.module';
+import { WxPushModule } from './common/wx-push/wx-push.module';
+import { SystemModule } from './common/system/system.module';
+// import { TestModule } from './common/test/test.module';
 
 @Module({
   imports: [
@@ -35,6 +39,10 @@ import { ConfigService } from './common/config/config.service';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => configService.REDIS_OPTIONS,
     }),
+    HouseSpiderModule,
+    WxPushModule,
+    SystemModule,
+    // TestModule,
   ],
 })
 export class AppModule {}

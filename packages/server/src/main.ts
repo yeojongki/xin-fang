@@ -7,6 +7,7 @@ import { HttpResInterceptor } from './interceptor/http-res.interceptor';
 import { PermissionAuthGuard } from './guard/permission-auth.guard';
 import { ConfigService } from './common/config/config.service';
 import { errorCode } from './constants/error-code';
+import { HouseSpiderService } from './modules/house-spider/house-spider.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,7 +23,7 @@ async function bootstrap() {
       exceptionFactory: (errors: ValidationError[]) => {
         if (errors.length > 0) {
           const errorMsg = errors
-            .map(error => Object.values(error.constraints).join(';'))
+            .map((error) => Object.values(error.constraints).join(';'))
             .join(';');
           throw new BadRequestException({
             errno: errorCode.VALIDATION_ERROR,
@@ -34,6 +35,15 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new ErrorExceptionFilter());
   app.useGlobalInterceptors(new HttpResInterceptor(reflector));
+
   await app.listen(configService.get('SERVER_PORT'));
+
+  // 豆瓣爬虫
+  if (configService.IS_OPEN_HOUSE_SPIDER) {
+    const houseSpiderService = app.get(HouseSpiderService);
+    houseSpiderService.startCronJob();
+    // houseSpiderService.startCronJob(new Date(+new Date() + 2000));
+  }
 }
+
 bootstrap();
