@@ -5,9 +5,10 @@ import { HouseSpiderService } from './house-spider.service';
 import { ScheduleModule } from '@nestjs/schedule';
 // import { ProxyService } from '@/common/proxy/proxy.service';
 import { AttachmentService } from '../attachment/attachment.service';
+import { WxPushService } from '@/common/wx-push/wx-push.service';
 @Module({
   imports: [TypeOrmModule.forFeature([User, House]), ScheduleModule.forRoot()],
-  providers: [HouseSpiderService, AttachmentService],
+  providers: [HouseSpiderService, AttachmentService, WxPushService],
   // providers: [HouseSpiderService, AttachmentService, ProxyService],
   exports: [HouseSpiderService],
 })

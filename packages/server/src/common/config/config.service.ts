@@ -14,6 +14,10 @@ export class ConfigService {
     return this.envConfig[key];
   }
 
+  get IS_PROD(): boolean {
+    return process.env.NODE_ENV === 'production';
+  }
+
   get API_PREFIX(): string {
     return this.envConfig.API_PREFIX;
   }
@@ -134,5 +138,17 @@ export class ConfigService {
 
   get PROXY_POOL_COUNT(): number {
     return +this.envConfig.PROXY_POOL_COUNT;
+  }
+
+  get SC_KEY(): string {
+    return this.envConfig.SC_KEY;
+  }
+
+  get HOUSE_PUSH_KEYWORD(): string[] {
+    return this.envConfig.HOUSE_PUSH_KEYWORD.split(',');
+  }
+
+  get OPEN_HOUSE_KEYWORD(): boolean {
+    return +this.envConfig.OPEN_HOUSE_KEYWORD === 1;
   }
 }

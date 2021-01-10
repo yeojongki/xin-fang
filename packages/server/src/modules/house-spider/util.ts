@@ -30,7 +30,7 @@ function getNumberOfStr(str: string): number {
   return +firstStr.match(/\d/)![0];
 }
 
-export function parseHouseHtml(html: string, title: string) {
+export function parseHouseHtml(html: string, title: string, toGetKeywords: string[] = []) {
   const pricesPatt1 = /\d{3,5}(?=元|\/月|每月|一个月|每个月)/g;
   const pricesPatt2 = /(月租|租金|价钱|价格|房租)(:|：| )*(\d{3,5})/g;
   const contactPatt = /((手机|电话|微信|v)号?(:|：|\s)?(\s)?([\d\w_一二两三四五六七八九零]{5,}))/;
@@ -42,6 +42,19 @@ export function parseHouseHtml(html: string, title: string) {
   const house: Partial<House> = {};
   const user: Partial<User> = {};
   let subwayName: string | null = null;
+
+  // 搜索关键词
+  const keywords: string[] = [];
+  if (toGetKeywords.length) {
+    for (let index = 0; index < toGetKeywords.length; index++) {
+      const keyword = toGetKeywords[index];
+      if (title.includes(keyword)) {
+        keywords.push(keyword);
+        // 只需要查找到一个关键词
+        break;
+      }
+    }
+  }
 
   let price = 0;
   // price
@@ -112,6 +125,7 @@ export function parseHouseHtml(html: string, title: string) {
   // house.area = resArea ? resArea[0] : null;
 
   return {
+    keywords,
     house,
     subwayName,
     user,
@@ -132,7 +146,7 @@ export const createUserAgent = () => ({
 });
 
 /**
- * 生成 11 位 bid for Cookie bid=xxx
+ * 生成 11 位 bid for Cookie: bid=xxx
  *
  * @export
  * @returns

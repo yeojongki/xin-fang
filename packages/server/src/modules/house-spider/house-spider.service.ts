@@ -11,6 +11,8 @@ import { CronService } from '@/common/cron/cron.service';
 import { AttachmentService } from '@/modules/attachment/attachment.service';
 import { request, createRangeRandom } from '@/utils';
 import { parseHouseHtml, createBid } from './util';
+import { WxPushService } from '@/common/wx-push/wx-push.service';
+import { ConfigService } from '@/common/config/config.service';
 // import { ProxyService } from '@/common/proxy/proxy.service';
 
 export interface IDoubanGroupTopic {
@@ -38,7 +40,7 @@ export class HouseSpiderService extends CronService {
   private errorsCount = 0;
 
   /**
-   * 当前爬取的数量
+   * 当前请求次数
    *
    * @private
    * @memberof HouseSpiderService
@@ -57,17 +59,19 @@ export class HouseSpiderService extends CronService {
   constructor(
     protected readonly schedulerRegistry: SchedulerRegistry,
     private readonly attachmentService: AttachmentService, // private readonly proxyService: ProxyService,
+    private readonly wxPushService: WxPushService,
+    private readonly configService: ConfigService,
   ) {
     super(schedulerRegistry);
   }
 
   /**
-   * 每次爬取的房源最大爬取数
+   * 每次爬取时最大请求数
    *
    * @static
    * @memberof HouseSpiderService
    */
-  static maxFetchCount = process.env.NODE_ENV === 'development' ? 3 : Infinity;
+  static readonly maxFetchCount = process.env.NODE_ENV === 'production' ? 90 : 3;
 
   /**
    * cron 任务名
@@ -75,7 +79,7 @@ export class HouseSpiderService extends CronService {
    * @static
    * @memberof HouseSpiderService
    */
-  static cronJobName = 'douban-spider';
+  static readonly cronJobName = 'douban-spider';
 
   /**
    * cron 表达式
@@ -83,7 +87,7 @@ export class HouseSpiderService extends CronService {
    * @static
    * @memberof HouseSpiderService
    */
-  static CronExpression = '0 0 9-23 * * *';
+  static readonly CronExpression = '0 0 9-23 * * *';
 
   /**
    * 每次爬取列表的数量
@@ -91,7 +95,7 @@ export class HouseSpiderService extends CronService {
    * @static
    * @memberof HouseSpiderService
    */
-  static everyTimeGetPageNum = process.env.NODE_ENV === 'development' ? 1 : 10;
+  static readonly everyTimeGetPageNum = process.env.NODE_ENV === 'development' ? 1 : 10;
 
   /**
    * 最大爬取列表失败次数
@@ -99,7 +103,15 @@ export class HouseSpiderService extends CronService {
    * @static
    * @memberof HouseSpiderService
    */
-  static maxErrorListCount = 5;
+  static readonly maxErrorListCount = 5;
+
+  /**
+   * 豆瓣小组每页个数
+   *
+   * @static
+   * @memberof HouseSpiderService
+   */
+  static readonly pagePerCount = 25;
 
   /**
    * 豆瓣小组广州地址前缀
@@ -107,7 +119,7 @@ export class HouseSpiderService extends CronService {
    * @static
    * @memberof HouseSpiderService
    */
-  static groupListUrl = 'https://www.douban.com/group/gz020/discussion?start=';
+  static readonly groupListUrl = 'https://www.douban.com/group/gz020/discussion?start=';
 
   /**
    * 豆瓣小组话题前缀
@@ -115,7 +127,7 @@ export class HouseSpiderService extends CronService {
    * @static
    * @memberof HouseSpiderService
    */
-  static topicUrl = 'https://www.douban.com/group/topic/';
+  static readonly topicUrl = 'https://www.douban.com/group/topic/';
 
   /**
    * 爬取的当前页数
@@ -146,6 +158,14 @@ export class HouseSpiderService extends CronService {
     cronJob.start();
   }
 
+  /**
+   * 豆瓣爬虫请求封装
+   *
+   * @private
+   * @param {AxiosRequestConfig} options
+   * @returns
+   * @memberof HouseSpiderService
+   */
   private request(options: AxiosRequestConfig) {
     const bid = createBid();
     if (!options.headers) {
@@ -174,7 +194,10 @@ export class HouseSpiderService extends CronService {
         }, createRangeRandom(1, 7) * 1000);
       };
 
-      const url = HouseSpiderService.groupListUrl + this.pageNum * 25;
+      const url = HouseSpiderService.groupListUrl + this.pageNum * HouseSpiderService.pagePerCount;
+      // 爬取次数 +1
+      this.fetchCount++;
+
       // this.proxyService
       this.request({ url })
         .then((res: any) => {
@@ -282,6 +305,8 @@ export class HouseSpiderService extends CronService {
           const { tid } = firstItem;
           const url = HouseSpiderService.topicUrl + tid;
           this.logger.log(`开始获取豆瓣小组出租详情, tid: ${tid}`);
+          // 爬取次数 +1
+          this.fetchCount++;
           // this.proxyService
           this.request({ url })
             .then((res: any) => {
@@ -294,7 +319,6 @@ export class HouseSpiderService extends CronService {
                   } else {
                     this.logger.log(`保存房源成功豆瓣话题成功, tid:${tid}`);
                   }
-                  this.fetchCount++;
                   fetchNextDetail();
                 })
                 .catch((err) => {
@@ -317,6 +341,11 @@ export class HouseSpiderService extends CronService {
           resolve();
         }
       } else {
+        const info = '已结束本次爬取';
+        this.logger.log(info);
+        if (this.configService.IS_PROD) {
+          this.wxPushService.send(info);
+        }
         resolve();
       }
     };
@@ -360,7 +389,19 @@ export class HouseSpiderService extends CronService {
       const cTime = $('#content h3 .color-green').text();
       // const userface = $('.user-face img').attr('src')!;
 
-      const { house: parsedHouse, user, subwayName } = parseHouseHtml(text, title);
+      const { house: parsedHouse, user, subwayName, keywords } = parseHouseHtml(
+        text,
+        title,
+        this.configService.OPEN_HOUSE_KEYWORD ? this.configService.HOUSE_PUSH_KEYWORD : [],
+      );
+      // 推送到微信
+      if (keywords.length) {
+        this.wxPushService.send(
+          `有${keywords.join('/')}的新房子啦`,
+          HouseSpiderService.topicUrl + tid,
+        );
+      }
+
       parsedHouse.content = text;
       parsedHouse.createdAt = new Date(cTime);
       parsedHouse.updatedAt = new Date(updateAt);

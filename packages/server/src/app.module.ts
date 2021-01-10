@@ -15,6 +15,7 @@ import { AttachmentModule } from './modules/attachment/attachment.module';
 import { EmailModule } from './common/email/email.module';
 import { ConfigService } from './common/config/config.service';
 import { HouseSpiderModule } from './modules/house-spider/house-spider.module';
+import { WxPushModule } from './common/wx-push/wx-push.module';
 // import { TestModule } from './common/test/test.module';
 
 @Module({
@@ -38,6 +39,7 @@ import { HouseSpiderModule } from './modules/house-spider/house-spider.module';
       useFactory: async (configService: ConfigService) => configService.REDIS_OPTIONS,
     }),
     HouseSpiderModule,
+    WxPushModule,
     // TestModule,
   ],
 })
