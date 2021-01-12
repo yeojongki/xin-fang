@@ -325,7 +325,7 @@ export class HouseSpiderService extends CronService {
                   // 失败则跳过爬取下一条
                   fetchNextDetail();
                   // 把失败的加入到队尾
-                  this.pendingFetchList.push(firstItem);
+                  // this.pendingFetchList.push(firstItem);
                 });
             })
             .catch((err) => {
@@ -389,7 +389,8 @@ export class HouseSpiderService extends CronService {
       // 如果已经存在数据库了 直接跳过
       const dbHouse = await queryRunner.manager.findOne(House, { where: { tid } });
       if (dbHouse) {
-        await queryRunner.release();
+        this.logger.log(`已经存在数据库中 tid 为 ${tid}`);
+        // await queryRunner.release();
         return Promise.resolve('已经存在数据库中');
       }
 
