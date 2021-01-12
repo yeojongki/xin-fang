@@ -335,6 +335,7 @@ export class HouseSpiderService extends CronService {
                 this.configService.IS_PROD && this.wxPushService.send(msg);
                 resolve();
               } else {
+                this.fetchErrorCount++;
                 this.logger.error(`获取豆瓣话题失败, 地址:${url}, ${err.message}`);
                 // 失败则跳过爬取下一条
                 fetchNextDetail();
