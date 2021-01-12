@@ -171,6 +171,8 @@ export class HouseSpiderService extends CronService {
 
   public startCronJob(expression: string | Date = HouseSpiderService.CronExpression) {
     const cronJob = this.addCronJob(HouseSpiderService.cronJobName, expression, () => {
+      this.resetData();
+
       // 创建代理池
       // this.proxyService.createProxyPool().then(() => {
       this.fetchList().then(() => {
@@ -521,5 +523,17 @@ export class HouseSpiderService extends CronService {
       // you need to release query runner which is manually created:
       await queryRunner.release();
     }
+  }
+
+  /**
+   * 重置爬取基础数据
+   *
+   * @memberof HouseSpiderService
+   */
+  private resetData() {
+    this.pageNum = 0;
+    this.fetchCount = 0;
+    this.detailErrorCount = 0;
+    this.listErrorCount = 0;
   }
 }
