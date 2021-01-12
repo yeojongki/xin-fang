@@ -22,7 +22,7 @@ export class WxPushService {
         method: 'POST',
         url: `https://sc.ftqq.com/${this.configService.SC_KEY}.send`,
         data: qs.stringify({
-          text: `${title} - ${dayjs().format('YYYY-MM-DD hh:mm:ss')}`,
+          text: `${title} - ${dayjs().format('YYYY-MM-DD HH:mm:ss')}`,
           desp: content,
         }),
       }).then((res: any) => {
