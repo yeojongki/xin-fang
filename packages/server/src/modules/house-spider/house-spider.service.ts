@@ -284,9 +284,9 @@ export class HouseSpiderService extends CronService {
    */
   private fetchDetail(): Promise<void> {
     const handler = (resolve: any) => {
-      // 5 - 12 秒后爬取下一详情
+      // 5 - 15 秒后爬取下一详情
       const fetchNextDetail = () => {
-        const time = createRangeRandom(5, 12);
+        const time = createRangeRandom(5, 15);
         this.logger.log(`${time}s后开始获取下一详情`);
 
         setTimeout(() => {
