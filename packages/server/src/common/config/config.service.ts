@@ -144,15 +144,37 @@ export class ConfigService {
     return this.envConfig.SC_KEY;
   }
 
-  get IS_OPEN_HOUSE_SPIDER(): boolean {
-    return +this.envConfig.IS_OPEN_HOUSE_SPIDER === 1;
+  get SPIDER_CRON_JOB(): string {
+    return this.envConfig.SPIDER_CRON_JOB;
   }
 
-  get HOUSE_PUSH_KEYWORD(): string[] {
-    return this.envConfig.HOUSE_PUSH_KEYWORD.split(',');
+  get SPIDER_IS_OPEN_HOUSE(): boolean {
+    return +this.envConfig.SPIDER_IS_OPEN_HOUSE === 1;
   }
 
-  get OPEN_HOUSE_KEYWORD(): boolean {
-    return +this.envConfig.OPEN_HOUSE_KEYWORD === 1;
+  get SPIDER_MATCH_KEYWORD(): string[] {
+    return this.envConfig.SPIDER_MATCH_KEYWORD
+      ? this.envConfig.SPIDER_MATCH_KEYWORD.split(',')
+      : [];
+  }
+
+  get SPIDER_OPEN_KEYWORD(): boolean {
+    return +this.envConfig.SPIDER_OPEN_KEYWORD === 1;
+  }
+
+  get SPIDER_ONLY_FETCH_WITH_KEYWORD(): boolean {
+    return +this.envConfig.SPIDER_ONLY_FETCH_WITH_KEYWORD === 1;
+  }
+
+  get SPIDER_MAX_FETCH_IN_CRON(): number {
+    return +this.envConfig.SPIDER_MAX_FETCH_IN_CRON;
+  }
+
+  get SPIDER_MAX_FETCH_ERROR_COUNT_IN_CRON(): number {
+    return +this.envConfig.SPIDER_MAX_FETCH_ERROR_COUNT_IN_CRON;
+  }
+
+  get SPIDER_PRE_FETCH_PAGE_COUNT(): number {
+    return +this.envConfig.SPIDER_PRE_FETCH_PAGE_COUNT;
   }
 }

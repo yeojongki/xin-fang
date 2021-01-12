@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Put } from '@nestjs/common';
 import { getConnection } from 'typeorm';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import * as cheerio from 'cheerio';
@@ -13,7 +13,7 @@ import { request, createRangeRandom } from '@/utils';
 import { parseHouseHtml, createBid } from './util';
 import { WxPushService } from '@/common/wx-push/wx-push.service';
 import { ConfigService } from '@/common/config/config.service';
-import { SystemService } from '@/common/system/system.service';
+// import { SystemService } from '@/common/system/system.service';
 // import { ProxyService } from '@/common/proxy/proxy.service';
 
 export interface IDoubanGroupTopic {
@@ -32,52 +32,12 @@ export interface IDoubanGroupTopic {
 @Injectable()
 export class HouseSpiderService extends CronService {
   /**
-   * 每次爬取时最大请求数
-   *
-   * @static
-   * @memberof HouseSpiderService
-   */
-  static readonly maxFetchCount = process.env.NODE_ENV === 'production' ? 90 : 3;
-
-  /**
    * cron 任务名
    *
    * @static
    * @memberof HouseSpiderService
    */
   static readonly cronJobName = 'douban-spider';
-
-  /**
-   * cron 表达式
-   *
-   * @static
-   * @memberof HouseSpiderService
-   */
-  static readonly CronExpression = '0 0 9-23 * * *';
-
-  /**
-   * 每次爬取列表的数量
-   *
-   * @static
-   * @memberof HouseSpiderService
-   */
-  static readonly everyTimeGetPageNum = process.env.NODE_ENV === 'development' ? 1 : 10;
-
-  /**
-   * 最大爬取列表失败次数
-   *
-   * @static
-   * @memberof HouseSpiderService
-   */
-  static readonly maxErrorListCount = 5;
-
-  /**
-   * 最大爬取详情失败次数
-   *
-   * @static
-   * @memberof HouseSpiderService
-   */
-  static readonly maxErrorDetailCount = 10;
 
   /**
    * 豆瓣小组每页个数
@@ -112,20 +72,12 @@ export class HouseSpiderService extends CronService {
   protected readonly logger = new Logger(HouseSpiderService.name);
 
   /**
-   * 爬取列表错误次数
+   * 爬取错误次数
    *
    * @private
    * @memberof HouseSpiderService
    */
-  private listErrorCount = 0;
-
-  /**
-   * 爬取详情错误次数
-   *
-   * @private
-   * @memberof HouseSpiderService
-   */
-  private detailErrorCount = 0;
+  private fetchErrorCount = 0;
 
   /**
    * 当前请求次数
@@ -169,18 +121,22 @@ export class HouseSpiderService extends CronService {
    */
   private houseDataMap = new Map<string, IDoubanGroupTopic>();
 
-  public startCronJob(expression: string | Date = HouseSpiderService.CronExpression) {
-    const cronJob = this.addCronJob(HouseSpiderService.cronJobName, expression, () => {
-      this.resetData();
+  public startCronJob() {
+    const cronJob = this.addCronJob(
+      HouseSpiderService.cronJobName,
+      this.configService.SPIDER_CRON_JOB,
+      () => {
+        this.resetData();
 
-      // 创建代理池
-      // this.proxyService.createProxyPool().then(() => {
-      this.fetchList().then(() => {
-        // 爬取详情
-        this.fetchDetail();
-      });
-      // });
-    });
+        // 创建代理池
+        // this.proxyService.createProxyPool().then(() => {
+        this.fetchList().then(() => {
+          // 爬取详情
+          this.fetchDetail();
+        });
+        // });
+      },
+    );
     cronJob.start();
   }
 
@@ -213,11 +169,11 @@ export class HouseSpiderService extends CronService {
     this.logger.log('开始获取豆瓣小组出租列表');
 
     const handler = (resolve: any) => {
-      // 1 - 7 秒后爬取下一列表
+      // 2 - 10 秒后爬取下一列表
       const fetchNextList = () => {
         setTimeout(() => {
           handler(resolve);
-        }, createRangeRandom(1, 7) * 1000);
+        }, createRangeRandom(2, 10) * 1000);
       };
 
       const url = HouseSpiderService.groupListUrl + this.pageNum * HouseSpiderService.pagePerCount;
@@ -232,27 +188,25 @@ export class HouseSpiderService extends CronService {
 
           // 当前页数没达到每次需爬取的数量时
           // 继续爬取下一页
-          if (this.pageNum < HouseSpiderService.everyTimeGetPageNum) {
+          if (this.pageNum < this.configService.SPIDER_PRE_FETCH_PAGE_COUNT) {
             fetchNextList();
           } else {
             this.logger.log(
-              `本次共获取${HouseSpiderService.everyTimeGetPageNum}页豆瓣小组出租列表`,
+              `本次共获取${this.configService.SPIDER_PRE_FETCH_PAGE_COUNT}页豆瓣小组出租列表`,
             );
             resolve();
           }
         })
         .catch((err) => {
           // 爬取列表失败超过最大次数，则跳过去爬取详情
-          if (this.listErrorCount > HouseSpiderService.maxErrorListCount) {
-            this.logger.error(`获取豆瓣小组列表失败超过最大错误次数${this.listErrorCount}`);
-            // 重置错误为 0
-            this.listErrorCount = 0;
+          if (this.fetchErrorCount > this.configService.SPIDER_MAX_FETCH_ERROR_COUNT_IN_CRON) {
+            this.logger.error(`获取豆瓣小组列表失败超过最大错误次数${this.fetchErrorCount}`);
             return resolve();
           }
           this.logger.error(
-            `获取豆瓣小组列表失败, 次数:${this.listErrorCount}, 地址:${url}, ${err.message}`,
+            `获取豆瓣小组列表失败, 次数:${this.fetchErrorCount}, 地址:${url}, ${err.message}`,
           );
-          this.listErrorCount++;
+          this.fetchErrorCount++;
           // 重新请求列表
           fetchNextList();
         });
@@ -283,6 +237,20 @@ export class HouseSpiderService extends CronService {
       const $titleTd = $tds.eq(0);
       const $a = $titleTd.children('a');
       item.title = $a.attr('title') || '';
+
+      // 如果配置了只爬取关键词
+      // 则标题没有关键词会跳过
+      if (
+        this.configService.SPIDER_ONLY_FETCH_WITH_KEYWORD &&
+        this.configService.SPIDER_MATCH_KEYWORD.length
+      ) {
+        const toGetKeywords = this.configService.SPIDER_MATCH_KEYWORD;
+        const shouldBreak = !toGetKeywords.some((keyword) => item.title.includes(keyword));
+        if (shouldBreak) {
+          break;
+        }
+      }
+
       // 不获取含有 `求租` 关键字的帖子
       if (item.title.includes('求租')) {
         break;
@@ -316,21 +284,25 @@ export class HouseSpiderService extends CronService {
    */
   private fetchDetail(): Promise<void> {
     const handler = (resolve: any) => {
-      // 5 - 10 秒后爬取下一详情
+      // 5 - 12 秒后爬取下一详情
       const fetchNextDetail = () => {
+        const time = createRangeRandom(5, 12);
+        this.logger.log(`${time}s后开始获取下一详情`);
+
         setTimeout(() => {
           handler(resolve);
-        }, createRangeRandom(5, 10) * 1000);
+        }, time * 1000);
       };
 
       // 超过最大爬取数则结束爬取
-      if (this.fetchCount < HouseSpiderService.maxFetchCount) {
+      if (this.fetchCount < this.configService.SPIDER_MAX_FETCH_IN_CRON) {
         // 队列中还存在未爬取数据
         if (this.pendingFetchList.length) {
           const firstItem = this.pendingFetchList.shift()!;
           const { tid } = firstItem;
           const url = HouseSpiderService.topicUrl + tid;
           this.logger.log(`开始获取豆瓣小组出租详情, tid: ${tid}`);
+
           // 爬取次数 +1
           this.fetchCount++;
           // this.proxyService
@@ -345,6 +317,7 @@ export class HouseSpiderService extends CronService {
                   } else {
                     this.logger.log(`保存房源成功豆瓣话题成功, tid:${tid}`);
                   }
+
                   fetchNextDetail();
                 })
                 .catch((err) => {
@@ -356,8 +329,8 @@ export class HouseSpiderService extends CronService {
                 });
             })
             .catch((err) => {
-              if (this.detailErrorCount > HouseSpiderService.maxErrorDetailCount) {
-                const msg = `已超过获取详情失败最大次数${HouseSpiderService.maxErrorDetailCount}`;
+              if (this.fetchErrorCount > this.configService.SPIDER_MAX_FETCH_ERROR_COUNT_IN_CRON) {
+                const msg = `已超过获取详情失败最大次数${this.configService.SPIDER_MAX_FETCH_ERROR_COUNT_IN_CRON}`;
                 this.logger.error(msg);
                 this.configService.IS_PROD && this.wxPushService.send(msg);
                 resolve();
@@ -371,10 +344,12 @@ export class HouseSpiderService extends CronService {
             });
         } else {
           this.logger.log('列表中已无数据!');
-          resolve();
+          this.shouldFetchMore().then(() => {
+            resolve();
+          });
         }
       } else {
-        const info = `已请求${HouseSpiderService.maxFetchCount}次，等待下一次获取`;
+        const info = `已请求${this.configService.SPIDER_MAX_FETCH_IN_CRON}次，等待下一次获取`;
         this.logger.log(info);
         if (this.configService.IS_PROD) {
           this.wxPushService.send(info);
@@ -425,7 +400,7 @@ export class HouseSpiderService extends CronService {
       const { house: parsedHouse, user, subwayName, keywords } = parseHouseHtml(
         text,
         title,
-        this.configService.OPEN_HOUSE_KEYWORD ? this.configService.HOUSE_PUSH_KEYWORD : [],
+        this.configService.SPIDER_OPEN_KEYWORD ? this.configService.SPIDER_MATCH_KEYWORD : [],
       );
       // 推送到微信
       if (keywords.length) {
@@ -526,6 +501,21 @@ export class HouseSpiderService extends CronService {
   }
 
   /**
+   * 是否需要爬取过多
+   *
+   * @private
+   * @memberof HouseSpiderService
+   */
+  private shouldFetchMore() {
+    // 没有达到本次请求数
+    if (this.fetchCount < this.configService.SPIDER_MAX_FETCH_IN_CRON) {
+      // 继续下一次请求
+      return this.fetchList();
+    }
+    return Promise.resolve();
+  }
+
+  /**
    * 重置爬取基础数据
    *
    * @memberof HouseSpiderService
@@ -533,7 +523,7 @@ export class HouseSpiderService extends CronService {
   private resetData() {
     this.pageNum = 0;
     this.fetchCount = 0;
-    this.detailErrorCount = 0;
-    this.listErrorCount = 0;
+    this.fetchErrorCount = 0;
+    this.fetchErrorCount = 0;
   }
 }

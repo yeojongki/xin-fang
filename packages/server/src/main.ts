@@ -39,10 +39,9 @@ async function bootstrap() {
   await app.listen(configService.get('SERVER_PORT'));
 
   // 豆瓣爬虫
-  if (configService.IS_OPEN_HOUSE_SPIDER) {
+  if (configService.SPIDER_IS_OPEN_HOUSE) {
     const houseSpiderService = app.get(HouseSpiderService);
     houseSpiderService.startCronJob();
-    // houseSpiderService.startCronJob(new Date(+new Date() + 2000));
   }
 }
 

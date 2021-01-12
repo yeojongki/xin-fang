@@ -13,14 +13,14 @@ export class HouseSpiderController {
 
   @Get('isOpened')
   isOpened() {
-    return this.configService.IS_OPEN_HOUSE_SPIDER;
+    return this.configService.SPIDER_IS_OPEN_HOUSE;
   }
 
   @Put('toggleSpiderOpen')
   async toggleSpiderOpen() {
     const file = `.env.${process.env.NODE_ENV}`;
     const fileStr = await fs.readFile(file, 'utf-8');
-    const reg = /(IS_OPEN_HOUSE_SPIDER=)(\d)/;
+    const reg = /(SPIDER_IS_OPEN_HOUSE=)(\d)/;
     const matched = fileStr.match(reg);
     if (matched && matched[1] && matched[2]) {
       const nextOpenStatus = +matched[2] === 1 ? 0 : 1;
@@ -34,7 +34,7 @@ export class HouseSpiderController {
     }
     throw new BadRequestException({
       errno: errorCode.CONFIG_FIELD_NOT_FOUND,
-      message: '获取配置文件中的 IS_OPEN_HOUSE_SPIDER 失败',
+      message: '获取配置文件中的 SPIDER_IS_OPEN_HOUSE 失败',
     });
   }
 }
