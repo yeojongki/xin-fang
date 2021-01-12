@@ -27,6 +27,7 @@ module.exports = async (deployDir, afterTransfer, recursive = true) => {
     const successful = [];
     const putDirectoryStatus = await ssh.putDirectory(localDistDir, dest, {
       recursive,
+      validate: () => true,
       tick: (localPath, remotePath, error) => {
         if (error) {
           failed.push(localPath);

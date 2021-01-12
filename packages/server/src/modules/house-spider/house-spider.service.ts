@@ -506,7 +506,7 @@ export class HouseSpiderService extends CronService {
    * @private
    * @memberof HouseSpiderService
    */
-  private shouldFetchMore() {
+  private shouldFetchMore(): Promise<any> {
     // 没有达到本次请求数
     if (this.fetchCount < this.configService.SPIDER_MAX_FETCH_IN_CRON) {
       // 继续下一次请求
