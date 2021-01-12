@@ -403,14 +403,15 @@ export class HouseSpiderService extends CronService {
         title,
         this.configService.SPIDER_OPEN_KEYWORD ? this.configService.SPIDER_MATCH_KEYWORD : [],
       );
+
       // 推送到微信
       if (keywords.length) {
+        const link = HouseSpiderService.topicUrl + tid;
         this.wxPushService.send(
           `有${keywords.join('/')}的新房子啦`,
-          `
-          Title: ${title}
-          Price: ${parsedHouse.price}
-          Link: ${HouseSpiderService.topicUrl + tid}
+          `Title: ${title}
+           Price: ${parsedHouse.price}
+           Link: [${link}](${link})
           `,
         );
       }
