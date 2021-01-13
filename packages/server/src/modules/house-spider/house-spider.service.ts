@@ -428,10 +428,7 @@ export class HouseSpiderService extends CronService {
         const link = HouseSpiderService.topicUrl + tid;
         this.wxPushService.send(
           `有${keywords.join('/')}的新房子啦`,
-          `Title: ${title}
-           Price: ${parsedHouse.price}
-           Link: [${link}](${link})
-          `,
+          `- Title: ${title}\n - Price: ${parsedHouse.price}\n - Link: [${link}](${link})`,
         );
       }
 
