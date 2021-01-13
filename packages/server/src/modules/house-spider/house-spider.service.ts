@@ -200,7 +200,9 @@ export class HouseSpiderService extends CronService {
         .catch((err) => {
           // 爬取列表失败超过最大次数，则跳过去爬取详情
           if (this.fetchErrorCount > this.configService.SPIDER_MAX_FETCH_ERROR_COUNT_IN_CRON) {
-            this.logger.error(`获取豆瓣小组列表失败超过最大错误次数${this.fetchErrorCount}`);
+            const msg = `获取豆瓣小组列表失败超过最大错误次数${this.fetchErrorCount}`;
+            this.logger.error(msg);
+            this.configService.IS_PROD && this.wxPushService.send(msg);
             return resolve();
           }
           this.logger.error(
@@ -516,6 +518,8 @@ export class HouseSpiderService extends CronService {
   private shouldFetchMore(): Promise<any> {
     // 没有达到本次请求数
     if (this.fetchCount < this.configService.SPIDER_MAX_FETCH_IN_CRON) {
+      // 重置页数
+      this.pageNum = 1;
       // 继续下一次请求
       return this.fetchList();
     }
@@ -530,7 +534,6 @@ export class HouseSpiderService extends CronService {
   private resetData() {
     this.pageNum = 0;
     this.fetchCount = 0;
-    this.fetchErrorCount = 0;
     this.fetchErrorCount = 0;
   }
 }
