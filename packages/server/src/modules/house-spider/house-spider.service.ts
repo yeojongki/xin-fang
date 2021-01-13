@@ -1,4 +1,4 @@
-import { Injectable, Logger, Put } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { getConnection } from 'typeorm';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import * as cheerio from 'cheerio';
@@ -114,6 +114,14 @@ export class HouseSpiderService extends CronService {
   private pageNum = 0;
 
   /**
+   * 下次爬取的列表页号
+   *
+   * @private
+   * @memberof HouseSpiderService
+   */
+  private nextPageNum = 0;
+
+  /**
    * 当前爬取过的房源数据 {tid: <houseData>}
    *
    * @private
@@ -166,35 +174,38 @@ export class HouseSpiderService extends CronService {
    * @memberof HouseSpiderService
    */
   private fetchList() {
-    this.logger.log('开始获取豆瓣小组出租列表');
+    // 3 - 10 秒后爬取下一列表
+    const fetchNextList = (resolve: any) => {
+      const time = createRangeRandom(3, 10);
+      // this.logger.log(`${time}s后开始获取下一列表`);
+
+      setTimeout(() => {
+        handler(resolve);
+      }, time * 1000);
+    };
 
     const handler = (resolve: any) => {
-      // 2 - 10 秒后爬取下一列表
-      const fetchNextList = () => {
-        setTimeout(() => {
-          handler(resolve);
-        }, createRangeRandom(2, 10) * 1000);
-      };
-
       const url = HouseSpiderService.groupListUrl + this.pageNum * HouseSpiderService.pagePerCount;
+      this.logger.log(`[获取列表] 当前列表页数为: ${this.pageNum}, 请求数为 ${this.fetchCount}`);
       // 爬取次数 +1
       this.fetchCount++;
 
       // this.proxyService
       this.request({ url })
         .then((res: any) => {
-          this.pageNum++;
           this.parseListData(res);
-
+          const nextNum = this.configService.SPIDER_PRE_FETCH_PAGE_COUNT + this.nextPageNum;
           // 当前页数没达到每次需爬取的数量时
           // 继续爬取下一页
           if (this.pageNum < this.configService.SPIDER_PRE_FETCH_PAGE_COUNT) {
-            fetchNextList();
+            this.pageNum++;
+            fetchNextList(resolve);
           } else {
             this.logger.log(
-              `本次共获取${this.configService.SPIDER_PRE_FETCH_PAGE_COUNT}页豆瓣小组出租列表`,
+              `本次共获取${this.configService.SPIDER_PRE_FETCH_PAGE_COUNT}页列表, 下一页为${nextNum}`,
             );
-            resolve();
+            this.nextPageNum = nextNum;
+            return resolve();
           }
         })
         .catch((err) => {
@@ -210,7 +221,7 @@ export class HouseSpiderService extends CronService {
           );
           this.fetchErrorCount++;
           // 重新请求列表
-          fetchNextList();
+          fetchNextList(resolve);
         });
     };
 
@@ -231,6 +242,8 @@ export class HouseSpiderService extends CronService {
     const curYear = new Date().getFullYear();
     const $ = cheerio.load(html);
     const $trs = $('table.olt tr');
+    let successParsedCount = 0;
+
     for (let i = 1; i < $trs.length; i++) {
       const el = $trs[i];
       const item: IDoubanGroupTopic = {} as IDoubanGroupTopic;
@@ -249,13 +262,13 @@ export class HouseSpiderService extends CronService {
         const toGetKeywords = this.configService.SPIDER_MATCH_KEYWORD;
         const shouldBreak = !toGetKeywords.some((keyword) => item.title.includes(keyword));
         if (shouldBreak) {
-          break;
+          continue;
         }
       }
 
       // 不获取含有 `求租` 关键字的帖子
       if (item.title.includes('求租')) {
-        break;
+        continue;
       }
 
       // tid
@@ -271,9 +284,11 @@ export class HouseSpiderService extends CronService {
 
       // 加入 pending 列表中
       if (!this.houseDataMap.has(item.tid)) {
+        successParsedCount++;
         this.houseDataMap.set(item.tid, item);
         this.pendingFetchList.push(item);
       }
+      this.logger.log(`列表解析加入共${successParsedCount}条`);
     }
   }
 
@@ -285,17 +300,19 @@ export class HouseSpiderService extends CronService {
    * @memberof HouseSpiderService
    */
   private fetchDetail(): Promise<void> {
+    this.logger.log('已开始爬取详情');
+
+    // 5 - 15 秒后爬取下一详情
+    const fetchNextDetail = (resolve: any) => {
+      const time = createRangeRandom(5, 15);
+      // this.logger.log(`${time}s后开始获取下一详情`);
+
+      setTimeout(() => {
+        handler(resolve);
+      }, time * 1000);
+    };
+
     const handler = (resolve: any) => {
-      // 5 - 15 秒后爬取下一详情
-      const fetchNextDetail = () => {
-        const time = createRangeRandom(5, 15);
-        this.logger.log(`${time}s后开始获取下一详情`);
-
-        setTimeout(() => {
-          handler(resolve);
-        }, time * 1000);
-      };
-
       // 超过最大爬取数则结束爬取
       if (this.fetchCount < this.configService.SPIDER_MAX_FETCH_IN_CRON) {
         // 队列中还存在未爬取数据
@@ -303,7 +320,7 @@ export class HouseSpiderService extends CronService {
           const firstItem = this.pendingFetchList.shift()!;
           const { tid } = firstItem;
           const url = HouseSpiderService.topicUrl + tid;
-          this.logger.log(`开始获取豆瓣小组出租详情, tid: ${tid}`);
+          this.logger.log(`[获取详情] tid: ${tid}, 请求数为 ${this.fetchCount}`);
 
           // 爬取次数 +1
           this.fetchCount++;
@@ -320,12 +337,12 @@ export class HouseSpiderService extends CronService {
                     this.logger.log(`保存房源成功豆瓣话题成功, tid:${tid}`);
                   }
 
-                  fetchNextDetail();
+                  fetchNextDetail(resolve);
                 })
                 .catch((err) => {
                   this.logger.error(`解析豆瓣话题失败, 地址:${url}, ${err.message}`);
                   // 失败则跳过爬取下一条
-                  fetchNextDetail();
+                  fetchNextDetail(resolve);
                   // 把失败的加入到队尾
                   // this.pendingFetchList.push(firstItem);
                 });
@@ -340,16 +357,15 @@ export class HouseSpiderService extends CronService {
                 this.fetchErrorCount++;
                 this.logger.error(`获取豆瓣话题失败, 地址:${url}, ${err.message}`);
                 // 失败则跳过爬取下一条
-                fetchNextDetail();
+                fetchNextDetail(resolve);
                 // 把失败的加入到队尾
-                this.pendingFetchList.push(firstItem);
+                // this.pendingFetchList.push(firstItem);
               }
             });
         } else {
           this.logger.log('列表中已无数据!');
-          this.shouldFetchMore().then(() => {
-            resolve();
-          });
+          resolve();
+          this.shouldFetchMore();
         }
       } else {
         const info = `已请求${this.configService.SPIDER_MAX_FETCH_IN_CRON}次，等待下一次获取`;
@@ -518,10 +534,10 @@ export class HouseSpiderService extends CronService {
   private shouldFetchMore(): Promise<any> {
     // 没有达到本次请求数
     if (this.fetchCount < this.configService.SPIDER_MAX_FETCH_IN_CRON) {
-      // 重置页数
-      this.pageNum = 1;
       // 继续下一次请求
-      return this.fetchList();
+      return this.fetchList().then(() => {
+        return this.fetchDetail();
+      });
     }
     return Promise.resolve();
   }
@@ -534,6 +550,7 @@ export class HouseSpiderService extends CronService {
   private resetData() {
     this.pageNum = 0;
     this.fetchCount = 0;
+    this.nextPageNum = 0;
     this.fetchErrorCount = 0;
   }
 }
