@@ -288,8 +288,8 @@ export class HouseSpiderService extends CronService {
         this.houseDataMap.set(item.tid, item);
         this.pendingFetchList.push(item);
       }
-      this.logger.log(`列表解析加入共${successParsedCount}条`);
     }
+    this.logger.log(`列表解析加入共${successParsedCount}条`);
   }
 
   /**
@@ -300,7 +300,7 @@ export class HouseSpiderService extends CronService {
    * @memberof HouseSpiderService
    */
   private fetchDetail(): Promise<void> {
-    this.logger.log('已开始爬取详情');
+    this.logger.log(`开始爬取详情, 共${this.pendingFetchList.length}条`);
 
     // 5 - 15 秒后爬取下一详情
     const fetchNextDetail = (resolve: any) => {
