@@ -9,11 +9,11 @@ import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
 import { DEFAULT_USER_PASSWORD } from '@xf/common/src/constants/user.const';
 import { CronService } from '@/common/cron/cron.service';
 import { AttachmentService } from '@/modules/attachment/attachment.service';
-import { request, createRangeRandom } from '@/utils';
+import { request, createRangeRandom, modifyConfig } from '@/utils';
 import { parseHouseHtml, createBid } from './util';
 import { WxPushService } from '@/common/wx-push/wx-push.service';
 import { ConfigService } from '@/common/config/config.service';
-// import { SystemService } from '@/common/system/system.service';
+import { SystemService } from '@/common/system/system.service';
 // import { ProxyService } from '@/common/proxy/proxy.service';
 
 export interface IDoubanGroupTopic {
@@ -101,6 +101,7 @@ export class HouseSpiderService extends CronService {
     private readonly attachmentService: AttachmentService, // private readonly proxyService: ProxyService,
     private readonly wxPushService: WxPushService,
     private readonly configService: ConfigService,
+    private readonly systemService: SystemService,
   ) {
     super(schedulerRegistry);
   }
@@ -129,11 +130,28 @@ export class HouseSpiderService extends CronService {
    */
   private houseDataMap = new Map<string, IDoubanGroupTopic>();
 
+  /**
+   * 是否被禁
+   *
+   * @private
+   * @memberof HouseSpiderService
+   */
+  private wasBanned = false;
+
+  /**
+   * 开始爬虫
+   *
+   * @memberof HouseSpiderService
+   */
   public startCronJob() {
     const cronJob = this.addCronJob(
       HouseSpiderService.cronJobName,
       this.configService.SPIDER_CRON_JOB,
       () => {
+        if (this.wasBanned) {
+          return;
+        }
+
         this.resetData();
 
         // 创建代理池
@@ -174,9 +192,9 @@ export class HouseSpiderService extends CronService {
    * @memberof HouseSpiderService
    */
   private fetchList() {
-    // 3 - 10 秒后爬取下一列表
+    // 延迟爬取下一列表
     const fetchNextList = (resolve: any) => {
-      const time = createRangeRandom(3, 10);
+      const time = createRangeRandom(10, 30);
       // this.logger.log(`${time}s后开始获取下一列表`);
 
       setTimeout(() => {
@@ -193,11 +211,17 @@ export class HouseSpiderService extends CronService {
       // this.proxyService
       this.request({ url })
         .then((res: any) => {
+          // 不合法退出
+          if (this.checkResIsUnValid(res)) {
+            this.wasBanned = true;
+            return resolve();
+          }
           this.parseListData(res);
-          const nextNum = this.configService.SPIDER_PRE_FETCH_PAGE_COUNT * this.fetchListTimes;
+
+          const nextMaxPage = this.configService.SPIDER_PRE_FETCH_PAGE_COUNT * this.fetchListTimes;
           // 当前页数没达到每次需爬取的数量时
           // 继续爬取下一页
-          if (this.pageNum < nextNum) {
+          if (this.pageNum < nextMaxPage) {
             this.pageNum++;
             fetchNextList(resolve);
           } else {
@@ -301,11 +325,15 @@ export class HouseSpiderService extends CronService {
    * @memberof HouseSpiderService
    */
   private fetchDetail(): Promise<void> {
+    if (this.wasBanned) {
+      return Promise.resolve();
+    }
+
     this.logger.log(`开始爬取详情, 共${this.pendingFetchList.length}条`);
 
-    // 5 - 15 秒后爬取下一详情
+    // 延迟爬取下一详情
     const fetchNextDetail = (resolve: any) => {
-      const time = createRangeRandom(5, 15);
+      const time = createRangeRandom(10, 30);
       // this.logger.log(`${time}s后开始获取下一详情`);
 
       setTimeout(() => {
@@ -328,6 +356,11 @@ export class HouseSpiderService extends CronService {
           // this.proxyService
           this.request({ url })
             .then((res: any) => {
+              // 不合法退出
+              if (this.checkResIsUnValid(res, true)) {
+                this.wasBanned = true;
+                return resolve();
+              }
               this.parseDetailData(res, tid)
                 .then((reason) => {
                   // 解析出来若结果为 null 说明有信息丢失(地铁名没有解析到/已存在数据库中)
@@ -429,7 +462,9 @@ export class HouseSpiderService extends CronService {
         const link = HouseSpiderService.topicUrl + tid;
         this.wxPushService.send(
           `有${keywords.join('/')}的新房子啦`,
-          `- Title: ${title}\n - Price: ${parsedHouse.price}\n - Link: [${link}](${link})`,
+          `- Title: ${title}
+           - Price: ${parsedHouse.price}
+           - Link: [${link}](${link})`,
         );
       }
 
@@ -530,6 +565,10 @@ export class HouseSpiderService extends CronService {
    * @memberof HouseSpiderService
    */
   private shouldFetchMore(): Promise<any> {
+    if (this.wasBanned) {
+      return Promise.resolve();
+    }
+
     // 没有达到本次请求数
     if (this.fetchCount < this.configService.SPIDER_MAX_FETCH_IN_CRON) {
       // 继续下一次请求
@@ -537,7 +576,31 @@ export class HouseSpiderService extends CronService {
         return this.fetchDetail();
       });
     }
+
     return Promise.resolve();
+  }
+
+  /**
+   * 检测返回数据是否有效
+   *
+   * @private
+   * @param {string} res
+   * @param {boolean} shouldPush 是否微信推送
+   * @returns
+   * @memberof HouseSpiderService
+   */
+  private checkResIsUnValid(res: string, shouldPush = false) {
+    const unValid = /https\:\/\/sec.douban.com/.test(res);
+    const msg = '已被 ban !';
+    if (unValid) {
+      this.logger.error(msg);
+      this.toggleSpiderOpen(true, 0);
+      if (shouldPush) {
+        this.wxPushService.send(msg);
+      }
+    }
+
+    return unValid;
   }
 
   /**
@@ -550,5 +613,25 @@ export class HouseSpiderService extends CronService {
     this.fetchCount = 0;
     this.fetchListTimes = 0;
     this.fetchErrorCount = 0;
+  }
+
+  /**
+   * 切换开启/关闭爬虫
+   *
+   * @param {boolean} [reload=true] 是否需要重加载服务 默认 true
+   * @param {number} [val] 如果存在则设置为该值 0关闭 1开启
+   * @memberof HouseSpiderService
+   */
+  public async toggleSpiderOpen(reload = true, val?: number) {
+    await modifyConfig(/(SPIDER_IS_OPEN_HOUSE=)(\d)/, (matched) => {
+      if (val !== undefined) {
+        return val;
+      }
+      return +matched === 1 ? 0 : 1;
+    });
+
+    if (reload) {
+      await this.systemService.run('pm2 reload xf-server');
+    }
   }
 }
