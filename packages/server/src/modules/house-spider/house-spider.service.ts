@@ -114,12 +114,12 @@ export class HouseSpiderService extends CronService {
   private pageNum = 0;
 
   /**
-   * 下次爬取的列表页号
+   * 爬取列表次数
    *
    * @private
    * @memberof HouseSpiderService
    */
-  private nextPageNum = 0;
+  private fetchListTimes = 1;
 
   /**
    * 当前爬取过的房源数据 {tid: <houseData>}
@@ -194,17 +194,15 @@ export class HouseSpiderService extends CronService {
       this.request({ url })
         .then((res: any) => {
           this.parseListData(res);
-          const nextNum = this.configService.SPIDER_PRE_FETCH_PAGE_COUNT + this.nextPageNum;
+          const nextNum = this.configService.SPIDER_PRE_FETCH_PAGE_COUNT * this.fetchListTimes;
           // 当前页数没达到每次需爬取的数量时
           // 继续爬取下一页
-          if (this.pageNum < this.configService.SPIDER_PRE_FETCH_PAGE_COUNT) {
+          if (this.pageNum < nextNum) {
             this.pageNum++;
             fetchNextList(resolve);
           } else {
-            this.logger.log(
-              `本次共获取${this.configService.SPIDER_PRE_FETCH_PAGE_COUNT}页列表, 下一页为${nextNum}`,
-            );
-            this.nextPageNum = nextNum;
+            this.logger.log(`已结束获取列表, 下一页为${this.pageNum + 1}`);
+            this.fetchListTimes++;
             return resolve();
           }
         })
@@ -547,7 +545,7 @@ export class HouseSpiderService extends CronService {
   private resetData() {
     this.pageNum = 0;
     this.fetchCount = 0;
-    this.nextPageNum = 0;
+    this.fetchListTimes = 0;
     this.fetchErrorCount = 0;
   }
 }
