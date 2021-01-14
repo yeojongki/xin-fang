@@ -237,10 +237,11 @@ export class HouseSpiderService extends CronService {
    * @memberof HouseSpiderService
    */
   private parseListData(html: string): void {
+    let successParsedCount = 0;
+    let skipParsedCount = 0;
     const curYear = new Date().getFullYear();
     const $ = cheerio.load(html);
     const $trs = $('table.olt tr');
-    let successParsedCount = 0;
 
     for (let i = 1; i < $trs.length; i++) {
       const el = $trs[i];
@@ -260,12 +261,14 @@ export class HouseSpiderService extends CronService {
         const toGetKeywords = this.configService.SPIDER_MATCH_KEYWORD;
         const shouldBreak = !toGetKeywords.some((keyword) => item.title.includes(keyword));
         if (shouldBreak) {
+          skipParsedCount++;
           continue;
         }
       }
 
       // 不获取含有 `求租` 关键字的帖子
       if (item.title.includes('求租')) {
+        skipParsedCount++;
         continue;
       }
 
@@ -287,7 +290,7 @@ export class HouseSpiderService extends CronService {
         this.pendingFetchList.push(item);
       }
     }
-    this.logger.log(`列表解析加入共${successParsedCount}条`);
+    this.logger.log(`列表解析成功${successParsedCount}条, 跳过${skipParsedCount}条`);
   }
 
   /**
