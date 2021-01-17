@@ -1,17 +1,59 @@
 import * as dotenv from 'dotenv';
-import * as fs from 'fs';
+import fs = require('fs-extra');
 import { RedisModuleOptions } from 'nestjs-redis';
 import { Injectable } from '@nestjs/common';
+
+type ModifyNextValueHandler = (string | number) | ((val: string) => string | number);
+
 @Injectable()
 export class ConfigService {
   private readonly envConfig: { [key: string]: string };
+  private readonly filePath: string;
 
   constructor(filePath: string) {
+    this.filePath = filePath;
     this.envConfig = dotenv.parse(fs.readFileSync(filePath));
   }
 
   get(key: string): string {
     return this.envConfig[key];
+  }
+
+  /**
+   * 修改配置文件
+   *
+   * @param {string} key 配置文件中的 key 名
+   * @param {((val: string) => string | number)} nextValHandler
+   * @returns
+   * @memberof ConfigService
+   */
+  async modifyConfig(
+    keys: string | string[],
+    nextValHandlers: ModifyNextValueHandler | ModifyNextValueHandler[],
+  ) {
+    let fileStr = await fs.readFile(this.filePath, 'utf-8');
+
+    if (typeof keys === 'string') {
+      keys = [keys];
+    }
+
+    if (!Array.isArray(nextValHandlers)) {
+      nextValHandlers = [nextValHandlers];
+    }
+
+    keys.forEach((key, index) => {
+      const reg = new RegExp(`(${key}=)\\s*(.*)?\\s`);
+      const matched = fileStr.match(reg);
+
+      if (matched && matched[1] && matched[2]) {
+        const handler = nextValHandlers[index];
+        const nextValue = typeof handler === 'function' ? handler(matched[2]) : handler;
+        fileStr = fileStr.replace(`${matched[1]}${matched[2]}`, `${matched[1]}${nextValue}`);
+        // 重新写入文件
+      }
+    });
+
+    return await fs.writeFile(this.filePath, fileStr);
   }
 
   get IS_PROD(): boolean {
@@ -24,6 +66,10 @@ export class ConfigService {
 
   get APP_DOMAIN(): string {
     return this.envConfig.APP_DOMAIN;
+  }
+
+  get PM2_PROJECT_NAME(): string {
+    return this.envConfig.PM2_PROJECT_NAME;
   }
 
   get ATTACHMENT_LIMIT_MB(): number {
@@ -164,8 +210,8 @@ export class ConfigService {
       : [];
   }
 
-  get SPIDER_OPEN_KEYWORD(): boolean {
-    return +this.envConfig.SPIDER_OPEN_KEYWORD === 1;
+  get SPIDER_KEYWORD_TO_PUSH(): boolean {
+    return +this.envConfig.SPIDER_KEYWORD_TO_PUSH === 1;
   }
 
   get SPIDER_ONLY_FETCH_WITH_KEYWORD(): boolean {

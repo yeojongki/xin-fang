@@ -9,7 +9,7 @@ import { DEFAULT_ROLE } from '@xf/common/src/constants/roles.const';
 import { DEFAULT_USER_PASSWORD } from '@xf/common/src/constants/user.const';
 import { CronService } from '@/common/cron/cron.service';
 import { AttachmentService } from '@/modules/attachment/attachment.service';
-import { request, createRangeRandom, modifyConfig } from '@/utils';
+import { request, createRangeRandom } from '@/utils';
 import { parseHouseHtml, createBid } from './util';
 import { WxPushService } from '@/common/wx-push/wx-push.service';
 import { ConfigService } from '@/common/config/config.service';
@@ -447,7 +447,7 @@ export class HouseSpiderService extends CronService {
       const { house: parsedHouse, user, subwayName, keywords } = parseHouseHtml(
         text,
         title,
-        this.configService.SPIDER_OPEN_KEYWORD ? this.configService.SPIDER_KEYWORD_INCLUDE : [],
+        this.configService.SPIDER_KEYWORD_TO_PUSH ? this.configService.SPIDER_KEYWORD_INCLUDE : [],
       );
 
       // 推送到微信
@@ -587,7 +587,11 @@ export class HouseSpiderService extends CronService {
     const msg = '已被 ban !';
     if (unValid) {
       this.logger.error(msg);
-      this.toggleSpiderOpen(true, 0);
+      // 修改配置文件设置为关闭
+      this.configService.modifyConfig('SPIDER_IS_OPEN_HOUSE', 0).then(() => {
+        // 重启服务
+        this.systemService.reloadServer();
+      });
       if (shouldPush) {
         this.wxPushService.send(msg);
       }
@@ -645,25 +649,5 @@ export class HouseSpiderService extends CronService {
     this.fetchCount = 0;
     this.fetchListTimes = 0;
     this.fetchErrorCount = 0;
-  }
-
-  /**
-   * 切换开启/关闭爬虫
-   *
-   * @param {boolean} [reload=true] 是否需要重加载服务 默认 true
-   * @param {number} [val] 如果存在则设置为该值 0关闭 1开启
-   * @memberof HouseSpiderService
-   */
-  public async toggleSpiderOpen(reload = true, val?: number) {
-    await modifyConfig(/(SPIDER_IS_OPEN_HOUSE=)(\d)/, (matched) => {
-      if (val !== undefined) {
-        return val;
-      }
-      return +matched === 1 ? 0 : 1;
-    });
-
-    if (reload) {
-      await this.systemService.run('pm2 reload xf-server');
-    }
   }
 }

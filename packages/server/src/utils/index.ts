@@ -5,7 +5,6 @@ import { errorCode } from '@/constants/error-code';
 export * from './request';
 export * from './random';
 export * from './user-agent';
-export * from './modify-config';
 
 export function now(time = 0): number {
   return parseInt(((Date.now() + time) / 1000).toString());

@@ -84,6 +84,13 @@ export default [
             component: './house',
           },
           {
+            path: '/config',
+            authority: [ROLES.SUPER_ADMIN],
+            name: '配置管理',
+            icon: 'setting',
+            component: './config',
+          },
+          {
             path: '/city',
             authority: [ROLES.SUPER_ADMIN],
             name: '城市地铁',

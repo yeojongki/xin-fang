@@ -10,6 +10,7 @@ export enum ModuleNameMap {
   'house' = '房子',
   'house-spider' = '豆瓣爬虫',
   'system' = '系统',
+  'config' = '配置',
 }
 
 export const OSS_PREFIX = 'http://fang.yeojongki.cn/_upload/';
