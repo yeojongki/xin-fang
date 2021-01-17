@@ -152,9 +152,15 @@ export class ConfigService {
     return +this.envConfig.SPIDER_IS_OPEN_HOUSE === 1;
   }
 
-  get SPIDER_MATCH_KEYWORD(): string[] {
-    return this.envConfig.SPIDER_MATCH_KEYWORD
-      ? this.envConfig.SPIDER_MATCH_KEYWORD.split(',')
+  get SPIDER_KEYWORD_EXCLUDE(): string[] {
+    return this.envConfig.SPIDER_KEYWORD_EXCLUDE
+      ? this.envConfig.SPIDER_KEYWORD_EXCLUDE.split(',')
+      : [];
+  }
+
+  get SPIDER_KEYWORD_INCLUDE(): string[] {
+    return this.envConfig.SPIDER_KEYWORD_INCLUDE
+      ? this.envConfig.SPIDER_KEYWORD_INCLUDE.split(',')
       : [];
   }
 

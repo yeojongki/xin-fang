@@ -276,22 +276,15 @@ export class HouseSpiderService extends CronService {
       const $a = $titleTd.children('a');
       item.title = $a.attr('title') || '';
 
-      // 如果配置了只爬取关键词
-      // 则标题没有关键词会跳过
-      if (
-        this.configService.SPIDER_ONLY_FETCH_WITH_KEYWORD &&
-        this.configService.SPIDER_MATCH_KEYWORD.length
-      ) {
-        const toGetKeywords = this.configService.SPIDER_MATCH_KEYWORD;
-        const shouldBreak = !toGetKeywords.some((keyword) => item.title.includes(keyword));
-        if (shouldBreak) {
-          skipParsedCount++;
-          continue;
-        }
+      // 配置了排除关键字
+      if (this.checkKeywordExclude(item.title)) {
+        skipParsedCount++;
+        continue;
       }
 
-      // 不获取含有 `求租` 关键字的帖子
-      if (item.title.includes('求租')) {
+      // 如果配置了只爬取关键词
+      // 则标题没有关键词会跳过
+      if (!this.checkKeywordInclude(item.title)) {
         skipParsedCount++;
         continue;
       }
@@ -454,7 +447,7 @@ export class HouseSpiderService extends CronService {
       const { house: parsedHouse, user, subwayName, keywords } = parseHouseHtml(
         text,
         title,
-        this.configService.SPIDER_OPEN_KEYWORD ? this.configService.SPIDER_MATCH_KEYWORD : [],
+        this.configService.SPIDER_OPEN_KEYWORD ? this.configService.SPIDER_KEYWORD_INCLUDE : [],
       );
 
       // 推送到微信
@@ -601,6 +594,45 @@ export class HouseSpiderService extends CronService {
     }
 
     return unValid;
+  }
+
+  /**
+   * 检测标题含有关键词
+   *
+   * @private
+   * @param {string} title
+   * @returns
+   * @memberof HouseSpiderService
+   */
+  private checkKeywordInclude(title: string) {
+    let include = false;
+    if (
+      this.configService.SPIDER_ONLY_FETCH_WITH_KEYWORD &&
+      this.configService.SPIDER_KEYWORD_INCLUDE.length
+    ) {
+      const toGetKeywords = this.configService.SPIDER_KEYWORD_INCLUDE;
+      include = toGetKeywords.some((keyword) => title.includes(keyword));
+    }
+
+    return include;
+  }
+
+  /**
+   * 检测标题不含关键词
+   *
+   * @private
+   * @param {string} title
+   * @returns
+   * @memberof HouseSpiderService
+   */
+  private checkKeywordExclude(title: string) {
+    let hasExcludeKeyword = false;
+    if (this.configService.SPIDER_KEYWORD_EXCLUDE.length) {
+      const toGetKeywords = this.configService.SPIDER_KEYWORD_EXCLUDE;
+      hasExcludeKeyword = toGetKeywords.some((keyword) => title.includes(keyword));
+    }
+
+    return hasExcludeKeyword;
   }
 
   /**
