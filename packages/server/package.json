@@ -10,6 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "seed:dev": "cross-env NODE_ENV=development node scripts/initDB.js",
     "seed:prod": "cross-env NODE_ENV=production node scripts/initDB.js",
+    "run-sql:prod": "cross-env NODE_ENV=production node scripts/runSQL.js",
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
     "dev:debug": "cross-env NODE_ENV=development ts-node-dev --inspect --respawn -r tsconfig-paths/register ./src/main.ts",
     "start:dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./src/main.ts",
@@ -81,7 +82,8 @@
     "tsc-watch": "2.2.1",
     "tsconfig-paths": "3.8.0",
     "tslint": "5.16.0",
-    "typescript": "3.4.3"
+    "typescript": "3.4.3",
+    "yargs-parser": "^20.2.4"
   },
   "jest": {
     "moduleFileExtensions": [
