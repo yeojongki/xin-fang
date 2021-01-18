@@ -167,6 +167,8 @@ INSERT INTO `permission` VALUES ('2019-10-05 00:52:05', '2019-10-05 00:52:05', '
 INSERT INTO `permission` VALUES ('2019-09-24 22:54:54', '2019-09-24 22:54:54', 'e2ceb8b7-deaf-49e6-8ce2-bde931ae5bc2', 'delete.role', 'role', '角色删除', '', NULL);
 INSERT INTO `permission` VALUES ('2019-09-24 22:56:52', '2019-09-24 22:56:52', 'e5575e16-c92a-4432-917e-e9a51fce47d7', 'get.permission', 'permission', '权限 Item', '', NULL);
 INSERT INTO `permission` VALUES ('2019-11-04 22:23:23', '2019-11-04 22:23:23', 'eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', 'get.house', 'house', '房子 Item', '', NULL);
+INSERT INTO `permission` VALUES ('2021-01-17 16:47:14', '2021-01-17 16:47:14', '8f801572-2a22-4691-9c8e-da9625bf4760', 'get.config.spider-config', 'config', '获取爬虫配置', NULL, NULL);
+INSERT INTO `permission` VALUES ('2021-01-17 19:02:28', '2021-01-17 19:02:28', '7a88b85f-17fe-465c-bf81-ca8f2dcd0cbf', 'put.config.spider-config', 'config', '更新爬虫配置', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for role
@@ -255,6 +257,8 @@ INSERT INTO `role_permission` VALUES ('e5575e16-c92a-4432-917e-e9a51fce47d7', '9
 INSERT INTO `role_permission` VALUES ('eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', '1789cb3f-7ec1-4c8e-a7aa-72a8e3e49ee1');
 INSERT INTO `role_permission` VALUES ('eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', '4b7f2859-cc69-4781-ae40-2e8dc13aa21c');
 INSERT INTO `role_permission` VALUES ('eaa57ea0-a2ea-43d7-bfcc-1d7805bc94b4', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('7a88b85f-17fe-465c-bf81-ca8f2dcd0cbf', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
+INSERT INTO `role_permission` VALUES ('8f801572-2a22-4691-9c8e-da9625bf4760', '9adf12e6-079e-4695-aab8-6e19cbe1082e');
 
 -- ----------------------------
 -- Table structure for subway
